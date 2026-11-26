@@ -4,12 +4,12 @@
  */
 export const site = {
   name: 'Fateh Mammari',
-  title: 'Fateh Mammari · PhD Candidate in Mechanical Engineering',
-  position: 'PhD Candidate in Mechanical Engineering',
+  title: 'Fateh Mammari · Researcher in Mechanical Engineering',
+  position: 'Researcher in Mechanical Engineering',
   institution: 'University of Bejaia, Algeria',
   url: 'https://mammarifateh.github.io',
   description:
-    'Fateh Mammari, PhD candidate in mechanical engineering at the University of Bejaia: nonlinear bending of thin plates, surface elasticity of nanoplates, analytical and numerical methods.',
+    'Fateh Mammari, researcher in mechanical engineering at the University of Bejaia: nonlinear bending of thin plates, surface elasticity of nanoplates, analytical and numerical methods.',
   locale: 'en_US',
 };
 
