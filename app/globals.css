@@ -1,0 +1,191 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+/* Dark mode is driven by a `dark` class on <html> (set by the theme toggle). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-serif: var(--font-source-serif), 'Source Serif 4', Georgia, serif;
+  --font-sans: var(--font-inter), Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  --color-paper: #f8f7f3;
+  --color-paper-2: #f0eee8;
+  --color-ink: #1f2328;
+  --color-ink-2: #4b5260;
+  --color-ink-3: #7a808c;
+  --color-rule: #e2dfd6;
+  --color-accent: #35598a;
+  --color-accent-2: #5a7cab;
+  --color-accent-soft: #e7edf5;
+
+  --color-night: #121417;
+  --color-night-2: #1a1d22;
+  --color-night-ink: #e6e4df;
+  --color-night-ink-2: #aab0bb;
+  --color-night-ink-3: #7d8491;
+  --color-night-rule: #2b2f36;
+  --color-night-accent: #8fb0dc;
+  --color-night-accent-soft: #1d2a3b;
+}
+
+@layer base {
+  html {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+  }
+  html.dark {
+    background: var(--color-night);
+    color: var(--color-night-ink);
+    color-scheme: dark;
+  }
+  body {
+    font-family: var(--font-sans);
+  }
+  ::selection {
+    background: #35598a33;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+}
+
+@layer components {
+  .wrap {
+    @apply mx-auto w-full max-w-5xl px-5 sm:px-8;
+  }
+  .eyebrow {
+    @apply text-xs font-semibold tracking-[0.14em] text-accent uppercase dark:text-night-accent;
+  }
+  .h-display {
+    @apply font-serif text-4xl leading-[1.1] font-semibold tracking-tight sm:text-5xl md:text-6xl;
+  }
+  .h-page {
+    @apply font-serif text-3xl leading-tight font-semibold tracking-tight sm:text-4xl;
+  }
+  .h-section {
+    @apply font-serif text-2xl font-semibold tracking-tight;
+  }
+  .muted {
+    @apply text-ink-2 dark:text-night-ink-2;
+  }
+  .faint {
+    @apply text-ink-3 dark:text-night-ink-3;
+  }
+  .rule {
+    @apply border-rule dark:border-night-rule;
+  }
+  .card {
+    @apply rounded-xl border border-rule bg-white/60 transition-colors hover:border-accent-2 dark:border-night-rule dark:bg-night-2/60 dark:hover:border-night-accent;
+  }
+  .link {
+    @apply text-accent underline decoration-accent/30 underline-offset-4 transition-colors hover:decoration-accent dark:text-night-accent dark:decoration-night-accent/30;
+  }
+  .chip {
+    @apply inline-flex items-center rounded-full border border-rule px-2.5 py-0.5 text-xs text-ink-2 transition-colors hover:border-accent hover:text-accent dark:border-night-rule dark:text-night-ink-2 dark:hover:border-night-accent dark:hover:text-night-accent;
+  }
+  .badge {
+    @apply inline-flex items-center rounded px-1.5 py-0.5 text-[11px] font-semibold tracking-wide uppercase;
+  }
+  .badge-draft {
+    @apply bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300;
+  }
+  .badge-ongoing {
+    @apply bg-accent-soft text-accent dark:bg-night-accent-soft dark:text-night-accent;
+  }
+  .badge-published {
+    @apply bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300;
+  }
+  .btn {
+    @apply inline-flex items-center gap-2 rounded-lg border border-ink/80 px-4 py-2 text-sm font-medium transition-colors hover:bg-ink hover:text-paper dark:border-night-ink/70 dark:hover:bg-night-ink dark:hover:text-night;
+  }
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-ink dark:bg-night-accent dark:text-night dark:hover:bg-night-ink;
+  }
+}
+
+/* Article typography */
+.prose-sci {
+  @apply prose prose-neutral max-w-none dark:prose-invert;
+  --tw-prose-body: var(--color-ink);
+  --tw-prose-headings: var(--color-ink);
+  --tw-prose-links: var(--color-accent);
+  --tw-prose-invert-body: var(--color-night-ink);
+  --tw-prose-invert-headings: var(--color-night-ink);
+  --tw-prose-invert-links: var(--color-night-accent);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+.prose-sci h2,
+.prose-sci h3 {
+  font-family: var(--font-serif);
+  letter-spacing: -0.01em;
+}
+.prose-sci pre {
+  @apply rounded-lg border border-rule bg-paper-2 text-ink dark:border-night-rule dark:bg-night-2 dark:text-night-ink;
+}
+.prose-sci code::before,
+.prose-sci code::after {
+  content: none;
+}
+.prose-sci :not(pre) > code {
+  @apply rounded bg-paper-2 px-1 py-0.5 text-[0.9em] dark:bg-night-2;
+}
+.prose-sci table {
+  @apply text-sm;
+}
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+}
+
+/* Streaming intro text */
+.stream-word {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.stream-word.on {
+  opacity: 1;
+}
+.stream-caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 0.55em;
+  margin-left: 0.3em;
+  border-radius: 999px;
+  background: currentColor;
+  vertical-align: middle;
+  animation: caret 0.7s ease-in-out infinite alternate;
+}
+@keyframes caret {
+  from {
+    transform: scale(0.65);
+    opacity: 0.4;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Subtle grid used behind the hero figure */
+.grid-paper {
+  background-image: linear-gradient(to right, #35598a12 1px, transparent 1px), linear-gradient(to bottom, #35598a12 1px, transparent 1px);
+  background-size: 24px 24px;
+}

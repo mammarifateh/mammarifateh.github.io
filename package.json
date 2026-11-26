@@ -1,0 +1,39 @@
+{
+  "name": "fateh-mammari-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Personal scientific website of Fateh Mammari",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "python -m http.server 3000 --directory out",
+    "lint": "next lint",
+    "linkcheck": "node scripts/linkcheck.mjs"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "katex": "^0.19.1",
+    "next": "^15.5.29",
+    "next-mdx-remote": "^5.0.0",
+    "plotly.js-dist-min": "^4.3.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "rehype-katex": "^7.0.1",
+    "rehype-slug": "^6.0.0",
+    "remark-gfm": "^4.0.1",
+    "remark-math": "^6.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.5",
+    "@tailwindcss/typography": "^0.5.20",
+    "@types/node": "^26.6.11",
+    "@types/react": "^19.3.3",
+    "@types/react-dom": "^19.3.0",
+    "postcss": "^8.5.33",
+    "tailwindcss": "^4.3.5",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,66 @@
+---
+# TEMPLATE: scientific article.
+# Copy this file to content/blog/<your-url-slug>.mdx and edit it.
+# The file name becomes the address: content/blog/my-article.mdx -> /blog/my-article/
+title: "Title of the article"
+summary: "One or two sentences shown in previews, search results and social cards."
+type: article            # article | note
+category: "Applied Mathematics"   # one of: Mechanics and Engineering, Applied Mathematics, Computational Science, AI for Science, Scientific Reflections, Research Ideas
+tags: ["Tag one", "Tag two"]
+status: draft            # draft (shows "Draft · idea" and a banner) | published
+date: 2027-01-15         # publication date, used once status is "published"
+order: 10                # optional: lower numbers are listed first
+---
+
+{/* Remove <Status /> once the article is finished and status is "published". */}
+<Status />
+
+## Introduction
+
+Plain Markdown works: **bold**, *italic*, [links](/research/), lists, and footnotes.[^1]
+
+Inline mathematics with single dollars, $E = \frac{\sigma}{\varepsilon}$, and display mathematics with double dollars:
+
+$$
+D\,\nabla^4 w = q, \qquad D = \frac{E h^3}{12(1-\nu^2)}.
+$$
+
+## Saying how sure you are
+
+<Callout kind="established">A result that is standard in the literature (cite it).</Callout>
+
+<Callout kind="interpretation">Your own reading or opinion.</Callout>
+
+<Callout kind="hypothesis">A conjecture you have not yet tested.</Callout>
+
+<Callout kind="ongoing">Work in progress: aims, not results.</Callout>
+
+## Figures
+
+Put image files in `public/figures/` and reference them like this:
+
+{/* <Figure src="/figures/my-figure.png" alt="Short description" caption="Figure 1. What the reader should notice." /> */}
+
+## Tables
+
+| Symbol | Meaning | Unit |
+|---|---|---|
+| $E$ | Young's modulus | Pa |
+| $\nu$ | Poisson's ratio | – |
+
+## Code
+
+```python
+import numpy as np
+x = np.linspace(0, 1, 101)
+```
+
+## Interactive plots
+
+<Plot data={[{ x: [0, 1, 2, 3], y: [0, 1, 4, 9], mode: 'lines+markers', name: 'y = x²' }]} layout={{ xaxis: { title: { text: 'x' } }, yaxis: { title: { text: 'y' } } }} height={300} />
+
+## References
+
+1. M. E. Gurtin and A. I. Murdoch, *A continuum theory of elastic material surfaces*, Arch. Ration. Mech. Anal. 57 (1975) 291–323.
+
+[^1]: Footnotes are written like this.

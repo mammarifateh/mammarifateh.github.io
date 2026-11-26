@@ -1,0 +1,28 @@
+---
+# TEMPLATE: publication entry.
+# Copy to content/publications/<slug>.mdx. It appears on /publications/ (newest first, by date).
+# Only list work that has actually been published or formally accepted.
+title: "Full title of the article"
+summary: "Journal, volume, article (year)."
+date: 2027-06-01          # used for ordering
+authors: "First Author, Second Author, Fateh Mammari"
+journal: "Journal name"
+volume: 1
+article: 1                # article number or page range, e.g. "101–120"
+year: 2027
+doi: "https://doi.org/10.xxxx/xxxxx"
+pdf: null                 # e.g. "/papers/my-paper.pdf" after placing the file in public/papers/
+project: null             # slug of a related page in content/research, or null
+tags: ["Topic"]
+bibtex: |
+  @article{Key2027,
+    author  = {Last, First and Mammari, Fateh},
+    title   = {Full title of the article},
+    journal = {Journal name},
+    volume  = {1},
+    year    = {2027},
+    doi     = {10.xxxx/xxxxx}
+  }
+---
+
+{/* Optional: the abstract, a short plain-language summary, or a figure. Leave empty if not needed. */}

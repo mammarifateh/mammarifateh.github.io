@@ -1,0 +1,32 @@
+---
+title: "Nonlinear bending of circular nanoplates with surface effects"
+summary: "A closed-form model for the large-deflection bending of circular nanoplates that accounts for Gurtin–Murdoch surface elasticity, validated by finite-element simulation."
+status: published
+order: 1
+methods: ["Gurtin–Murdoch surface elasticity", "Nonlinear plate theory", "Closed-form solution", "Finite-element validation"]
+tags: ["Nanoplates", "Surface elasticity"]
+---
+
+## The question
+
+At the nanoscale, the surface of a plate is no longer a negligible part of the structure. Atoms at the surface sit in a different environment from those in the bulk, so the surface can carry its own residual stress and its own elastic stiffness. When such a plate bends far enough for membrane stretching to matter, both effects enter the equations of equilibrium.
+
+This project asks how these surface effects change the nonlinear bending response of a **circular nanoplate**, and whether that response can be captured by a **closed-form** model rather than only by numerical solution.
+
+## Approach
+
+<Callout kind="established">
+In the Gurtin–Murdoch theory, the surface is modelled as a membrane of zero thickness, perfectly bonded to the bulk, with its own constitutive law. A common linearised form is
+
+$$
+\boldsymbol{\sigma}^s = \tau_0\,\mathbf{I} + 2(\mu_0-\tau_0)\,\boldsymbol{\varepsilon}^s + (\lambda_0+\tau_0)\,\operatorname{tr}(\boldsymbol{\varepsilon}^s)\,\mathbf{I} + \tau_0\,\nabla_s\mathbf{u},
+$$
+
+where $\tau_0$ is the residual surface stress and $\lambda_0,\mu_0$ are the surface Lamé constants.
+</Callout>
+
+The work combines this surface model with a nonlinear (large-deflection) plate formulation for an axisymmetric circular plate, derives a closed-form approximation of the load–deflection relation, and compares it with finite-element simulations.
+
+## Publication
+
+The results are published in the *Journal of Engineering Mathematics*. The full reference, DOI and citation are on the [Publications](/publications/#closed-form-nonlinear-bending-circular-nanoplates) page. Please refer to the article itself for the model, its assumptions and its results.

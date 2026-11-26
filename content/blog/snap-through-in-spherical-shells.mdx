@@ -1,0 +1,29 @@
+---
+title: "Understanding Snap-Through Instability in Spherical Shells"
+summary: "Why a curved shell can suddenly jump to an inverted shape, explained from the simplest two-bar model up to shallow spherical caps."
+type: article
+category: "Mechanics and Engineering"
+tags: ["Stability", "Shells", "Snap-through"]
+status: draft
+order: 3
+---
+
+<Status />
+
+## Planned outline
+
+1. **A toy model first.** The two-bar (von Mises) truss already shows a limit point and a snap. You can explore it in the [Computational Lab](/lab/von-mises-truss/).
+2. **Limit points and bifurcations.** The difference between reaching a maximum of load along the equilibrium path and branching onto a new path.
+3. **Shallow spherical caps.** How curvature couples bending and stretching, and why a cap under pressure can lose stability at a limit point.
+4. **Imperfection sensitivity.** Why measured buckling loads of shells are often well below classical predictions.
+5. **Load control and displacement control.** What a snap looks like in each case, and how numerical continuation follows the unstable part of the path.
+
+<Callout kind="established">
+For the two-bar truss with bars of initial length $L_0$, axial stiffness $EA$ and rise angle $\alpha$, exact kinematics give the apex load
+
+$$
+P(w) = 2EA\left(1-\frac{L(w)}{L_0}\right)\frac{h-w}{L(w)},\qquad L(w)=\sqrt{a^2+(h-w)^2},
+$$
+
+with half-span $a=L_0\cos\alpha$ and rise $h=L_0\sin\alpha$.
+</Callout>
