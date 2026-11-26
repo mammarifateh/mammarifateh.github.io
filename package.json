@@ -4,10 +4,11 @@
   "private": true,
   "description": "Personal scientific website of Fateh Mammari",
   "scripts": {
+    "predev": "node scripts/prerender-math.mjs",
     "dev": "next dev",
+    "prebuild": "node scripts/prerender-math.mjs",
     "build": "next build",
     "start": "python -m http.server 3000 --directory out",
-    "lint": "next lint",
     "linkcheck": "node scripts/linkcheck.mjs"
   },
   "dependencies": {

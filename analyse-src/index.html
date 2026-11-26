@@ -112,8 +112,8 @@ h1 .logo{background:linear-gradient(135deg,var(--c2),var(--c3));color:#fff}
 .part>.pbody{margin-left:32px;padding:4px 10px 14px 14px;border-left:2px solid color-mix(in srgb,var(--pc) 35%,transparent)}
 @media(max-width:560px){.part>.pbody{margin-left:28px;padding:4px 4px 10px 10px}}
 </style>
-<script>window.MathJax={tex:{inlineMath:[['$','$']]},svg:{fontCache:'global'},output:{displayOverflow:'linebreak',linebreaks:{inline:true}}};</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-svg.js"></script>
+<!-- Formulas are pre-rendered with KaTeX at build time (scripts/prerender-math.mjs): only the stylesheet is needed here. -->
+<link rel="stylesheet" href="/analyse/katex/katex.min.css">
 </head>
 <body>
 <div class="wrap">
@@ -481,18 +481,11 @@ ${P.ex.map((e, i) => card(e, i, p, P.ex)).join('')}</div></details>
 
 /* Texte qui s'écrit progressivement */
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-let mjOk = false;
-const waitMJ = () => {
-  const M = window.MathJax;
-  if (M && M.startup && M.startup.promise) M.startup.promise.then(() => { mjOk = true; });
-  else setTimeout(waitMJ, 150);
-};
-waitMJ();
 
 const prep = box => {
   if (box.dataset.prep) return;
   const walker = document.createTreeWalker(box, NodeFilter.SHOW_TEXT, {
-    acceptNode: n => n.parentElement.closest('mjx-container') || !n.textContent.trim() ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT
+    acceptNode: n => n.parentElement.closest('.katex') || !n.textContent.trim() ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT
   });
   const nodes = [];
   while (walker.nextNode()) nodes.push(walker.currentNode);
@@ -506,12 +499,12 @@ const prep = box => {
     }
     n.replaceWith(frag);
   }
-  for (const m of box.querySelectorAll('mjx-container')) m.classList.add('w');
+  for (const m of box.querySelectorAll('.katex')) m.classList.add('w');
   box.dataset.prep = '1';
 };
 
 const stream = box => {
-  if (!box || reduce || !mjOk) return;
+  if (!box || reduce) return;
   prep(box);
   if (box._t) cancelAnimationFrame(box._t);
   box.querySelector('.cur')?.remove();
