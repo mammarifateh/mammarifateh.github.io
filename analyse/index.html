@@ -107,8 +107,8 @@ h1 .logo{background:linear-gradient(135deg,var(--c2),var(--c3));color:#fff}
 .tip{border-left-color:var(--pc)}
 .tip b{color:var(--pc)}
 </style>
-<script>window.MathJax={tex:{inlineMath:[['$','$']]},svg:{fontCache:'global'}};</script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js"></script>
+<script>window.MathJax={tex:{inlineMath:[['$','$']]},svg:{fontCache:'global'},output:{displayOverflow:'linebreak',linebreaks:{inline:true}}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-svg.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -429,7 +429,7 @@ const P4 = [
  s:[R`$\Lambda$ est paire, donc $\hat\Lambda(\omega)=\sqrt{\dfrac2\pi}\displaystyle\int_0^1(1-t)\cos(\omega t)\,dt$.`, R`Par parties, avec $u=1-t$ et $v'=\cos\omega t$ : $\displaystyle\int_0^1(1-t)\cos\omega t\,dt=\left[\frac{(1-t)\sin\omega t}{\omega}\right]_0^1+\int_0^1\frac{\sin\omega t}{\omega}\,dt$.`, R`Le crochet vaut $0$ (en $t=1$ et en $t=0$), et $\displaystyle\int_0^1\frac{\sin\omega t}{\omega}\,dt=\frac{1-\cos\omega}{\omega^2}$.`, R`<span class="ok">$\hat\Lambda(\omega)=\sqrt{\dfrac2\pi}\,\dfrac{1-\cos\omega}{\omega^2}$</span> pour $\omega\neq 0$, et $\hat\Lambda(0)=\frac{1}{\sqrt{2\pi}}\int\Lambda=\frac{1}{\sqrt{2\pi}}$ (l'aire du triangle vaut $1$).`],
  t:R`Fonction paire : $\hat f(\omega)=\sqrt{\frac2\pi}\int_0^{+\infty}f(t)\cos(\omega t)\,dt$, c'est plus court.`},
 {l:'m', q:R`Calcule la transformée de Fourier de $e^{-|t|}\cos t$.`,
- s:[R`Formule d'Euler : $\cos t=\dfrac{e^{it}+e^{-it}}{2}$, donc $e^{-|t|}\cos t=\frac12e^{it}e^{-|t|}+\frac12e^{-it}e^{-|t|}$.`, R`Modulation : $\widehat{e^{iat}f(t)}(\omega)=\hat f(\omega-a)$. Avec $\widehat{e^{-|t|}}(\omega)=\sqrt{\frac2\pi}\,\frac{1}{1+\omega^2}$ ({ex:expa} avec $a=1$) :`, R`<span class="ok">$\dfrac{1}{\sqrt{2\pi}}\left(\dfrac{1}{1+(\omega-1)^2}+\dfrac{1}{1+(\omega+1)^2}\right)$</span>.`, R`Le pic en $0$ se dédouble en deux pics, autour de $\omega=\pm1$.`],
+ s:[R`Formule d'Euler : $\cos t=\dfrac{e^{it}+e^{-it}}{2}$, donc $e^{-|t|}\cos t=\frac12e^{it}e^{-|t|}+\frac12e^{-it}e^{-|t|}$.`, R`Modulation : $\widehat{e^{iat}f(t)}(\omega)=\hat f(\omega-a)$. Avec $\widehat{e^{-|t|}}(\omega)=\sqrt{\frac2\pi}\,\frac{1}{1+\omega^2}$ ({ex:expa} avec $a=1$) :`, R`<span class="ok">$\dfrac{1}{\sqrt{2\pi}\,\bigl(1+(\omega-1)^2\bigr)}+\dfrac{1}{\sqrt{2\pi}\,\bigl(1+(\omega+1)^2\bigr)}$</span>.`, R`Le pic en $0$ se dédouble en deux pics, autour de $\omega=\pm1$.`],
  t:R`Multiplier par $e^{iat}$ dans le temps = décaler de $a$ en fréquence.`},
 {l:'d', k:'gauss', q:R`Calcule la transformée de Fourier de la gaussienne $e^{-t^2}$.`,
  s:[R`Je pose $G(\omega)=\dfrac{1}{\sqrt{2\pi}}\displaystyle\int e^{-t^2}e^{-i\omega t}\,dt$. Je dérive sous l'intégrale : $G'(\omega)=\dfrac{1}{\sqrt{2\pi}}\displaystyle\int(-it)\,e^{-t^2}e^{-i\omega t}\,dt$.`, R`Comme $\left(e^{-t^2}\right)'=-2t\,e^{-t^2}$, j'ai $-it\,e^{-t^2}=\frac i2\left(e^{-t^2}\right)'$. J'intègre par parties ; le crochet est nul car $e^{-t^2}\to 0$ à l'infini. On trouve $G'(\omega)=-\frac\omega2\,G(\omega)$.`, R`$G'=-\frac\omega2G$ est une équation différentielle simple : ses solutions sont $G(\omega)=C\,e^{-\omega^2/4}$, avec $C=G(0)$.`, R`$G(0)=\frac{1}{\sqrt{2\pi}}\int e^{-t^2}dt=\frac{\sqrt\pi}{\sqrt{2\pi}}=\frac{1}{\sqrt2}$ (intégrale de Gauss : $\int e^{-t^2}dt=\sqrt\pi$).`, R`<span class="ok">$\widehat{e^{-t^2}}(\omega)=\dfrac{1}{\sqrt2}\,e^{-\omega^2/4}$</span>.`],
