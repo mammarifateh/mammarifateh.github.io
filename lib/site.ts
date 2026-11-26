@@ -1,74 +1,49 @@
 /**
- * Site-wide identity and links. Edit this file to update your name, links or navigation.
- * Values set to `null` are placeholders: they are hidden on the site until you fill them in.
+ * Site-wide identity and links. Edit this file to update your name, biography, links or navigation.
+ * Contact links with `href: null` are hidden until you fill them in.
  */
 export const site = {
   name: 'Fateh Mammari',
-  title: 'Fateh Mammari · Mechanics, mathematics and computation',
-  position: 'PhD Candidate in Mechanical Engineering',
+  title: 'Fateh Mammari · Researcher in Mechanical Engineering',
+  position: 'Researcher in Mechanical Engineering',
   institution: 'University of Bejaia, Algeria',
   url: 'https://mammarifateh.github.io',
-  headline: 'Exploring the mechanics of the physical world.',
-  subtitle:
-    'Research, mathematical ideas, computational experiments and reflections on the intersection of engineering and artificial intelligence.',
   description:
-    'Personal research website of Fateh Mammari, PhD candidate in mechanical engineering at the University of Bejaia: nonlinear mechanics, nanoplates, surface elasticity, shell stability and computational modelling.',
+    'Fateh Mammari, researcher in mechanical engineering at the University of Bejaia: nonlinear bending of thin plates, surface elasticity and computational mechanics.',
   locale: 'en_US',
 };
 
-/** Short biography, shown on the homepage (streamed in) and on the About page. */
+/** Short biography, shown on the homepage (revealed word by word). */
 export const bio = [
-  'I am a PhD candidate in Mechanical Engineering at the University of Bejaia, Algeria. My work is about how thin structures behave when classical assumptions start to strain: nanoplates whose surfaces carry their own elasticity, plates that bend far beyond the linear regime, and shells that lose stability and snap through.',
-  'I approach these questions through mathematics first, then computation: closed-form models, numerical analysis, and finite-element simulations used to test them. This site gathers my research, mathematical notes, computational experiments, and reflections on how artificial intelligence may change the way science is done.',
+  'I am a researcher in mechanical engineering at the University of Bejaia, Algeria.',
+  'I work on the mechanics of thin plates, in particular their nonlinear bending and the role of surface effects at the nanoscale. I use approximate analytical methods together with numerical and finite-element simulations.',
 ];
 
-export type ContactLink = { label: string; href: string | null; handle: string | null; note?: string };
+/** Research directions, shown on the homepage and the Research page. */
+export const directions = [
+  { title: 'Nonlinear bending of thin plates', text: 'Large deflections of circular plates under pressure, and approximate load–deflection formulas.' },
+  { title: 'Surface elasticity at the nanoscale', text: 'Gurtin–Murdoch surface elasticity applied to the bending of nanoplates.' },
+  { title: 'Stability of shells', text: 'Spherical shells and snap-through instability.' },
+  { title: 'Analytical and numerical methods', text: 'Galerkin-type approximations, compared with finite-difference and finite-element solutions.' },
+];
+
+export const tools = ['MATLAB', 'Maple', 'COMSOL Multiphysics', 'Python'];
+
+export type ContactLink = { label: string; href: string | null; handle: string | null };
 
 export const contacts: ContactLink[] = [
   { label: 'Email', href: 'mailto:fateh.mammari@univ-bejaia.dz', handle: 'fateh.mammari@univ-bejaia.dz' },
   { label: 'ORCID', href: 'https://orcid.org/0009-0005-8854-4241', handle: '0009-0005-8854-4241' },
   { label: 'GitHub', href: 'https://github.com/mammarifateh', handle: 'mammarifateh' },
-  // Placeholders: add your profile URLs and handles, they will then appear automatically.
+  // Add your profile URLs here; they appear automatically once filled in.
   { label: 'Google Scholar', href: null, handle: null },
   { label: 'ResearchGate', href: null, handle: null },
-  { label: 'LinkedIn', href: null, handle: null },
 ];
 
 export const nav = [
-  { href: '/about/', label: 'About' },
   { href: '/research/', label: 'Research' },
   { href: '/publications/', label: 'Publications' },
+  { href: '/teaching/', label: 'Teaching' },
   { href: '/blog/', label: 'Blog' },
-  { href: '/lab/', label: 'Computational Lab' },
-  { href: '/ai-for-science/', label: 'AI for Science' },
-  { href: '/resources/', label: 'Resources' },
   { href: '/contact/', label: 'Contact' },
 ];
-
-export const researchInterests = [
-  'Nonlinear mechanics',
-  'Nanoplates and nanoscale structures',
-  'Gurtin–Murdoch surface elasticity',
-  'Nonlinear bending and stability',
-  'Spherical shells and snap-through instability',
-  'Mathematical modelling and numerical analysis',
-];
-
-export const tools = ['MATLAB', 'Maple', 'COMSOL Multiphysics', 'Python', 'Finite-element methods', 'AI-assisted scientific research'];
-
-export const otherInterests = [
-  'Applied mathematics',
-  'Computational science',
-  'Artificial intelligence',
-  'Scientific discovery',
-  'Interdisciplinary research',
-];
-
-export const blogCategories = [
-  'Mechanics and Engineering',
-  'Applied Mathematics',
-  'Computational Science',
-  'AI for Science',
-  'Scientific Reflections',
-  'Research Ideas',
-] as const;

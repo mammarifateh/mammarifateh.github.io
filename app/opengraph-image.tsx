@@ -16,7 +16,7 @@ export default function OgImage() {
         </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <div style={{ fontSize: 84, fontWeight: 600, lineHeight: 1.05 }}>{site.name}</div>
-          <div style={{ fontSize: 40, marginTop: 24, color: '#4b5260' }}>{site.headline}</div>
+          <div style={{ fontSize: 40, marginTop: 24, color: '#4b5260' }}>{site.institution}</div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 24, fontSize: 24, color: '#7a808c', fontFamily: 'sans-serif' }}>
           <div style={{ display: 'flex', width: 120, height: 4, background: '#35598a' }} />

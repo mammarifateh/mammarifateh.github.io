@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title: { default: site.title, template: `%s · ${site.name}` },
   description: site.description,
   authors: [{ name: site.name, url: site.url }],
-  keywords: ['Fateh Mammari', 'nonlinear mechanics', 'nanoplates', 'surface elasticity', 'Gurtin–Murdoch', 'snap-through', 'spherical shells', 'finite element', 'computational mechanics', 'AI for science'],
+  keywords: ['Fateh Mammari', 'thin plates', 'nonlinear bending', 'nanoplates', 'surface elasticity', 'Galerkin method', 'finite element'],
   alternates: { canonical: '/' },
   openGraph: { type: 'website', siteName: site.name, title: site.title, description: site.description, url: site.url, locale: site.locale },
   twitter: { card: 'summary_large_image', title: site.title, description: site.description },
@@ -40,7 +40,7 @@ const personLd = {
   affiliation: { '@type': 'CollegeOrUniversity', name: 'University of Bejaia' },
   email: 'mailto:fateh.mammari@univ-bejaia.dz',
   sameAs: contacts.filter((c) => c.href?.startsWith('http')).map((c) => c.href),
-  knowsAbout: ['Nonlinear mechanics', 'Nanoplates', 'Surface elasticity', 'Shell stability', 'Finite element method'],
+  knowsAbout: ['Thin plates', 'Nonlinear bending', 'Surface elasticity'],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
