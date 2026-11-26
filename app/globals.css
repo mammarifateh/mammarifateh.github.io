@@ -6,8 +6,8 @@
 
 /* Palette in the spirit of a chat interface: white / charcoal, soft grey bubbles, a few elegant accents. */
 @theme {
-  --font-serif: ui-sans-serif, -apple-system, system-ui, 'Segoe UI', Helvetica, 'Apple Color Emoji', Arial, sans-serif;
-  --font-sans: ui-sans-serif, -apple-system, system-ui, 'Segoe UI', Helvetica, 'Apple Color Emoji', Arial, sans-serif;
+  --font-serif: var(--font-plex-mono), 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+  --font-sans: var(--font-plex-mono), 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
   --font-mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
 
   --color-paper: #ffffff;

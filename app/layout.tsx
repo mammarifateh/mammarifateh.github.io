@@ -1,10 +1,13 @@
 import type { Metadata, Viewport } from 'next';
+import { IBM_Plex_Mono } from 'next/font/google';
 import 'katex/dist/katex.min.css';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { contacts, site } from '@/lib/site';
 
+
+const mono = IBM_Plex_Mono({ subsets: ['latin'], weight: ['400', '500', '600'], style: ['normal', 'italic'], variable: '--font-plex-mono', display: 'swap' });
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -42,7 +45,7 @@ const personLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={mono.variable} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }} />
