@@ -41,9 +41,8 @@ export const contacts: ContactLink[] = [
 ];
 
 export const nav = [
-  { href: '/research/', label: 'Research' },
-  { href: '/publications/', label: 'Publications' },
-  { href: '/teaching/', label: 'Teaching' },
-  { href: '/blog/', label: 'Blog' },
-  { href: '/contact/', label: 'Contact' },
+  { href: '/#research', label: 'Research' },
+  { href: '/#publications', label: 'Publications' },
+  { href: '/#teaching', label: 'Teaching' },
+  { href: '/#contact', label: 'Contact' },
 ];

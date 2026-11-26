@@ -1,56 +1,87 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 
 /**
- * Reveals paragraphs word by word, like a streamed answer.
- * The full text is in the HTML from the start (good for SEO and screen readers);
- * only the visual reveal is animated. Respects prefers-reduced-motion.
+ * Reveals its content word by word, like a streamed chat answer, when it scrolls into view.
+ * The full text is in the HTML from the start (search engines and screen readers see it all);
+ * only the visual reveal is animated. Blocks on the same page stream one after another.
+ * Equations (KaTeX) appear as a whole. Respects prefers-reduced-motion.
  */
-export default function StreamingText({ paragraphs, wordMs = 38, className = '' }: { paragraphs: string[]; wordMs?: number; className?: string }) {
-  const words = paragraphs.map((p) => p.split(/\s+/).filter(Boolean));
-  const total = words.reduce((n, w) => n + w.length, 0);
-  const [shown, setShown] = useState(total);
-  const [running, setRunning] = useState(false);
-  const started = useRef(false);
+let queue: Promise<void> = Promise.resolve();
+
+function wrapWords(root: HTMLElement): HTMLElement[] {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: (n) => (n.parentElement?.closest('.katex, .stream-skip') || !n.textContent?.trim() ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT),
+  });
+  const nodes: Text[] = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode as Text);
+  for (const n of nodes) {
+    const frag = document.createDocumentFragment();
+    for (const part of (n.textContent ?? '').split(/(\s+)/)) {
+      if (!part) continue;
+      if (/^\s+$/.test(part)) frag.appendChild(document.createTextNode(part));
+      else {
+        const s = document.createElement('span');
+        s.className = 'stream-word';
+        s.textContent = part;
+        frag.appendChild(s);
+      }
+    }
+    n.replaceWith(frag);
+  }
+  root.querySelectorAll<HTMLElement>('.katex, .stream-skip').forEach((k) => k.classList.add('stream-word'));
+  return [...root.querySelectorAll<HTMLElement>('.stream-word')];
+}
+
+export default function StreamingText({ children, className = '', wordMs = 28 }: { children: ReactNode; className?: string; wordMs?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (started.current) return;
-    started.current = true;
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    setShown(0);
-    setRunning(true);
-    let raf = 0;
-    const t0 = performance.now();
-    const step = (now: number) => {
-      const n = Math.min(total, Math.floor((now - t0) / wordMs));
-      setShown(n);
-      if (n < total) raf = requestAnimationFrame(step);
-      else setRunning(false);
-    };
-    raf = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(raf);
-  }, [total, wordMs]);
+    const el = ref.current;
+    if (!el || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const words = wrapWords(el);
+    if (!words.length) return;
+    el.classList.add('streaming');
 
-  let i = 0;
+    const play = () =>
+      new Promise<void>((resolve) => {
+        const caret = document.createElement('span');
+        caret.className = 'stream-caret';
+        caret.setAttribute('aria-hidden', 'true');
+        const t0 = performance.now();
+        let i = 0;
+        const step = () => {
+          const now = performance.now();
+          const goal = Math.min(words.length, Math.max(1, Math.floor((now - t0) / wordMs) + 1));
+          while (i < goal) words[i++].classList.add('on');
+          words[i - 1].after(caret);
+          if (i < words.length) setTimeout(step, 16);
+          else {
+            caret.remove();
+            el.classList.remove('streaming');
+            resolve();
+          }
+        };
+        step();
+      });
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          io.disconnect();
+          queue = queue.then(play).catch(() => el.classList.remove('streaming'));
+        }
+      },
+      { rootMargin: '0px 0px -10% 0px' },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [wordMs]);
+
   return (
-    <div className={className} aria-live="off">
-      {words.map((ws, pi) => (
-        <p key={pi}>
-          {ws.map((w, wi) => {
-            const idx = i++;
-            const on = idx < shown;
-            const last = running && idx === shown - 1;
-            return (
-              <span key={wi}>
-                <span className={`stream-word${on ? ' on' : ''}`}>{w}</span>
-                {last && <span className="stream-caret" aria-hidden="true" />}
-                {wi < ws.length - 1 ? ' ' : ''}
-              </span>
-            );
-          })}
-        </p>
-      ))}
+    <div ref={ref} className={className}>
+      {children}
     </div>
   );
 }

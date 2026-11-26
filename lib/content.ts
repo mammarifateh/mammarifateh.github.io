@@ -8,7 +8,7 @@ import matter from 'gray-matter';
  */
 const ROOT = path.join(process.cwd(), 'content');
 
-export type Collection = 'blog' | 'publications';
+export type Collection = 'publications';
 
 export type Entry = {
   slug: string;
@@ -45,7 +45,6 @@ function readCollection(collection: Collection): Entry[] {
     .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
 }
 
-export const getPosts = () => readCollection('blog');
 export const getPublications = () => readCollection('publications');
 export const getEntry = (collection: Collection, slug: string) => readCollection(collection).find((e) => e.slug === slug);
 

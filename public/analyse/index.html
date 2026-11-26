@@ -107,6 +107,10 @@ h1 .logo{background:linear-gradient(135deg,var(--c2),var(--c3));color:#fff}
 .answer ol>li::marker{color:var(--accent);font-weight:600}
 .tip{border-left-color:var(--pc)}
 .tip b{color:var(--pc)}
+
+/* sous-blocs décalés sous leur partie */
+.part>.pbody{margin-left:32px;padding:4px 10px 14px 14px;border-left:2px solid color-mix(in srgb,var(--pc) 35%,transparent)}
+@media(max-width:560px){.part>.pbody{margin-left:28px;padding:4px 4px 10px 10px}}
 </style>
 <script>window.MathJax={tex:{inlineMath:[['$','$']]},svg:{fontCache:'global'},output:{displayOverflow:'linebreak',linebreaks:{inline:true}}};</script>
 <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-svg.js"></script>

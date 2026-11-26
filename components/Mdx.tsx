@@ -3,10 +3,8 @@ import remarkMath from 'remark-math';
 import remarkGfm from 'remark-gfm';
 import rehypeKatex from 'rehype-katex';
 import rehypeSlug from 'rehype-slug';
-import { Callout, Figure } from './MdxBlocks';
 
-/** Components available inside every MDX file. */
-const components = { Callout, Figure };
+const components = {};
 
 export default async function Mdx({ source }: { source: string }) {
   const { content } = await compileMDX({

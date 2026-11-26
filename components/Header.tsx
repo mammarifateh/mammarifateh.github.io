@@ -1,32 +1,24 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { nav, site } from '@/lib/site';
 import ThemeToggle from './ThemeToggle';
 
 export default function Header() {
-  const pathname = usePathname() ?? '/';
   const [open, setOpen] = useState(false);
-  useEffect(() => setOpen(false), [pathname]);
-
-  const current = pathname.endsWith('/') ? pathname : pathname + '/';
-  const isActive = (href: string) => current.startsWith(href);
-  const linkCls = (href: string) =>
-    isActive(href) ? 'text-accent dark:text-night-accent' : 'text-ink-2 hover:text-ink dark:text-night-ink-2 dark:hover:text-night-ink';
-
   return (
     <header className="sticky top-0 z-40 border-b rule bg-paper/85 backdrop-blur-md dark:bg-night/85">
-      <div className="wrap flex h-16 max-w-3xl items-center gap-6">
-        <Link href="/" className="font-serif text-lg font-semibold tracking-tight whitespace-nowrap">
+      <div className="wrap flex h-16 items-center gap-6">
+        <Link href="/" className="flex items-center gap-2.5 text-[17px] font-semibold tracking-tight whitespace-nowrap">
+          <span className="avatar h-7 w-7 text-[14px]" aria-hidden="true">∑</span>
           {site.name}
         </Link>
         <nav className="ml-auto hidden items-center gap-1 sm:flex" aria-label="Main">
           {nav.map((n) => (
-            <Link key={n.href} href={n.href} aria-current={isActive(n.href) ? 'page' : undefined} className={`rounded-md px-2.5 py-1.5 text-sm ${linkCls(n.href)}`}>
+            <a key={n.href} href={n.href} className="rounded-md px-2.5 py-1.5 text-sm text-ink-2 hover:text-ink dark:text-night-ink-2 dark:hover:text-night-ink">
               {n.label}
-            </Link>
+            </a>
           ))}
         </nav>
         <div className="ml-auto flex items-center sm:ml-0">
@@ -50,9 +42,9 @@ export default function Header() {
           <ul className="wrap grid gap-0.5 py-3">
             {nav.map((n) => (
               <li key={n.href}>
-                <Link href={n.href} aria-current={isActive(n.href) ? 'page' : undefined} className={`block rounded-md px-2 py-2.5 text-[15px] ${linkCls(n.href)}`}>
+                <a href={n.href} onClick={() => setOpen(false)} className="block rounded-md px-2 py-2.5 text-[15px] text-ink-2 dark:text-night-ink-2">
                   {n.label}
-                </Link>
+                </a>
               </li>
             ))}
           </ul>
