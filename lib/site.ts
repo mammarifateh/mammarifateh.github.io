@@ -4,29 +4,34 @@
  */
 export const site = {
   name: 'Fateh Mammari',
-  title: 'Fateh Mammari · Researcher in Mechanical Engineering',
-  position: 'Researcher in Mechanical Engineering',
+  title: 'Fateh Mammari · PhD Candidate in Mechanical Engineering',
+  position: 'PhD Candidate in Mechanical Engineering',
   institution: 'University of Bejaia, Algeria',
   url: 'https://mammarifateh.github.io',
   description:
-    'Fateh Mammari, researcher in mechanical engineering at the University of Bejaia: nonlinear bending of thin plates, surface elasticity of nanoplates, analytical and numerical methods.',
+    'Fateh Mammari, PhD candidate in mechanical engineering at the University of Bejaia: nonlinear bending of thin plates, surface elasticity of nanoplates, analytical and numerical methods.',
   locale: 'en_US',
 };
 
 /** Short biography, shown at the top of the page (revealed word by word). */
 export const bio = [
-  'My research concerns the mechanics of thin plates, in particular large-deflection bending and size-dependent surface effects in nanoplates. I develop approximate analytical solutions and assess them against finite-difference and finite-element results.',
+  'I work on the mechanics of thin structures at small scales, with a particular interest in how surface effects influence the nonlinear behaviour of nanoplates and nanoshells.',
+  'My research combines analytical modelling, numerical methods and finite-element simulations to study problems involving large deformation, instability and surface elasticity.',
+  'This website is a place to share my research, publications, teaching materials and ideas.',
 ];
 
-/** Research directions. */
-export const directions = [
-  { title: 'Nonlinear bending of thin plates', text: 'Large-deflection response of clamped circular plates under uniform pressure, and approximate load–deflection relations.' },
-  { title: 'Surface elasticity of nanoplates', text: 'Size-dependent behaviour of nanoplates described by Gurtin–Murdoch surface elasticity within the Föppl–von Kármán framework.' },
-  { title: 'Stability of shells', text: 'Snap-through instability of spherical shells.' },
-  { title: 'Analytical and numerical methods', text: 'Galerkin and collocation approximations, verified against finite-difference and finite-element solutions.' },
+export const researchIntro = 'My research focuses on the nonlinear mechanics of thin structures, especially when surface effects become important at the nanoscale.';
+
+export const researchTopics = [
+  'Nonlinear bending of circular nanoplates',
+  'Surface elasticity and the Gurtin–Murdoch model',
+  'Snap-through instability of spherical caps',
+  'Nonlinear plate and shell theories',
+  'Analytical approximations and numerical continuation',
+  'Finite-element validation of theoretical models',
 ];
 
-export const tools = ['MATLAB', 'Maple', 'COMSOL Multiphysics', 'Python'];
+export const researchOutro = 'I am particularly interested in understanding how surface stresses and surface elastic properties modify the mechanical response and stability of nanoscale structures.';
 
 export type ContactLink = { label: string; href: string | null; handle: string | null };
 

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: { default: site.title, template: `%s · ${site.name}` },
   description: site.description,
   authors: [{ name: site.name, url: site.url }],
-  keywords: ['Fateh Mammari', 'thin plates', 'nonlinear bending', 'nanoplates', 'surface elasticity', 'Galerkin method', 'finite element'],
+  keywords: ['Fateh Mammari', 'thin structures', 'nanoplates', 'nanoshells', 'nonlinear bending', 'surface elasticity', 'Gurtin–Murdoch', 'snap-through', 'finite element'],
   alternates: { canonical: '/' },
   openGraph: { type: 'website', siteName: site.name, title: site.title, description: site.description, url: site.url, locale: site.locale },
   twitter: { card: 'summary_large_image', title: site.title, description: site.description },
