@@ -13,16 +13,22 @@ let html = fs.readFileSync(src, 'utf8');
 
 const errors = [];
 let count = 0;
-const render = (tex) => {
+const render = (tex, displayMode = false) => {
   count++;
   try {
-    return katex.renderToString(tex, { output: 'html', throwOnError: true, strict: false });
+    return katex.renderToString(tex, { output: 'html', throwOnError: true, strict: false, displayMode });
   } catch (e) {
     errors.push(`${tex}\n   -> ${e.message}`);
-    return katex.renderToString(tex, { output: 'html', throwOnError: false, strict: false });
+    return katex.renderToString(tex, { output: 'html', throwOnError: false, strict: false, displayMode });
   }
 };
-const renderMath = (s) => s.replace(/\$([^$]+?)\$/g, (_, tex) => render(tex));
+// $$…$$ = formula displayed on its own line; $…$ = inline formula
+const renderMath = (s) =>
+  s
+    // Displayed formulas are rendered as inline math in display style inside a centred block,
+    // so that KaTeX can still break long lines at = and + on narrow (phone) screens.
+    .replace(/\$\$([\s\S]+?)\$\$/g, (_, tex) => '<span class="dmath">' + render('\\displaystyle ' + tex.trim()) + '</span>')
+    .replace(/\$([^$]+?)\$/g, (_, tex) => render(tex));
 
 // 1) Course notes in <template> blocks
 html = html.replace(/(<template id="r\d+">)([\s\S]*?)(<\/template>)/g, (_, a, body, b) => a + renderMath(body) + b);

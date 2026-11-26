@@ -111,6 +111,18 @@ h1 .logo{background:linear-gradient(135deg,var(--c2),var(--c3));color:#fff}
 /* sous-blocs décalés sous leur partie */
 .part>.pbody{margin-left:32px;padding:4px 10px 14px 14px;border-left:2px solid color-mix(in srgb,var(--pc) 35%,transparent)}
 @media(max-width:560px){.part>.pbody{margin-left:28px;padding:4px 4px 10px 10px}}
+
+/* aération */
+.cours ul>li{padding:18px 0;line-height:1.8}
+.answer ol>li{margin:0 0 18px;padding:0;line-height:1.8}
+.answer ol>li:last-child{margin-bottom:6px}
+.q{line-height:1.75;padding:12px 20px}
+.tip{margin-top:20px;line-height:1.75}
+.method{padding:14px 18px;margin-top:16px;line-height:1.8}
+.method li{margin:6px 0}
+.dmath{display:block;text-align:center;margin:.7em 0;padding:2px 0;line-height:2.4}
+.dmath .katex{white-space:normal}
+.katex{font-size:1.05em}
 </style>
 <!-- Formulas are pre-rendered with KaTeX at build time (scripts/prerender-math.mjs): only the stylesheet is needed here. -->
 <link rel="stylesheet" href="/analyse/katex/katex.min.css">
@@ -123,61 +135,117 @@ h1 .logo{background:linear-gradient(135deg,var(--c2),var(--c3));color:#fff}
 </div>
 
 <template id="r1"><ul>
-<li><b>Une série, c'est quoi ?</b> C'est une addition sans fin : $u_0+u_1+u_2+\dots$ On la note $\sum u_n$. Je calcule les <b>sommes partielles</b> $S_N=u_0+u_1+\dots+u_N$. Si $S_N$ a une limite finie quand $N\to\infty$, la série <b>converge</b> et cette limite est sa <b>somme</b>. Sinon, elle <b>diverge</b>.</li>
-<li><b>Premier test (condition nécessaire).</b> Si la série converge, alors $u_n\to 0$. Donc : si $u_n$ ne tend pas vers $0$, la série diverge tout de suite (« divergence grossière »). Attention, l'inverse est faux : $\frac1n\to 0$ mais $\sum\frac1n$ diverge.</li>
-<li><b>Série géométrique.</b> $\sum q^n$ converge si et seulement si $|q|\lt 1$. Dans ce cas : $\displaystyle\sum_{n\ge 0}q^n=\frac{1}{1-q}$.</li>
-<li><b>Séries de Riemann.</b> $\sum\frac{1}{n^\alpha}$ converge si et seulement si $\alpha>1$. Exemples : $\sum\frac1{n^2}$ converge, $\sum\frac1n$ (série harmonique) diverge.</li>
-<li><b>Série télescopique.</b> Si $u_n=a_n-a_{n+1}$, les termes s'annulent deux à deux et $S_N=a_0-a_{N+1}$. Très pratique pour calculer une somme.</li>
-<li><b>Comparaison (termes positifs).</b> Si $0\le u_n\le v_n$ : si $\sum v_n$ converge, alors $\sum u_n$ converge. Si $\sum u_n$ diverge, alors $\sum v_n$ diverge. En bref : plus petit qu'une série qui converge, ça converge.</li>
-<li><b>Équivalents (termes positifs).</b> Si $u_n\sim v_n$, les deux séries ont la même nature. Équivalents utiles quand $u\to 0$ : $\sin u\sim u$, $\ln(1+u)\sim u$, $e^u-1\sim u$, $1-\cos u\sim\frac{u^2}{2}$.</li>
-<li><b>Règle de d'Alembert.</b> Je calcule $\ell=\lim\left|\frac{u_{n+1}}{u_n}\right|$. Si $\ell\lt 1$ : converge. Si $\ell>1$ : diverge. Si $\ell=1$ : on ne peut pas conclure. Idéale avec des factorielles $n!$ ou des puissances $a^n$.</li>
-<li><b>Règle de Cauchy.</b> Même chose avec $\ell=\lim\sqrt[n]{|u_n|}$. Idéale quand tout est à la puissance $n$.</li>
-<li><b>Séries alternées.</b> Pour $\sum(-1)^n u_n$ avec $u_n\ge 0$ : si $u_n$ est décroissante et tend vers $0$, la série converge.</li>
-<li><b>Critère d'Abel.</b> Si $(a_n)$ décroît vers $0$ et si les sommes partielles $\sum_{k=1}^N b_k$ restent bornées, alors $\sum a_nb_n$ converge. Exemple type : $\sum\frac{\cos n}{n^\alpha}$ avec $\alpha>0$.</li>
-<li><b>Ce qui ne change pas la nature.</b> Enlever ou modifier un nombre fini de termes, ou multiplier par une constante non nulle. (La somme, elle, peut changer.)</li>
-<li><b>Convergence absolue.</b> Si $\sum|u_n|$ converge, alors $\sum u_n$ converge. Une série qui converge sans converger absolument est dite <b>semi-convergente</b>.</li>
+<li><b>Une série, c'est quoi ?</b> C'est une addition sans fin :
+$$u_0+u_1+u_2+\cdots$$
+On la note $\sum u_n$. Pour savoir si cette addition « s'arrête » sur un nombre, je regarde les <b>sommes partielles</b>
+$$S_N=u_0+u_1+\cdots+u_N .$$
+Si $S_N$ a une limite finie quand $N\to\infty$, la série <b>converge</b> et cette limite est sa <b>somme</b>. Sinon, elle <b>diverge</b>.</li>
+<li><b>Premier test (condition nécessaire).</b> Si la série converge, alors $u_n\to 0$.
+<br>Pourquoi ? Parce que $u_N=S_N-S_{N-1}$ et que $S_N$ et $S_{N-1}$ tendent vers la même limite.
+<br>Donc : si $u_n$ ne tend pas vers $0$, la série diverge tout de suite. On parle de <b>divergence grossière</b>.
+<br>Attention, l'inverse est faux : $\frac1n\to 0$ et pourtant $\sum\frac1n$ diverge.</li>
+<li><b>Série géométrique.</b> $\sum q^n$ converge si et seulement si $|q|\lt 1$. Dans ce cas :
+$$\sum_{n\ge 0}q^n=\frac{1}{1-q}.$$
+Elle vient de la formule $1+q+\cdots+q^N=\dfrac{1-q^{N+1}}{1-q}$, où $q^{N+1}\to 0$ quand $|q|\lt 1$.</li>
+<li><b>Séries de Riemann.</b> La série
+$$\sum_{n\ge1}\frac{1}{n^\alpha}$$
+converge si et seulement si $\alpha>1$.
+Exemples : $\sum\frac1{n^2}$ converge ; $\sum\frac1n$ (la série harmonique) diverge. Ce sont les séries de référence pour comparer.</li>
+<li><b>Série télescopique.</b> Si $u_n=a_n-a_{n+1}$, les termes s'annulent deux à deux :
+$$S_N=(a_0-a_1)+(a_1-a_2)+\cdots+(a_N-a_{N+1})=a_0-a_{N+1}.$$
+La série converge si et seulement si $a_n$ a une limite. Très pratique pour <b>calculer</b> une somme.</li>
+<li><b>Comparaison (termes positifs).</b> Si $0\le u_n\le v_n$ à partir d'un certain rang :
+<br>• si $\sum v_n$ converge, alors $\sum u_n$ converge ;
+<br>• si $\sum u_n$ diverge, alors $\sum v_n$ diverge.
+<br>En bref : plus petit qu'une série qui converge, ça converge ; plus grand qu'une série qui diverge, ça diverge.</li>
+<li><b>Équivalents (termes positifs).</b> Si $u_n\sim v_n$ (c'est-à-dire $u_n/v_n\to 1$) et si les termes sont positifs, les deux séries ont la même nature.
+<br>Équivalents utiles quand $u\to 0$ :
+$$\sin u\sim u,\qquad \ln(1+u)\sim u,\qquad e^u-1\sim u,\qquad 1-\cos u\sim\frac{u^2}{2}.$$</li>
+<li><b>Règle de d'Alembert.</b> Je calcule
+$$\ell=\lim_{n\to\infty}\left|\frac{u_{n+1}}{u_n}\right|.$$
+Si $\ell\lt 1$ : la série converge. Si $\ell>1$ : elle diverge. Si $\ell=1$ : on ne peut pas conclure. Idéale avec des factorielles $n!$ ou des puissances $a^n$, qui se simplifient bien dans le quotient.</li>
+<li><b>Règle de Cauchy.</b> Même conclusion avec
+$$\ell=\lim_{n\to\infty}\sqrt[n]{|u_n|}.$$
+Idéale quand tout le terme général est à la puissance $n$.</li>
+<li><b>Séries alternées.</b> Pour $\sum(-1)^n u_n$ avec $u_n\ge 0$ : si $(u_n)$ est <b>décroissante</b> et <b>tend vers $0$</b>, la série converge. Les deux conditions sont nécessaires au critère.</li>
+<li><b>Critère d'Abel.</b> Si $(a_n)$ décroît vers $0$ et si les sommes partielles $\sum_{k=1}^N b_k$ restent bornées, alors $\sum a_nb_n$ converge.
+<br>Exemple type : $\sum\frac{\cos n}{n^\alpha}$ avec $\alpha>0$.</li>
+<li><b>Ce qui ne change pas la nature.</b> Enlever ou modifier un nombre fini de termes, ou multiplier tous les termes par une constante non nulle. La <b>somme</b>, elle, peut changer.</li>
+<li><b>Convergence absolue.</b> Si $\sum|u_n|$ converge, alors $\sum u_n$ converge. Une série qui converge sans converger absolument est dite <b>semi-convergente</b> (exemple : $\sum\frac{(-1)^n}{n}$).</li>
 </ul>
 <div class="method"><b>🧐 Ma méthode, dans l'ordre :</b>
-<ol><li>Est-ce que $u_n\to 0$ ? Si non, c'est fini : ça diverge.</li><li>Les termes sont-ils positifs ? Si oui : comparaison ou équivalent avec une série connue.</li><li>Factorielle ou puissance $n$ ? d'Alembert ou Cauchy.</li><li>Signe qui alterne ? Critère des séries alternées, ou valeur absolue.</li></ol></div></template>
+<ol><li>Est-ce que $u_n\to 0$ ? Si non, c'est fini : la série diverge.</li><li>Les termes sont-ils positifs ? Si oui : comparaison ou équivalent avec une série connue (géométrique, Riemann).</li><li>Une factorielle ou une puissance $n$ ? d'Alembert ou Cauchy.</li><li>Un signe qui change ? Critère des séries alternées, valeur absolue, ou Abel.</li></ol></div></template>
 <template id="r2"><ul>
-<li><b>Une série entière, c'est quoi ?</b> C'est une série de la forme $\sum a_n x^n=a_0+a_1x+a_2x^2+\dots$ On peut la voir comme un « polynôme infini ». Pour chaque $x$, j'obtiens une série numérique.</li>
-<li><b>Le rayon de convergence $R$.</b> C'est un nombre $R\in[0\,;+\infty]$ tel que : si $|x|\lt R$, la série converge (et même absolument) ; si $|x|>R$, elle diverge.</li>
-<li><b>Les bords $x=R$ et $x=-R$.</b> Le rayon ne dit rien en ces points. J'étudie les deux séries numériques à la main, avec les outils de la partie 1.</li>
-<li><b>Calculer $R$ avec d'Alembert.</b> Si $\left|\frac{a_{n+1}}{a_n}\right|\to\ell$, alors $R=\frac1\ell$. Avec les conventions : $\ell=0\Rightarrow R=+\infty$ et $\ell=+\infty\Rightarrow R=0$.</li>
+<li><b>Une série entière, c'est quoi ?</b> C'est une série de la forme
+$$\sum_{n\ge0} a_n x^n=a_0+a_1x+a_2x^2+\cdots$$
+On peut la voir comme un « polynôme infini ». Pour chaque valeur de $x$, j'obtiens une série numérique, qui converge ou non.</li>
+<li><b>Le rayon de convergence $R$.</b> C'est un nombre $R\in[0\,;+\infty]$ tel que :
+<br>• si $|x|\lt R$, la série converge, et même absolument ;
+<br>• si $|x|>R$, elle diverge.
+<br>Autrement dit, la série converge sur un intervalle centré en $0$.</li>
+<li><b>Les bords $x=R$ et $x=-R$.</b> Le rayon ne dit rien en ces deux points. J'étudie les deux séries numériques obtenues à la main, avec les outils de la partie 1.</li>
+<li><b>Calculer $R$ avec d'Alembert.</b> Si $a_n\neq 0$ et
+$$\left|\frac{a_{n+1}}{a_n}\right|\to\ell,\qquad\text{alors}\qquad R=\frac1\ell,$$
+avec les conventions $\ell=0\Rightarrow R=+\infty$ et $\ell=+\infty\Rightarrow R=0$.</li>
 <li><b>Calculer $R$ avec Cauchy.</b> Si $\sqrt[n]{|a_n|}\to\ell$, alors $R=\frac1\ell$ (mêmes conventions). Pratique quand $a_n$ est une puissance $n$-ième.</li>
-<li><b>Séries « à trous ».</b> S'il n'y a que des $x^{2n}$ (ou des $x^{2n+1}$), je n'utilise pas $a_n$ directement : j'applique d'Alembert à $|u_n(x)|$, ou je reconnais une série géométrique.</li>
-<li><b>Dériver et intégrer.</b> Sur $]-R\,;R[$, je peux dériver ou intégrer terme à terme. Le rayon reste le même.</li>
-<li><b>Développements à connaître</b> (DSE) :<br>
-$\dfrac1{1-x}=\sum x^n$ et $\dfrac1{1+x}=\sum(-1)^nx^n$ pour $|x|\lt 1$ ;<br>
-$e^x=\sum\dfrac{x^n}{n!}$ pour tout $x$ ;<br>
-$\ln(1+x)=\sum_{n\ge1}\dfrac{(-1)^{n+1}x^n}{n}$ pour $|x|\lt 1$ ;<br>
-$\cos x=\sum\dfrac{(-1)^nx^{2n}}{(2n)!}$ et $\sin x=\sum\dfrac{(-1)^nx^{2n+1}}{(2n+1)!}$ pour tout $x$.</li>
+<li><b>Séries « à trous ».</b> S'il n'y a que des $x^{2n}$ (ou des $x^{2n+1}$), un coefficient sur deux est nul et le quotient $\frac{a_{n+1}}{a_n}$ n'a pas de sens. J'applique alors d'Alembert à $|u_n(x)|$, le terme complet, ou je reconnais une série géométrique.</li>
+<li><b>Dériver et intégrer.</b> Sur $]-R\,;R[$, je peux dériver ou intégrer terme à terme. Le rayon reste le même. C'est l'outil principal pour calculer des sommes.</li>
+<li><b>Développements à connaître (DSE).</b>
+$$\frac1{1-x}=\sum_{n\ge0} x^n,\qquad \frac1{1+x}=\sum_{n\ge0}(-1)^nx^n\qquad(|x|\lt 1)$$
+$$e^x=\sum_{n\ge0}\frac{x^n}{n!}\qquad(\text{pour tout }x)$$
+$$\ln(1+x)=\sum_{n\ge1}\frac{(-1)^{n+1}x^n}{n}\qquad(|x|\lt 1)$$
+$$\cos x=\sum_{n\ge0}\frac{(-1)^nx^{2n}}{(2n)!},\qquad \sin x=\sum_{n\ge0}\frac{(-1)^nx^{2n+1}}{(2n+1)!}\qquad(\text{pour tout }x)$$</li>
 <li><b>Identifier les coefficients.</b> Si $\sum a_nx^n=\sum b_nx^n$ près de $0$, alors $a_n=b_n$ pour tout $n$. C'est ce qui permet de résoudre une équation différentielle avec une série entière.</li>
 <li><b>Astuces pour fabriquer un DSE.</b> Remplacer $x$ par $-x$, $x^2$ ou $2x$ ; multiplier par $x$ ; dériver ou intégrer un DSE connu ; décomposer une fraction en éléments simples.</li>
 </ul>
 <div class="method"><b>🧐 Ma méthode, dans l'ordre :</b>
-<ol><li>Je trouve $R$ (d'Alembert ou série géométrique reconnue).</li><li>Si on me demande le domaine, j'étudie $x=R$ et $x=-R$.</li><li>Pour une somme : je pars d'une série connue, puis je dérive, j'intègre ou je multiplie par $x$.</li></ol></div></template>
+<ol><li>Je trouve $R$ (d'Alembert, Cauchy, ou une série géométrique reconnue).</li><li>Si on me demande le domaine, j'étudie séparément $x=R$ et $x=-R$.</li><li>Pour une somme : je pars d'une série connue, puis je dérive, j'intègre ou je multiplie par $x$.</li></ol></div></template>
 <template id="r3"><ul>
-<li><b>Une série de Fourier, c'est quoi ?</b> On écrit une fonction $2\pi$-périodique comme une somme de cosinus et de sinus : $f(x)\sim\dfrac{a_0}{2}+\displaystyle\sum_{n\ge 1}\bigl(a_n\cos nx+b_n\sin nx\bigr)$.</li>
-<li><b>Les coefficients.</b> $a_n=\dfrac1\pi\displaystyle\int_{-\pi}^{\pi}f(x)\cos(nx)\,dx$ et $b_n=\dfrac1\pi\displaystyle\int_{-\pi}^{\pi}f(x)\sin(nx)\,dx$. Le terme $\frac{a_0}{2}$ est la valeur moyenne de $f$.</li>
-<li><b>Parité.</b> Si $f$ est paire : $b_n=0$ (que des cosinus). Si $f$ est impaire : $a_n=0$ (que des sinus). Dans les deux cas, je calcule $\frac2\pi\int_0^\pi$ au lieu de $\frac1\pi\int_{-\pi}^{\pi}$.</li>
-<li><b>Théorème de Dirichlet.</b> Si $f$ est $C^1$ par morceaux : là où $f$ est continue, la série vaut $f(x)$. En un saut, elle vaut la moyenne des deux valeurs : $\dfrac{f(x^+)+f(x^-)}{2}$.</li>
-<li><b>Formule de Parseval.</b> $\dfrac1\pi\displaystyle\int_{-\pi}^{\pi}f(x)^2\,dx=\dfrac{a_0^2}{2}+\sum_{n\ge 1}\left(a_n^2+b_n^2\right)$.</li>
-<li><b>Valeurs utiles.</b> $\cos(n\pi)=(-1)^n$ et $\sin(n\pi)=0$. Pour $n\ge 1$ : $\int_{-\pi}^{\pi}\cos(nx)\,dx=\int_{-\pi}^{\pi}\sin(nx)\,dx=0$.</li>
-<li><b>Primitives utiles</b> (par parties). $\displaystyle\int x\cos(nx)\,dx=\frac{x\sin nx}{n}+\frac{\cos nx}{n^2}$ et $\displaystyle\int x\sin(nx)\,dx=-\frac{x\cos nx}{n}+\frac{\sin nx}{n^2}$.</li>
-<li><b>Linéarisation.</b> $\cos^2x=\frac{1+\cos 2x}{2}$, $\sin^2x=\frac{1-\cos 2x}{2}$, $\sin^3x=\frac{3\sin x-\sin 3x}{4}$.</li>
+<li><b>Une série de Fourier, c'est quoi ?</b> On écrit une fonction $2\pi$-périodique comme une somme de cosinus et de sinus :
+$$f(x)\sim\frac{a_0}{2}+\sum_{n\ge 1}\bigl(a_n\cos nx+b_n\sin nx\bigr).$$
+Le symbole $\sim$ rappelle qu'il faut encore un théorème (Dirichlet) pour avoir l'égalité.</li>
+<li><b>Les coefficients.</b>
+$$a_n=\frac1\pi\int_{-\pi}^{\pi}f(x)\cos(nx)\,dx,\qquad b_n=\frac1\pi\int_{-\pi}^{\pi}f(x)\sin(nx)\,dx.$$
+Le terme $\frac{a_0}{2}$ est la valeur moyenne de $f$ sur une période.</li>
+<li><b>Parité.</b> Si $f$ est paire : $b_n=0$, il n'y a que des cosinus. Si $f$ est impaire : $a_n=0$, il n'y a que des sinus. Dans les deux cas, je calcule $\frac2\pi\int_0^\pi$ au lieu de $\frac1\pi\int_{-\pi}^{\pi}$, ce qui divise le travail par deux.</li>
+<li><b>Théorème de Dirichlet.</b> Si $f$ est $C^1$ par morceaux :
+<br>• là où $f$ est continue, la série vaut $f(x)$ ;
+<br>• en un saut, elle vaut la moyenne des deux valeurs :
+$$\frac{f(x^+)+f(x^-)}{2}.$$</li>
+<li><b>Formule de Parseval.</b>
+$$\frac1\pi\int_{-\pi}^{\pi}f(x)^2\,dx=\frac{a_0^2}{2}+\sum_{n\ge 1}\left(a_n^2+b_n^2\right).$$
+Elle relie une intégrale, souvent facile, à une somme de série.</li>
+<li><b>Valeurs utiles.</b> $\cos(n\pi)=(-1)^n$ et $\sin(n\pi)=0$. Pour $n\ge 1$ :
+$$\int_{-\pi}^{\pi}\cos(nx)\,dx=\int_{-\pi}^{\pi}\sin(nx)\,dx=0.$$</li>
+<li><b>Primitives utiles</b> (par parties) :
+$$\int x\cos(nx)\,dx=\frac{x\sin nx}{n}+\frac{\cos nx}{n^2},\qquad \int x\sin(nx)\,dx=-\frac{x\cos nx}{n}+\frac{\sin nx}{n^2}.$$</li>
+<li><b>Linéarisation.</b>
+$$\cos^2x=\frac{1+\cos 2x}{2},\qquad \sin^2x=\frac{1-\cos 2x}{2},\qquad \sin^3x=\frac{3\sin x-\sin 3x}{4}.$$</li>
 </ul>
 <div class="method"><b>🧐 Ma méthode, dans l'ordre :</b>
 <ol><li>Je regarde si $f$ est paire ou impaire.</li><li>Je calcule $a_0$ à part, puis $a_n$ ou $b_n$ (souvent par parties).</li><li>Pour une somme numérique : Dirichlet en un point bien choisi, ou Parseval.</li></ol></div></template>
 <template id="r4"><ul>
-<li><b>Définition.</b> La transformée de Fourier de $f$ est $\hat f(\omega)=\dfrac{1}{\sqrt{2\pi}}\displaystyle\int_{-\infty}^{+\infty}f(t)\,e^{-i\omega t}\,dt$.</li>
-<li><b>Transformée inverse.</b> On retrouve $f$ avec la même constante : $f(t)=\dfrac{1}{\sqrt{2\pi}}\displaystyle\int_{-\infty}^{+\infty}\hat f(\omega)\,e^{i\omega t}\,d\omega$ (là où $f$ est continue).</li>
-<li><b>Formules d'Euler.</b> $\cos t=\frac{e^{it}+e^{-it}}{2}$, $\sin t=\frac{e^{it}-e^{-it}}{2i}$, et donc $e^{i\omega}-e^{-i\omega}=2i\sin\omega$.</li>
-<li><b>Premier contrôle.</b> $\hat f(0)=\dfrac{1}{\sqrt{2\pi}}\displaystyle\int_{-\infty}^{+\infty}f(t)\,dt$.</li>
-<li><b>Parité.</b> Si $f$ est paire : $\hat f(\omega)=\sqrt{\dfrac2\pi}\displaystyle\int_0^{+\infty}f(t)\cos(\omega t)\,dt$.</li>
-<li><b>Décalage.</b> $\widehat{f(t-a)}=e^{-ia\omega}\,\hat f(\omega)$ et $\widehat{e^{iat}f(t)}=\hat f(\omega-a)$.</li>
-<li><b>Changement d'échelle.</b> $\widehat{f(\lambda t)}(\omega)=\dfrac1{|\lambda|}\,\hat f\!\left(\dfrac\omega\lambda\right)$.</li>
-<li><b>Transformées à connaître.</b> Porte $\mathbb 1_{[-1,1]}$ : $\sqrt{\frac2\pi}\,\frac{\sin\omega}{\omega}$ ; $e^{-a|t|}$ : $\sqrt{\frac2\pi}\,\frac{a}{a^2+\omega^2}$ ; $e^{-t^2/2}$ : $e^{-\omega^2/2}$.</li>
+<li><b>Définition.</b> La transformée de Fourier de $f$ est
+$$\hat f(\omega)=\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{+\infty}f(t)\,e^{-i\omega t}\,dt.$$
+Elle mesure « combien » la fonction contient de chaque fréquence $\omega$.</li>
+<li><b>Transformée inverse.</b> On retrouve $f$ avec la même constante :
+$$f(t)=\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{+\infty}\hat f(\omega)\,e^{i\omega t}\,d\omega$$
+(là où $f$ est continue).</li>
+<li><b>Formules d'Euler.</b>
+$$\cos t=\frac{e^{it}+e^{-it}}{2},\qquad \sin t=\frac{e^{it}-e^{-it}}{2i},$$
+et donc $e^{i\omega}-e^{-i\omega}=2i\sin\omega$.</li>
+<li><b>Premier contrôle.</b>
+$$\hat f(0)=\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{+\infty}f(t)\,dt :$$
+l'aire sous la courbe, divisée par $\sqrt{2\pi}$. Très utile pour vérifier un résultat.</li>
+<li><b>Parité.</b> Si $f$ est paire, la partie en $\sin$ disparaît et
+$$\hat f(\omega)=\sqrt{\frac2\pi}\int_0^{+\infty}f(t)\cos(\omega t)\,dt.$$</li>
+<li><b>Décalage et modulation.</b>
+$$\widehat{f(t-a)}=e^{-ia\omega}\,\hat f(\omega),\qquad \widehat{e^{iat}f(t)}=\hat f(\omega-a).$$</li>
+<li><b>Changement d'échelle.</b>
+$$\widehat{f(\lambda t)}(\omega)=\frac1{|\lambda|}\,\hat f\!\left(\frac\omega\lambda\right).$$
+Comprimer dans le temps étale dans les fréquences, et inversement.</li>
+<li><b>Transformées à connaître.</b>
+$$\mathbb 1_{[-1,1]}\ \longmapsto\ \sqrt{\tfrac2\pi}\,\frac{\sin\omega}{\omega},\qquad e^{-a|t|}\ \longmapsto\ \sqrt{\tfrac2\pi}\,\frac{a}{a^2+\omega^2},\qquad e^{-t^2/2}\ \longmapsto\ e^{-\omega^2/2}.$$</li>
 </ul>
 <div class="method"><b>🧐 Ma méthode, dans l'ordre :</b>
 <ol><li>Je reconnais une fonction connue, décalée ou dilatée : j'utilise les propriétés.</li><li>Sinon je calcule l'intégrale (parité, puis parties), sans oublier le facteur $\frac{1}{\sqrt{2\pi}}$.</li><li>Je vérifie avec $\hat f(0)$.</li></ol></div></template>
@@ -189,262 +257,517 @@ const LV = {f:'Facile', m:'Moyen', d:'Avancé'};
 
 const P1 = [
 {l:'f', q:R`La série $\displaystyle\sum_{n\ge 0}\left(\tfrac13\right)^n$ converge-t-elle ? Si oui, calcule sa somme.`,
- s:[R`C'est une série géométrique de raison $q=\tfrac13$.`, R`Comme $|q|=\frac13\lt 1$, elle converge.`, R`Sa somme vaut $\dfrac{1}{1-q}=\dfrac{1}{1-\frac13}=\dfrac{1}{\frac23}=$ <span class="ok">$\dfrac32$</span>.`],
- t:R`Série géométrique : converge si et seulement si $|q|\lt 1$, et sa somme est $\dfrac{1}{1-q}$.`},
+ s:[R`Chaque terme est le précédent multiplié par $\frac13$ : c'est une série géométrique de raison $q=\tfrac13$.`,
+    R`Une série géométrique converge si et seulement si $|q|\lt 1$. Ici $|q|=\frac13\lt 1$, donc elle converge.`,
+    R`Sa somme est donnée par la formule du cours : $$\sum_{n\ge0}q^n=\frac{1}{1-q}=\frac{1}{1-\frac13}=\frac{1}{\frac23}=\frac32.$$`,
+    R`Conclusion : la série converge et sa somme vaut <span class="ok">$\dfrac32$</span>.`],
+ t:R`Série géométrique : converge si et seulement si $|q|\lt 1$, et sa somme (à partir de $n=0$) est $\dfrac{1}{1-q}$.`},
 {l:'f', q:R`La série $\displaystyle\sum_{n\ge 0}2^n$ converge-t-elle ?`,
- s:[R`Le terme général $2^n$ tend vers $+\infty$, donc il ne tend pas vers $0$.`, R`La série <span class="ok">diverge grossièrement</span>. (C'est aussi une géométrique avec $|q|=2\ge 1$.)`],
- t:R`Si le terme général ne tend pas vers $0$, la série diverge. C'est le premier réflexe à avoir.`},
+ s:[R`Premier réflexe : je regarde si le terme général tend vers $0$.`,
+    R`Ici $2^n\to+\infty$ : le terme général ne tend pas vers $0$.`,
+    R`Or une série convergente a forcément un terme général qui tend vers $0$. Donc la série <span class="ok">diverge grossièrement</span>.`,
+    R`On retrouve le même résultat avec le cours : c'est une géométrique de raison $q=2$, et $|q|\ge 1$.`],
+ t:R`Si le terme général ne tend pas vers $0$, la série diverge. C'est le premier test à faire, avant tout calcul.`},
 {l:'f', q:R`Détermine la nature de $\displaystyle\sum_{n\ge 0}\frac{n}{n+1}$.`,
- s:[R`Je regarde la limite du terme général : $\dfrac{n}{n+1}=\dfrac{1}{1+\frac1n}\to 1$.`, R`$1\neq 0$, donc la série <span class="ok">diverge grossièrement</span>.`],
- t:R`Attention : la réciproque est fausse. Un terme qui tend vers $0$ ne suffit pas pour converger.`},
+ s:[R`Je regarde la limite du terme général. Je divise en haut et en bas par $n$ : $$\frac{n}{n+1}=\frac{1}{1+\frac1n}\xrightarrow[n\to\infty]{}1.$$`,
+    R`La limite vaut $1$, qui n'est pas $0$.`,
+    R`Le terme général ne tend pas vers $0$, donc la série <span class="ok">diverge grossièrement</span>.`],
+ t:R`Attention : la réciproque est fausse. Un terme qui tend vers $0$ ne suffit pas pour converger (voir $\sum\frac1n$).`},
 {l:'f', q:R`Donne la nature de $\displaystyle\sum_{n\ge 1}\frac1{n^3}$ et de $\displaystyle\sum_{n\ge 1}\frac1{\sqrt n}$.`,
- s:[R`Ce sont des séries de Riemann $\sum \frac1{n^\alpha}$.`, R`Pour $\frac1{n^3}$ : $\alpha=3>1$, donc elle <span class="ok">converge</span>.`, R`Pour $\frac1{\sqrt n}=\frac1{n^{1/2}}$ : $\alpha=\frac12\le 1$, donc elle <span class="ok">diverge</span>.`],
- t:R`Riemann : $\sum\frac1{n^\alpha}$ converge si et seulement si $\alpha>1$.`},
+ s:[R`Ce sont deux séries de Riemann $\sum \frac1{n^\alpha}$. Le cours dit : elle converge si et seulement si $\alpha>1$.`,
+    R`Pour $\frac1{n^3}$ : $\alpha=3>1$, donc la série <span class="ok">converge</span>.`,
+    R`Pour $\frac1{\sqrt n}$, j'écris d'abord la racine comme une puissance : $\sqrt n=n^{1/2}$, donc $\frac1{\sqrt n}=\frac1{n^{1/2}}$.`,
+    R`Ici $\alpha=\frac12\le 1$, donc la série <span class="ok">diverge</span>.`],
+ t:R`Riemann : $\sum\frac1{n^\alpha}$ converge si et seulement si $\alpha>1$. Penser à écrire les racines comme des puissances.`},
 {l:'f', q:R`Calcule $\displaystyle\sum_{n\ge 1}\left(\tfrac12\right)^n$.`,
- s:[R`C'est une géométrique de raison $\frac12$, mais elle commence à $n=1$.`, R`Si elle commençait à $n=0$ : $\sum_{n\ge 0}\left(\frac12\right)^n=\dfrac{1}{1-\frac12}=2$.`, R`J'enlève le terme $n=0$, qui vaut $\left(\frac12\right)^0=1$ : la somme vaut $2-1=$ <span class="ok">$1$</span>.`],
+ s:[R`C'est une géométrique de raison $q=\frac12$. Comme $|q|\lt 1$, elle converge.`,
+    R`Attention : elle commence à $n=1$, alors que la formule $\frac1{1-q}$ correspond à une somme qui commence à $n=0$.`,
+    R`Je calcule d'abord la somme complète : $$\sum_{n\ge 0}\left(\tfrac12\right)^n=\frac{1}{1-\frac12}=2.$$`,
+    R`Puis j'enlève le terme $n=0$, qui vaut $\left(\frac12\right)^0=1$ : $$\sum_{n\ge 1}\left(\tfrac12\right)^n=2-1=1.$$`,
+    R`La somme vaut <span class="ok">$1$</span>.`],
  t:R`L'indice de départ change la somme, mais pas la nature de la série.`},
 {l:'f', q:R`Calcule $\displaystyle\sum_{n\ge 1}\frac{1}{n(n+1)}$.`,
- s:[R`Je vérifie que $\dfrac1n-\dfrac1{n+1}=\dfrac{(n+1)-n}{n(n+1)}=\dfrac{1}{n(n+1)}$.`, R`J'écris la somme partielle : $S_N=\left(1-\frac12\right)+\left(\frac12-\frac13\right)+\dots+\left(\frac1N-\frac1{N+1}\right)$.`, R`Tout se simplifie sauf le premier et le dernier : $S_N=1-\dfrac{1}{N+1}$.`, R`Quand $N\to\infty$, $S_N\to 1$. La série converge et sa somme vaut <span class="ok">$1$</span>.`],
+ s:[R`J'essaie d'écrire le terme général comme une différence. Je vérifie que $$\frac1n-\frac1{n+1}=\frac{(n+1)-n}{n(n+1)}=\frac{1}{n(n+1)}.$$`,
+    R`J'écris la somme partielle en détaillant les premiers termes : $$S_N=\left(1-\tfrac12\right)+\left(\tfrac12-\tfrac13\right)+\cdots+\left(\tfrac1N-\tfrac1{N+1}\right).$$`,
+    R`Chaque $-\frac1k$ s'annule avec le $+\frac1k$ du terme suivant. Il ne reste que le premier et le dernier : $$S_N=1-\frac{1}{N+1}.$$`,
+    R`Quand $N\to\infty$, $\frac1{N+1}\to0$ donc $S_N\to 1$. La série converge et sa somme vaut <span class="ok">$1$</span>.`],
  t:R`Série télescopique : j'écris quelques termes pour voir ce qui s'annule.`},
 {l:'f', q:R`Montre que $\displaystyle\sum_{n\ge 0}\frac1{n^2+1}$ converge.`,
- s:[R`Les termes sont positifs.`, R`Pour $n\ge 1$ : $n^2+1>n^2$, donc $\dfrac1{n^2+1}\le\dfrac1{n^2}$.`, R`$\sum\frac1{n^2}$ converge (Riemann, $\alpha=2>1$).`, R`Par comparaison, la série <span class="ok">converge</span>.`],
+ s:[R`Les termes sont positifs : je peux utiliser la comparaison.`,
+    R`Pour $n\ge 1$ : $n^2+1>n^2$. En passant à l'inverse (ce qui renverse l'inégalité entre nombres positifs) : $$\frac1{n^2+1}\le\frac1{n^2}.$$`,
+    R`La série $\sum\frac1{n^2}$ converge (Riemann avec $\alpha=2>1$).`,
+    R`Plus petite qu'une série convergente à termes positifs, la série <span class="ok">converge</span>. Le terme $n=0$ ne change pas la nature.`],
  t:R`Plus petit qu'une série convergente (termes positifs), donc convergente.`},
 {l:'f', q:R`Montre que $\displaystyle\sum_{n\ge 3}\frac{\ln n}{n}$ diverge.`,
- s:[R`Pour $n\ge 3$ : $n>e$, donc $\ln n\ge 1$.`, R`Alors $\dfrac{\ln n}{n}\ge\dfrac1n\ge 0$.`, R`$\sum\frac1n$ diverge (série harmonique).`, R`Par comparaison, la série <span class="ok">diverge</span>.`],
+ s:[R`Je cherche une série plus petite qui diverge.`,
+    R`Pour $n\ge 3$ on a $n>e$, donc $\ln n>\ln e=1$.`,
+    R`En divisant par $n>0$ : $$\frac{\ln n}{n}\ge\frac1n\ge 0.$$`,
+    R`La série harmonique $\sum\frac1n$ diverge. Plus grande qu'une série divergente à termes positifs, la série <span class="ok">diverge</span>.`],
  t:R`Plus grand qu'une série divergente (termes positifs), donc divergente.`},
 {l:'f', td:1, q:R`Calcule $\displaystyle\sum_{n\ge 1}\frac{3^n}{5^{n-1}}$.`,
- s:[R`Je fais apparaître une puissance $n$-ième : $\dfrac{3^n}{5^{n-1}}=5\times\dfrac{3^n}{5^n}=5\left(\dfrac35\right)^n$.`, R`C'est $5$ fois une série géométrique de raison $q=\frac35$. Comme $|q|\lt 1$, elle converge.`, R`Elle commence à $n=1$ : $\displaystyle\sum_{n\ge 1}q^n=\dfrac{q}{1-q}=\dfrac{3/5}{2/5}=\dfrac32$.`, R`Donc la somme vaut $5\times\dfrac32=$ <span class="ok">$\dfrac{15}{2}$</span>.`],
+ s:[R`Je veux faire apparaître une seule puissance $n$-ième. Comme $5^{n-1}=\frac{5^n}{5}$ : $$\frac{3^n}{5^{n-1}}=5\times\frac{3^n}{5^n}=5\left(\frac35\right)^n.$$`,
+    R`C'est donc $5$ fois une série géométrique de raison $q=\frac35$. Comme $|q|\lt 1$, elle converge.`,
+    R`Elle commence à $n=1$. Je sors le premier terme $q$ en facteur : $$\sum_{n\ge 1}q^n=q\sum_{n\ge0}q^n=\frac{q}{1-q}=\frac{3/5}{2/5}=\frac32.$$`,
+    R`Je n'oublie pas le facteur $5$ : la somme vaut $5\times\dfrac32=$ <span class="ok">$\dfrac{15}{2}$</span>.`],
  t:R`Je regroupe les puissances pour voir $q^n$. Une géométrique qui commence à $n=1$ vaut $\dfrac{q}{1-q}$.`},
 {l:'f', td:1, q:R`Calcule $\displaystyle\sum_{n\ge 1}\left(\frac{1}{\sqrt n}-\frac{1}{\sqrt{n+1}}\right)$.`,
- s:[R`C'est de la forme $a_n-a_{n+1}$ avec $a_n=\frac1{\sqrt n}$ : série télescopique.`, R`$S_N=\left(1-\frac1{\sqrt2}\right)+\left(\frac1{\sqrt2}-\frac1{\sqrt3}\right)+\dots+\left(\frac1{\sqrt N}-\frac1{\sqrt{N+1}}\right)=1-\dfrac1{\sqrt{N+1}}$.`, R`$\frac1{\sqrt{N+1}}\to 0$, donc $S_N\to 1$. La série converge et sa somme vaut <span class="ok">$1$</span>.`],
+ s:[R`Le terme général est de la forme $a_n-a_{n+1}$ avec $a_n=\frac1{\sqrt n}$ : c'est une série télescopique.`,
+    R`J'écris la somme partielle : $$S_N=\left(1-\tfrac1{\sqrt2}\right)+\left(\tfrac1{\sqrt2}-\tfrac1{\sqrt3}\right)+\cdots+\left(\tfrac1{\sqrt N}-\tfrac1{\sqrt{N+1}}\right).$$`,
+    R`Tout se simplifie sauf le premier et le dernier terme : $$S_N=1-\frac1{\sqrt{N+1}}.$$`,
+    R`Comme $\frac1{\sqrt{N+1}}\to 0$, $S_N\to 1$. La série converge et sa somme vaut <span class="ok">$1$</span>.`],
  t:R`$\sum\frac1{\sqrt n}$ diverge, mais la différence de deux termes voisins donne une série convergente.`},
 {l:'m', q:R`Détermine la nature de $\displaystyle\sum_{n\ge 0}\frac{n+1}{n^3+2}$.`,
- s:[R`Les termes sont positifs. Je cherche un équivalent en gardant le terme le plus fort en haut et en bas.`, R`En haut : $n+1\sim n$. En bas : $n^3+2\sim n^3$.`, R`Donc $\dfrac{n+1}{n^3+2}\sim\dfrac{n}{n^3}=\dfrac1{n^2}$.`, R`$\sum\frac1{n^2}$ converge, donc par équivalence la série <span class="ok">converge</span>.`],
+ s:[R`Les termes sont positifs. Je cherche un équivalent simple, en gardant le terme le plus fort en haut et en bas.`,
+    R`En haut : $n+1\sim n$. En bas : $n^3+2\sim n^3$ (le $+1$ et le $+2$ deviennent négligeables).`,
+    R`Donc $$\frac{n+1}{n^3+2}\sim\frac{n}{n^3}=\frac1{n^2}.$$`,
+    R`La série $\sum\frac1{n^2}$ converge (Riemann, $\alpha=2$). Les termes étant positifs, par équivalence la série <span class="ok">converge</span>.`],
  t:R`Pour une fraction de polynômes : je garde le plus grand degré en haut et en bas.`},
 {k:'sin1n', l:'m', q:R`Détermine la nature de $\displaystyle\sum_{n\ge 1}\sin\!\left(\tfrac1n\right)$.`,
- s:[R`Pour $n\ge 1$ : $0\lt\frac1n\le 1\lt\pi$, donc $\sin\frac1n>0$. Les termes sont positifs.`, R`Quand $u\to 0$, $\sin u\sim u$. Avec $u=\frac1n\to 0$ : $\sin\frac1n\sim\frac1n$.`, R`$\sum\frac1n$ diverge.`, R`Par équivalence, la série <span class="ok">diverge</span>.`],
+ s:[R`Je vérifie d'abord le signe. Pour $n\ge 1$ : $0\lt\frac1n\le 1\lt\pi$, et le sinus est positif sur $]0\,;\pi[$. Donc $\sin\frac1n>0$.`,
+    R`Quand $u\to 0$, $\sin u\sim u$. Ici $u=\frac1n\to 0$, donc $$\sin\frac1n\sim\frac1n.$$`,
+    R`La série harmonique $\sum\frac1n$ diverge.`,
+    R`Termes positifs et équivalents : la série <span class="ok">diverge</span>.`],
  t:R`Avant d'utiliser un équivalent, je vérifie que les termes sont positifs.`},
 {l:'m', q:R`Détermine la nature de $\displaystyle\sum_{n\ge 1}\frac{n}{2^n}$.`,
- s:[R`Il y a une puissance $2^n$ : je pense à d'Alembert. Les termes sont positifs, donc pas besoin de valeur absolue.`, R`$\dfrac{u_{n+1}}{u_n}=\dfrac{n+1}{2^{n+1}}\times\dfrac{2^n}{n}=\dfrac{n+1}{n}\times\dfrac{2^n}{2^{n+1}}=\dfrac{n+1}{2n}$.`, R`Quand $n\to\infty$ : $\dfrac{n+1}{2n}\to\dfrac12$.`, R`$\frac12\lt 1$, donc la série <span class="ok">converge</span>.`],
- t:R`d'Alembert : limite $\lt 1$ converge, $>1$ diverge, $=1$ on ne peut rien dire.`},
+ s:[R`Il y a une puissance $2^n$ : je pense à d'Alembert. Les termes sont positifs, donc pas besoin de valeur absolue.`,
+    R`Je calcule le quotient de deux termes consécutifs : $$\frac{u_{n+1}}{u_n}=\frac{n+1}{2^{n+1}}\times\frac{2^n}{n}=\frac{n+1}{n}\times\frac{2^n}{2^{n+1}}=\frac{n+1}{2n}.$$`,
+    R`Quand $n\to\infty$ : $\dfrac{n+1}{2n}\to\dfrac12$.`,
+    R`La limite vaut $\frac12\lt 1$, donc la série <span class="ok">converge</span>.`],
+ t:R`d'Alembert : limite $\lt 1$, la série converge ; $>1$, elle diverge ; $=1$, on ne peut rien dire.`},
 {l:'m', q:R`Détermine la nature de $\displaystyle\sum_{n\ge 0}\frac1{n!}$.`,
- s:[R`Il y a une factorielle : j'utilise d'Alembert.`, R`$(n+1)!=(n+1)\times n!$, donc $\dfrac{u_{n+1}}{u_n}=\dfrac{n!}{(n+1)!}=\dfrac1{n+1}$.`, R`Cette quantité tend vers $0\lt 1$ : la série <span class="ok">converge</span>. (Sa somme vaut $e$.)`],
+ s:[R`Il y a une factorielle : j'utilise d'Alembert.`,
+    R`J'utilise $(n+1)!=(n+1)\times n!$ pour simplifier : $$\frac{u_{n+1}}{u_n}=\frac{n!}{(n+1)!}=\frac1{n+1}.$$`,
+    R`Cette quantité tend vers $0\lt 1$ : la série <span class="ok">converge</span>.`,
+    R`Remarque : sa somme vaut $e$ (on le verra avec les séries entières, partie 2).`],
  t:R`Je retiens $(n+1)!=(n+1)\,n!$ : ça simplifie tous les calculs.`},
 {l:'m', q:R`Détermine la nature de $\displaystyle\sum_{n\ge 0}\frac{3^n}{n!}$.`,
- s:[R`$\dfrac{u_{n+1}}{u_n}=\dfrac{3^{n+1}}{(n+1)!}\times\dfrac{n!}{3^n}=\dfrac{3}{n+1}$.`, R`Cette quantité tend vers $0\lt 1$.`, R`La série <span class="ok">converge</span>. (Sa somme vaut $e^3$.)`],
+ s:[R`Puissance et factorielle : d'Alembert.`,
+    R`$$\frac{u_{n+1}}{u_n}=\frac{3^{n+1}}{(n+1)!}\times\frac{n!}{3^n}=\frac{3}{n+1}.$$`,
+    R`Cette quantité tend vers $0\lt 1$.`,
+    R`La série <span class="ok">converge</span>. Sa somme vaut $e^3$.`],
  t:R`La factorielle grandit plus vite que n'importe quelle puissance $a^n$.`},
 {l:'m', q:R`Détermine la nature de $\displaystyle\sum_{n\ge 1}\left(\frac{n}{2n+1}\right)^n$.`,
- s:[R`Tout est à la puissance $n$ : j'utilise la règle de Cauchy.`, R`$\sqrt[n]{u_n}=\left(\left(\dfrac{n}{2n+1}\right)^n\right)^{1/n}=\dfrac{n}{2n+1}$.`, R`Quand $n\to\infty$ : $\dfrac{n}{2n+1}\to\dfrac12\lt 1$.`, R`La série <span class="ok">converge</span>.`],
+ s:[R`Tout le terme général est à la puissance $n$ : j'utilise la règle de Cauchy.`,
+    R`La racine $n$-ième annule la puissance $n$ : $$\sqrt[n]{u_n}=\left(\left(\frac{n}{2n+1}\right)^n\right)^{1/n}=\frac{n}{2n+1}.$$`,
+    R`Quand $n\to\infty$ : $\dfrac{n}{2n+1}\to\dfrac12\lt 1$.`,
+    R`La série <span class="ok">converge</span>.`],
  t:R`Cauchy : même conclusion que d'Alembert, mais avec $\sqrt[n]{u_n}$.`},
 {l:'m', q:R`Montre que $\displaystyle\sum_{n\ge 1}\frac{(-1)^n}{n}$ converge.`,
- s:[R`C'est une série alternée : $(-1)^n\,u_n$ avec $u_n=\frac1n\ge 0$.`, R`$u_n$ est décroissante : $\frac1{n+1}\le\frac1n$.`, R`$u_n\to 0$.`, R`D'après le critère des séries alternées, la série <span class="ok">converge</span>.`],
+ s:[R`Le signe change à chaque terme : c'est une série alternée $(-1)^n\,u_n$ avec $u_n=\frac1n\ge 0$.`,
+    R`$(u_n)$ est décroissante, car $\frac1{n+1}\le\frac1n$.`,
+    R`$(u_n)$ tend vers $0$.`,
+    R`Les deux conditions du critère des séries alternées sont réunies : la série <span class="ok">converge</span>.`],
  t:R`Critère des séries alternées : je vérifie bien les deux conditions (décroissante et limite $0$).`},
 {l:'m', q:R`La série $\displaystyle\sum_{n\ge 1}\frac{(-1)^n}{n^2}$ converge-t-elle absolument ?`,
- s:[R`Je prends la valeur absolue : $\left|\frac{(-1)^n}{n^2}\right|=\frac1{n^2}$.`, R`$\sum\frac1{n^2}$ converge (Riemann).`, R`La série <span class="ok">converge absolument</span>, donc elle converge.`],
+ s:[R`Converger absolument veut dire : la série des valeurs absolues converge.`,
+    R`Je prends la valeur absolue : $\left|\frac{(-1)^n}{n^2}\right|=\frac1{n^2}$.`,
+    R`$\sum\frac1{n^2}$ converge (Riemann, $\alpha=2$).`,
+    R`La série <span class="ok">converge absolument</span>, et donc elle converge.`],
  t:R`Convergence absolue $\Rightarrow$ convergence.`},
 {l:'m', q:R`Montre que $\displaystyle\sum_{n\ge 1}\frac{\sin n}{n^2}$ converge.`,
- s:[R`Le signe de $\sin n$ change sans régularité : ce n'est pas une série alternée.`, R`Je passe à la valeur absolue : $|\sin n|\le 1$, donc $\left|\dfrac{\sin n}{n^2}\right|\le\dfrac1{n^2}$.`, R`$\sum\frac1{n^2}$ converge, donc $\sum\left|\frac{\sin n}{n^2}\right|$ converge par comparaison.`, R`La série converge absolument, donc elle <span class="ok">converge</span>.`],
+ s:[R`Le signe de $\sin n$ change sans régularité : ce n'est pas une série alternée.`,
+    R`Je passe à la valeur absolue. Comme $|\sin n|\le 1$ : $$\left|\frac{\sin n}{n^2}\right|\le\frac1{n^2}.$$`,
+    R`$\sum\frac1{n^2}$ converge, donc $\sum\left|\frac{\sin n}{n^2}\right|$ converge par comparaison.`,
+    R`La série converge absolument, donc elle <span class="ok">converge</span>.`],
  t:R`Quand le signe est « bizarre », la valeur absolue est souvent la clé.`},
 {l:'m', td:1, q:R`Détermine la nature de $\displaystyle\sum_{n\ge 2}\left(1-\frac{1}{n^2}\right)^{n\sqrt n}$.`,
- s:[R`L'exposant dépend de $n$ : je passe au logarithme. $\ln u_n=n\sqrt n\,\ln\!\left(1-\frac1{n^2}\right)$.`, R`Avec $\ln(1+u)\sim u$ et $u=-\frac1{n^2}\to 0$ : $\ln u_n\sim n^{3/2}\times\left(-\dfrac1{n^2}\right)=-\dfrac1{\sqrt n}\to 0$.`, R`Donc $u_n=e^{\ln u_n}\to e^0=1\neq 0$.`, R`La série <span class="ok">diverge grossièrement</span>.`],
+ s:[R`L'exposant dépend de $n$ : je passe par l'exponentielle, $a^b=e^{b\ln a}$. $$\ln u_n=n\sqrt n\,\ln\!\left(1-\frac1{n^2}\right).$$`,
+    R`Quand $u\to0$, $\ln(1+u)\sim u$. Ici $u=-\frac1{n^2}\to 0$, donc $$\ln u_n\sim n^{3/2}\times\left(-\frac1{n^2}\right)=-\frac1{\sqrt n}\to 0.$$`,
+    R`Donc $u_n=e^{\ln u_n}\to e^0=1$, qui n'est pas $0$.`,
+    R`Le terme général ne tend pas vers $0$ : la série <span class="ok">diverge grossièrement</span>.`],
  t:R`Pour une forme $a_n^{\,b_n}$, j'écris $e^{b_n\ln a_n}$. Piège : on croit que $\left(1-\frac1{n^2}\right)^{\dots}\to 0$, mais non !`},
 {l:'m', td:1, q:R`En comparant à une série géométrique, détermine la nature de $\displaystyle\sum_{n\ge 1}\left(\frac12+\frac1n\right)^n$.`,
- s:[R`Les termes sont positifs.`, R`Pour $n\ge 4$ : $\frac1n\le\frac14$, donc $\frac12+\frac1n\le\frac34$.`, R`Donc $0\le u_n\le\left(\frac34\right)^n$ pour $n\ge 4$.`, R`$\sum\left(\frac34\right)^n$ converge (géométrique, $\frac34\lt 1$). Par comparaison, la série <span class="ok">converge</span>.`],
+ s:[R`Les termes sont positifs. L'idée : $\frac12+\frac1n$ finit par rester sous un nombre fixe plus petit que $1$.`,
+    R`Pour $n\ge 4$ : $\frac1n\le\frac14$, donc $\frac12+\frac1n\le\frac34$.`,
+    R`En élevant à la puissance $n$ (tout est positif) : $$0\le u_n\le\left(\frac34\right)^n\qquad(n\ge4).$$`,
+    R`$\sum\left(\frac34\right)^n$ converge (géométrique, $\frac34\lt 1$). Par comparaison, la série <span class="ok">converge</span>.`],
  t:R`Une comparaison « à partir d'un certain rang » suffit. Cauchy marche aussi : $\sqrt[n]{u_n}=\frac12+\frac1n\to\frac12\lt 1$.`},
 {l:'m', td:1, q:R`Détermine la nature de $\displaystyle\sum_{n\ge 1}(-1)^n\sin\!\left(\frac{(-1)^n}{n}\right)$.`,
- s:[R`Elle a l'air alternée, mais je simplifie d'abord. Le sinus est impair : $\sin\!\left(\frac{(-1)^n}{n}\right)=(-1)^n\sin\frac1n$.`, R`Donc $u_n=(-1)^n\times(-1)^n\sin\frac1n=\sin\frac1n$, car $(-1)^{2n}=1$.`, R`D'après l'{ex:sin1n}, $\sin\frac1n\sim\frac1n$ avec des termes positifs.`, R`La série <span class="ok">diverge</span>.`],
+ s:[R`Elle a l'air alternée, mais je simplifie d'abord. Le sinus est impair, $\sin(-x)=-\sin x$, donc $$\sin\!\left(\frac{(-1)^n}{n}\right)=(-1)^n\sin\frac1n.$$`,
+    R`Le terme général devient $$u_n=(-1)^n\times(-1)^n\sin\frac1n=\sin\frac1n,$$ car $(-1)^{2n}=1$. Les signes se compensent.`,
+    R`D'après l'{ex:sin1n}, $\sin\frac1n\sim\frac1n$ avec des termes positifs.`,
+    R`La série <span class="ok">diverge</span>.`],
  t:R`Avant d'appliquer un critère, je simplifie le terme général : les signes peuvent se compenser.`},
 {l:'d', q:R`Détermine la nature de $\displaystyle\sum_{n\ge 1}\frac{n!}{n^n}$.`,
- s:[R`Factorielle : j'utilise d'Alembert.`, R`$\dfrac{u_{n+1}}{u_n}=\dfrac{(n+1)!}{(n+1)^{n+1}}\times\dfrac{n^n}{n!}=\dfrac{(n+1)\,n^n}{(n+1)^{n+1}}=\dfrac{n^n}{(n+1)^n}=\left(\dfrac{n}{n+1}\right)^n$.`, R`J'écris $\left(\dfrac{n}{n+1}\right)^n=\dfrac{1}{\left(1+\frac1n\right)^n}$.`, R`Or $\left(1+\frac1n\right)^n\to e$, donc le rapport tend vers $\frac1e\approx 0{,}37$.`, R`$\frac1e\lt 1$, donc la série <span class="ok">converge</span>.`],
+ s:[R`Il y a une factorielle : j'utilise d'Alembert.`,
+    R`$$\frac{u_{n+1}}{u_n}=\frac{(n+1)!}{(n+1)^{n+1}}\times\frac{n^n}{n!}=\frac{(n+1)\,n^n}{(n+1)^{n+1}}=\frac{n^n}{(n+1)^n}.$$`,
+    R`J'ai simplifié $(n+1)!$ par $n!$, puis un facteur $(n+1)$. J'écris le résultat autrement : $$\left(\frac{n}{n+1}\right)^n=\frac{1}{\left(1+\frac1n\right)^n}.$$`,
+    R`Or $\left(1+\frac1n\right)^n\to e$, donc le rapport tend vers $\frac1e\approx 0{,}37$.`,
+    R`$\frac1e\lt 1$, donc la série <span class="ok">converge</span>.`],
  t:R`Limite à connaître par cœur : $\left(1+\frac1n\right)^n\to e$.`},
 {l:'d', q:R`Détermine la nature de $\displaystyle\sum_{n\ge 1}\bigl(1-\cos\tfrac1n\bigr)$.`,
- s:[R`Comme $\cos\le 1$, les termes sont positifs.`, R`Quand $u\to 0$, $1-\cos u\sim\dfrac{u^2}{2}$. Avec $u=\frac1n$ : $1-\cos\frac1n\sim\dfrac{1}{2n^2}$.`, R`$\sum\frac{1}{2n^2}=\frac12\sum\frac1{n^2}$ converge.`, R`Par équivalence, la série <span class="ok">converge</span>.`],
+ s:[R`Comme $\cos\le 1$, on a $1-\cos\frac1n\ge0$ : les termes sont positifs.`,
+    R`Quand $u\to 0$, $1-\cos u\sim\dfrac{u^2}{2}$. Avec $u=\frac1n$ : $$1-\cos\frac1n\sim\frac{1}{2n^2}.$$`,
+    R`$\sum\frac{1}{2n^2}=\frac12\sum\frac1{n^2}$ converge.`,
+    R`Par équivalence, la série <span class="ok">converge</span>.`],
  t:R`Multiplier par une constante ($\frac12$ ici) ne change pas la nature.`},
 {l:'d', q:R`Détermine la nature de $\displaystyle\sum_{n\ge 1}\ln\!\left(1+\tfrac1n\right)$.`,
- s:[R`<b>Méthode 1 (télescopage).</b> $\ln\!\left(1+\frac1n\right)=\ln\!\left(\frac{n+1}{n}\right)=\ln(n+1)-\ln n$.`, R`Donc $S_N=(\ln 2-\ln 1)+(\ln 3-\ln 2)+\dots+(\ln(N+1)-\ln N)=\ln(N+1)$.`, R`$\ln(N+1)\to+\infty$ : la série <span class="ok">diverge</span>.`, R`<b>Méthode 2 (équivalent).</b> $\ln\!\left(1+\frac1n\right)\sim\frac1n$, termes positifs, et $\sum\frac1n$ diverge. Même conclusion.`],
+ s:[R`<b>Méthode 1 (télescopage).</b> J'écris le logarithme d'un quotient comme une différence : $$\ln\!\left(1+\frac1n\right)=\ln\!\left(\frac{n+1}{n}\right)=\ln(n+1)-\ln n.$$`,
+    R`La somme partielle se télescope : $$S_N=(\ln 2-\ln 1)+(\ln 3-\ln 2)+\cdots+(\ln(N+1)-\ln N)=\ln(N+1).$$`,
+    R`Comme $\ln(N+1)\to+\infty$, la série <span class="ok">diverge</span>.`,
+    R`<b>Méthode 2 (équivalent).</b> $\ln\!\left(1+\frac1n\right)\sim\frac1n$, les termes sont positifs, et $\sum\frac1n$ diverge. Même conclusion.`],
  t:R`Deux méthodes, une seule réponse : je choisis celle que je maîtrise le mieux.`},
 {k:'n2m1', l:'d', q:R`Calcule $\displaystyle\sum_{n\ge 2}\frac1{n^2-1}$.`,
- s:[R`$n^2-1=(n-1)(n+1)$. Je cherche $a,b$ tels que $\dfrac1{(n-1)(n+1)}=\dfrac{a}{n-1}+\dfrac{b}{n+1}$. Je trouve $a=\frac12$, $b=-\frac12$.`, R`Donc $\dfrac1{n^2-1}=\dfrac12\left(\dfrac1{n-1}-\dfrac1{n+1}\right)$.`, R`J'écris : $2S_N=\left(1-\frac13\right)+\left(\frac12-\frac14\right)+\left(\frac13-\frac15\right)+\dots+\left(\frac1{N-1}-\frac1{N+1}\right)$.`, R`Les termes s'annulent avec un décalage de 2. Il reste : $2S_N=1+\frac12-\frac1N-\frac1{N+1}$.`, R`Quand $N\to\infty$ : $2S\to\frac32$, donc la somme vaut <span class="ok">$\dfrac34$</span>.`],
+ s:[R`Je factorise : $n^2-1=(n-1)(n+1)$. Je cherche $a$ et $b$ tels que $$\frac1{(n-1)(n+1)}=\frac{a}{n-1}+\frac{b}{n+1}.$$`,
+    R`En multipliant par $(n-1)$ puis en posant $n=1$ : $a=\frac12$. En multipliant par $(n+1)$ puis en posant $n=-1$ : $b=-\frac12$. Donc $$\frac1{n^2-1}=\frac12\left(\frac1{n-1}-\frac1{n+1}\right).$$`,
+    R`J'écris $2S_N$ en détaillant : $$2S_N=\left(1-\tfrac13\right)+\left(\tfrac12-\tfrac14\right)+\left(\tfrac13-\tfrac15\right)+\cdots+\left(\tfrac1{N-1}-\tfrac1{N+1}\right).$$`,
+    R`Cette fois, chaque terme s'annule avec celui situé deux places plus loin. Il reste deux termes au début et deux à la fin : $$2S_N=1+\frac12-\frac1N-\frac1{N+1}.$$`,
+    R`Quand $N\to\infty$ : $2S_N\to\frac32$, donc la somme vaut <span class="ok">$\dfrac34$</span>.`],
  t:R`Quand le télescopage saute d'un cran, il reste deux termes au début et deux à la fin.`},
 {l:'d', q:R`La série $\displaystyle\sum_{n\ge 1}\frac{(-1)^n}{\sqrt n}$ converge-t-elle ? Absolument ?`,
- s:[R`<b>Convergence.</b> $u_n=\frac1{\sqrt n}$ est positive, décroissante et tend vers $0$. Par le critère des séries alternées, la série converge.`, R`<b>Convergence absolue.</b> $\left|\frac{(-1)^n}{\sqrt n}\right|=\frac1{n^{1/2}}$ : Riemann avec $\alpha=\frac12\le 1$, donc $\sum\frac1{\sqrt n}$ diverge.`, R`Conclusion : la série est <span class="ok">convergente mais pas absolument</span> (semi-convergente).`],
- t:R`Une série peut converger sans converger absolument : le signe alterné « aide » la convergence.`},
+ s:[R`<b>Convergence.</b> C'est une série alternée avec $u_n=\frac1{\sqrt n}$, positive, décroissante et de limite $0$. Par le critère des séries alternées, elle converge.`,
+    R`<b>Convergence absolue.</b> $\left|\frac{(-1)^n}{\sqrt n}\right|=\frac1{n^{1/2}}$ : c'est Riemann avec $\alpha=\frac12\le 1$, donc $\sum\frac1{\sqrt n}$ diverge.`,
+    R`Conclusion : la série est <span class="ok">convergente mais pas absolument convergente</span>. On dit qu'elle est semi-convergente.`],
+ t:R`Une série peut converger sans converger absolument : l'alternance des signes « aide » la convergence.`},
 {l:'d', q:R`Détermine la nature de $\displaystyle\sum_{n\ge 1}n\,e^{-n}$.`,
- s:[R`J'utilise Cauchy : $\sqrt[n]{n\,e^{-n}}=n^{1/n}\times e^{-1}$.`, R`Je calcule $n^{1/n}=e^{\frac{\ln n}{n}}$. Or $\frac{\ln n}{n}\to 0$, donc $n^{1/n}\to e^0=1$.`, R`La limite vaut donc $\frac1e\lt 1$.`, R`La série <span class="ok">converge</span>.`],
- t:R`À retenir : $n^{1/n}\to 1$, et $\frac{\ln n}{n}\to 0$.`},
+ s:[R`J'utilise Cauchy. La racine $n$-ième d'un produit est le produit des racines : $$\sqrt[n]{n\,e^{-n}}=n^{1/n}\times e^{-1}.$$`,
+    R`Je calcule $n^{1/n}$ en passant par l'exponentielle : $n^{1/n}=e^{\frac{\ln n}{n}}$. Or $\frac{\ln n}{n}\to 0$, donc $n^{1/n}\to e^0=1$.`,
+    R`La limite vaut donc $\frac1e\lt 1$.`,
+    R`La série <span class="ok">converge</span>.`],
+ t:R`À retenir : $n^{1/n}\to 1$ et $\frac{\ln n}{n}\to 0$.`},
 {l:'d', q:R`Montre que $\displaystyle\sum_{n\ge 0}e^{-\sqrt n}$ converge.`,
- s:[R`Les termes sont positifs. Ni d'Alembert ni Cauchy ne marchent bien ici (les deux donnent $1$).`, R`Je compare à $\frac1{n^2}$ en calculant $n^2\,e^{-\sqrt n}$. Je pose $t=\sqrt n$ : c'est $t^4\,e^{-t}$.`, R`Croissances comparées : l'exponentielle l'emporte sur les puissances, donc $t^4e^{-t}\to 0$ quand $t\to+\infty$. Donc $n^2e^{-\sqrt n}\to 0$.`, R`À partir d'un certain rang, $n^2e^{-\sqrt n}\le 1$, c'est-à-dire $e^{-\sqrt n}\le\frac1{n^2}$.`, R`$\sum\frac1{n^2}$ converge, donc par comparaison la série <span class="ok">converge</span>.`],
+ s:[R`Les termes sont positifs. Ici d'Alembert et Cauchy donnent tous les deux la limite $1$ : ils ne permettent pas de conclure.`,
+    R`Je compare à $\frac1{n^2}$. Pour cela, je regarde le produit $n^2\,e^{-\sqrt n}$. En posant $t=\sqrt n$, il vaut $t^4\,e^{-t}$.`,
+    R`Par croissances comparées, l'exponentielle l'emporte sur les puissances : $t^4e^{-t}\to 0$ quand $t\to+\infty$. Donc $n^2e^{-\sqrt n}\to 0$.`,
+    R`En particulier, à partir d'un certain rang $n^2e^{-\sqrt n}\le 1$, c'est-à-dire $$e^{-\sqrt n}\le\frac1{n^2}.$$`,
+    R`$\sum\frac1{n^2}$ converge, donc par comparaison la série <span class="ok">converge</span>.`],
  t:R`Règle « $n^\alpha u_n$ » : si $n^\alpha u_n\to 0$ avec $\alpha>1$ et $u_n\ge 0$, la série converge.`},
 {l:'d', q:R`Montre que $\displaystyle\sum_{n\ge 2}\frac1{n\ln n}$ diverge.`,
- s:[R`La fonction $f(x)=\dfrac1{x\ln x}$ est positive et décroissante sur $[2\,;+\infty[$ (le dénominateur augmente).`, R`Dans ce cas, $\sum f(n)$ et $\int_2^{+\infty}f(x)\,dx$ ont la même nature.`, R`Je calcule : une primitive de $\dfrac{1}{x\ln x}=\dfrac{1/x}{\ln x}$ est $\ln(\ln x)$ (forme $\frac{u'}{u}$).`, R`$\displaystyle\int_2^N\frac{dx}{x\ln x}=\ln(\ln N)-\ln(\ln 2)\to+\infty$.`, R`L'intégrale diverge, donc la série <span class="ok">diverge</span>.`],
- t:R`Comparaison série-intégrale : avec $f$ positive et décroissante, $\sum f(n)$ et $\int f$ ont la même nature.`},
+ s:[R`La fonction $f(x)=\dfrac1{x\ln x}$ est positive et décroissante sur $[2\,;+\infty[$, car son dénominateur augmente.`,
+    R`Dans ce cas, la série $\sum f(n)$ et l'intégrale $\int_2^{+\infty}f(x)\,dx$ ont la même nature (comparaison série–intégrale).`,
+    R`Je cherche une primitive. J'écris $\dfrac{1}{x\ln x}=\dfrac{1/x}{\ln x}$ : c'est de la forme $\dfrac{u'}{u}$ avec $u=\ln x$. Une primitive est donc $\ln(\ln x)$.`,
+    R`$$\int_2^N\frac{dx}{x\ln x}=\ln(\ln N)-\ln(\ln 2)\xrightarrow[N\to\infty]{}+\infty.$$`,
+    R`L'intégrale diverge, donc la série <span class="ok">diverge</span>.`],
+ t:R`Comparaison série–intégrale : avec $f$ positive et décroissante, $\sum f(n)$ et $\int f$ ont la même nature.`},
 {l:'d', td:1, q:R`Selon le réel $a$, détermine la nature de $\displaystyle\sum_{n\ge 1}\left(1+\frac{a}{n}\right)^{-n^2}$.`,
- s:[R`Pour $n>|a|$, $1+\frac an>0$, donc $u_n>0$. Tout est à une puissance de $n$ : j'utilise Cauchy.`, R`$\sqrt[n]{u_n}=\left(1+\frac an\right)^{-n}$.`, R`Limite à connaître : $\left(1+\frac an\right)^n\to e^a$. Donc $\sqrt[n]{u_n}\to e^{-a}$.`, R`<b>Si $a>0$</b> : $e^{-a}\lt 1$, la série converge. <b>Si $a\lt 0$</b> : $e^{-a}>1$, elle diverge.`, R`<b>Si $a=0$</b> : Cauchy donne $1$, je regarde directement : $u_n=1$, divergence grossière.`, R`Conclusion : la série <span class="ok">converge si et seulement si $a>0$</span>.`],
- t:R`Avec un paramètre, je discute selon ses valeurs. Le cas « limite $=1$ » se traite toujours à part.`},
+ s:[R`Pour $n>|a|$, on a $1+\frac an>0$, donc $u_n>0$. Le terme est une puissance de $n$ : j'utilise Cauchy.`,
+    R`$$\sqrt[n]{u_n}=\left(1+\frac an\right)^{-n}.$$`,
+    R`Limite à connaître : $\left(1+\frac an\right)^n\to e^a$. Donc $\sqrt[n]{u_n}\to e^{-a}$.`,
+    R`<b>Si $a>0$</b> : $e^{-a}\lt 1$, la série converge. <b>Si $a\lt 0$</b> : $e^{-a}>1$, elle diverge.`,
+    R`<b>Si $a=0$</b> : Cauchy donne $1$ et ne conclut pas. Je regarde directement : $u_n=1$ pour tout $n$, donc divergence grossière.`,
+    R`Conclusion : la série <span class="ok">converge si et seulement si $a>0$</span>.`],
+ t:R`Avec un paramètre, je discute selon ses valeurs. Le cas où la limite vaut $1$ se traite toujours à part.`},
 {l:'d', td:1, q:R`Calcule $\displaystyle\sum_{n\ge 2}\frac{1}{(n-1)(n+2)}$.`,
- s:[R`Je décompose : $\dfrac1{(n-1)(n+2)}=\dfrac{a}{n-1}+\dfrac{b}{n+2}$. Je multiplie par $(n-1)$ et je pose $n=1$ : $a=\frac13$. Je multiplie par $(n+2)$ et je pose $n=-2$ : $b=-\frac13$.`, R`Donc $u_n=\dfrac13\left(\dfrac1{n-1}-\dfrac1{n+2}\right)$ : télescopage avec un décalage de $3$.`, R`$3S_N=\left(1-\frac14\right)+\left(\frac12-\frac15\right)+\left(\frac13-\frac16\right)+\left(\frac14-\frac17\right)+\dots+\left(\frac1{N-1}-\frac1{N+2}\right)$.`, R`Il reste trois termes au début et trois à la fin : $3S_N=1+\frac12+\frac13-\frac1N-\frac1{N+1}-\frac1{N+2}$.`, R`Quand $N\to\infty$ : $3S=\frac{11}{6}$, donc la somme vaut <span class="ok">$\dfrac{11}{18}$</span>.`],
+ s:[R`Je décompose en éléments simples : $$\frac1{(n-1)(n+2)}=\frac{a}{n-1}+\frac{b}{n+2}.$$ En multipliant par $(n-1)$ et en posant $n=1$ : $a=\frac13$. En multipliant par $(n+2)$ et en posant $n=-2$ : $b=-\frac13$.`,
+    R`Donc $u_n=\dfrac13\left(\dfrac1{n-1}-\dfrac1{n+2}\right)$ : un télescopage avec un décalage de $3$.`,
+    R`$$3S_N=\left(1-\tfrac14\right)+\left(\tfrac12-\tfrac15\right)+\left(\tfrac13-\tfrac16\right)+\left(\tfrac14-\tfrac17\right)+\cdots+\left(\tfrac1{N-1}-\tfrac1{N+2}\right).$$`,
+    R`Chaque $-\frac1k$ s'annule avec un $+\frac1k$ trois places plus loin. Il reste trois termes au début et trois à la fin : $$3S_N=1+\frac12+\frac13-\frac1N-\frac1{N+1}-\frac1{N+2}.$$`,
+    R`Quand $N\to\infty$ : $3S_N\to\frac{11}{6}$, donc la somme vaut <span class="ok">$\dfrac{11}{18}$</span>.`],
  t:R`Décalage de $k$ : il reste $k$ termes au début et $k$ à la fin. Même idée que l'{ex:n2m1}, avec $3$ au lieu de $2$.`},
 {l:'d', k:'abel', q:R`Montre que $\displaystyle\sum_{n\ge 1}\frac{\cos n}{\sqrt n}$ converge.`,
- s:[R`Le signe de $\cos n$ change sans régularité, et $\sum\frac{|\cos n|}{\sqrt n}$ ne se compare à aucune série convergente. J'utilise le critère d'Abel.`, R`$a_n=\frac1{\sqrt n}$ décroît vers $0$. Il reste à montrer que $B_N=\sum_{k=1}^N\cos k$ est bornée.`, R`$B_N$ est la partie réelle de $\sum_{k=1}^N e^{ik}=e^{i}\,\dfrac{1-e^{iN}}{1-e^{i}}$ (géométrique de raison $e^{i}\neq 1$).`, R`Le numérateur vérifie $|1-e^{iN}|\le 1+1=2$, et le dénominateur vaut $|1-e^{i}|=2\sin\frac12$ (calcul classique).`, R`Donc $|B_N|\le\dfrac{2}{2\sin\frac12}=\dfrac{1}{\sin\frac12}$ : les sommes partielles restent bornées, quel que soit $N$.`, R`D'après le critère d'Abel, la série <span class="ok">converge</span>.`],
+ s:[R`Le signe de $\cos n$ change sans régularité, et la valeur absolue ne marche pas ici ($\sum\frac{|\cos n|}{\sqrt n}$ diverge). J'utilise le critère d'Abel.`,
+    R`$a_n=\frac1{\sqrt n}$ décroît vers $0$. Il reste à montrer que les sommes $B_N=\sum_{k=1}^N\cos k$ sont bornées.`,
+    R`$B_N$ est la partie réelle d'une somme géométrique de raison $e^{i}\neq 1$ : $$\sum_{k=1}^N e^{ik}=e^{i}\,\frac{1-e^{iN}}{1-e^{i}}.$$`,
+    R`Au numérateur, $|1-e^{iN}|\le 1+1=2$. Au dénominateur, un calcul classique donne $|1-e^{i}|=2\sin\frac12$.`,
+    R`Donc, quel que soit $N$ : $$|B_N|\le\frac{2}{2\sin\frac12}=\frac{1}{\sin\frac12}.$$ Les sommes partielles restent bornées.`,
+    R`D'après le critère d'Abel, la série <span class="ok">converge</span>.`],
  t:R`Abel : (suite qui décroît vers $0$) $\times$ (sommes partielles bornées) donne une série convergente. Ça marche pour $\sum\frac{\cos n}{n^\alpha}$ et $\sum\frac{\sin n}{n^\alpha}$ dès que $\alpha>0$.`},
 {l:'d', td:1, q:R`Détermine la nature de $\displaystyle\sum_{n\ge 2}\ln\!\left(1+\frac{\cos n}{\sqrt n}\right)$.`,
- s:[R`Je pose $v_n=\frac{\cos n}{\sqrt n}\to 0$. Le signe change : pas d'équivalent possible, je fais un développement limité.`, R`Rappel : quand $v\to 0$, $\ln(1+v)\approx v-\dfrac{v^2}{2}$. Plus précisément $\ln(1+v)=v-\dfrac{v^2}{2}+w$, avec $|w|\le C|v|^3$ pour $v$ petit. Ici $|v_n|^3\le\dfrac{1}{n^{3/2}}$, donc $\sum w_n$ converge absolument.`, R`$\sum v_n$ converge (c'est l'{ex:abel}).`, R`Avec $\cos^2 n=\dfrac{1+\cos 2n}{2}$ : $\dfrac{v_n^2}{2}=\dfrac{\cos^2 n}{2n}=\dfrac{1}{4n}+\dfrac{\cos 2n}{4n}$. $\sum\frac{\cos 2n}{4n}$ converge (Abel, même méthode), mais $\sum\frac1{4n}$ diverge.`, R`$u_n$ = (termes de séries convergentes) $-\frac{1}{4n}$ : la série <span class="ok">diverge</span> (vers $-\infty$).`],
+ s:[R`Je pose $v_n=\frac{\cos n}{\sqrt n}\to 0$. Le signe change sans régularité : un simple équivalent ne suffit pas. Je fais un développement limité.`,
+    R`Quand $v\to 0$ : $$\ln(1+v)=v-\frac{v^2}{2}+w,\qquad\text{avec }|w|\le C|v|^3 .$$ Ici $|v_n|^3\le\frac{1}{n^{3/2}}$, donc $\sum w_n$ converge absolument.`,
+    R`Le premier morceau, $\sum v_n$, converge : c'est l'{ex:abel}.`,
+    R`Le deuxième morceau : avec $\cos^2 n=\frac{1+\cos 2n}{2}$, $$\frac{v_n^2}{2}=\frac{\cos^2 n}{2n}=\frac{1}{4n}+\frac{\cos 2n}{4n}.$$ $\sum\frac{\cos 2n}{4n}$ converge (Abel, même méthode), mais $\sum\frac1{4n}$ diverge.`,
+    R`Au total, $u_n$ = (termes de séries convergentes) $-\frac{1}{4n}$ : la série <span class="ok">diverge</span> (vers $-\infty$).`],
  t:R`Signe irrégulier : je développe jusqu'à obtenir un reste absolument convergent. Un seul morceau divergent suffit à faire diverger la somme.`}
 ];
 
 const P2 = [
 {l:'f', q:R`Trouve le rayon de convergence de $\displaystyle\sum_{n\ge 0}x^n$ et sa somme.`,
- s:[R`Pour $x$ fixé, c'est la série géométrique de raison $x$.`, R`Elle converge si $|x|\lt 1$ et diverge si $|x|\ge 1$.`, R`Donc <span class="ok">$R=1$</span> et la somme vaut $\dfrac1{1-x}$.`],
+ s:[R`Pour $x$ fixé, c'est une série géométrique de raison $x$.`,
+    R`Elle converge si $|x|\lt 1$ et diverge si $|x|\ge 1$.`,
+    R`Donc <span class="ok">$R=1$</span>, et pour $|x|\lt 1$ : $$\sum_{n\ge0}x^n=\frac1{1-x}.$$`],
  t:R`$\dfrac1{1-x}=\sum x^n$ pour $|x|\lt 1$ : la série entière la plus importante.`},
 {l:'f', q:R`Trouve le rayon de $\displaystyle\sum_{n\ge 0}2^n x^n$.`,
- s:[R`$a_n=2^n$, donc $\dfrac{a_{n+1}}{a_n}=\dfrac{2^{n+1}}{2^n}=2$.`, R`La limite vaut $\ell=2$, donc <span class="ok">$R=\frac12$</span>.`],
+ s:[R`Les coefficients sont $a_n=2^n$. J'applique d'Alembert aux coefficients : $$\frac{a_{n+1}}{a_n}=\frac{2^{n+1}}{2^n}=2.$$`,
+    R`La limite vaut $\ell=2$, donc <span class="ok">$R=\frac12$</span>.`,
+    R`Vérification : $\sum 2^nx^n=\sum(2x)^n$ est géométrique, elle converge pour $|2x|\lt 1$, soit $|x|\lt\frac12$.`],
  t:R`Si $\left|\frac{a_{n+1}}{a_n}\right|\to\ell$, alors $R=\frac1\ell$.`},
 {l:'f', q:R`Trouve le rayon de $\displaystyle\sum_{n\ge 1}\frac{x^n}{n}$.`,
- s:[R`$a_n=\frac1n$, donc $\dfrac{a_{n+1}}{a_n}=\dfrac{n}{n+1}\to 1$.`, R`Donc <span class="ok">$R=1$</span>.`],
+ s:[R`Ici $a_n=\frac1n$, donc $$\frac{a_{n+1}}{a_n}=\frac{n}{n+1}\to 1.$$`,
+    R`Donc <span class="ok">$R=1$</span>.`],
  t:R`Une puissance de $n$ seule ($n$, $\frac1n$, $n^2$…) ne change pas le rayon.`},
 {k:'expo', l:'f', q:R`Trouve le rayon de $\displaystyle\sum_{n\ge 0}\frac{x^n}{n!}$.`,
- s:[R`$\dfrac{a_{n+1}}{a_n}=\dfrac{n!}{(n+1)!}=\dfrac1{n+1}\to 0$.`, R`Limite $0$ : <span class="ok">$R=+\infty$</span>. Elle converge pour tout réel $x$.`],
+ s:[R`$$\frac{a_{n+1}}{a_n}=\frac{n!}{(n+1)!}=\frac1{n+1}\to 0.$$`,
+    R`Une limite nulle donne <span class="ok">$R=+\infty$</span> : la série converge pour tout réel $x$.`],
  t:R`Limite $0$ $\Rightarrow$ $R=+\infty$.`},
 {l:'f', q:R`Trouve le rayon de $\displaystyle\sum_{n\ge 0}n!\,x^n$.`,
- s:[R`$\dfrac{a_{n+1}}{a_n}=\dfrac{(n+1)!}{n!}=n+1\to+\infty$.`, R`Donc <span class="ok">$R=0$</span> : elle ne converge que pour $x=0$.`],
+ s:[R`$$\frac{a_{n+1}}{a_n}=\frac{(n+1)!}{n!}=n+1\to+\infty.$$`,
+    R`Donc <span class="ok">$R=0$</span> : la série ne converge que pour $x=0$.`],
  t:R`Limite $+\infty$ $\Rightarrow$ $R=0$.`},
 {k:'n2', l:'f', q:R`Trouve le rayon de $\displaystyle\sum_{n\ge 0}n^2x^n$.`,
- s:[R`$\dfrac{a_{n+1}}{a_n}=\dfrac{(n+1)^2}{n^2}=\left(1+\dfrac1n\right)^2\to 1$.`, R`Donc <span class="ok">$R=1$</span>.`],
- t:R`Même remarque : $n^2$ ne change pas le rayon.`},
+ s:[R`$$\frac{a_{n+1}}{a_n}=\frac{(n+1)^2}{n^2}=\left(1+\frac1n\right)^2\to 1.$$`,
+    R`Donc <span class="ok">$R=1$</span>.`],
+ t:R`Même remarque : le facteur $n^2$ ne change pas le rayon.`},
 {l:'f', q:R`Trouve le rayon et la somme de $\displaystyle\sum_{n\ge 0}\frac{x^n}{3^n}$.`,
- s:[R`J'écris $\dfrac{x^n}{3^n}=\left(\dfrac x3\right)^n$ : c'est une géométrique de raison $\frac x3$.`, R`Elle converge si $\left|\frac x3\right|\lt 1$, soit $|x|\lt 3$ : <span class="ok">$R=3$</span>.`, R`Sa somme vaut $\dfrac{1}{1-\frac x3}=\dfrac{3}{3-x}$.`],
+ s:[R`J'écris $\dfrac{x^n}{3^n}=\left(\dfrac x3\right)^n$ : c'est une géométrique de raison $\frac x3$.`,
+    R`Elle converge si $\left|\frac x3\right|\lt 1$, c'est-à-dire $|x|\lt 3$ : <span class="ok">$R=3$</span>.`,
+    R`Sa somme vaut $$\frac{1}{1-\frac x3}=\frac{3}{3-x}.$$`],
  t:R`Je reconnais une géométrique cachée avant de calculer.`},
 {l:'f', q:R`Calcule $\displaystyle\sum_{n\ge 0}\frac{2^n}{n!}$.`,
- s:[R`Je reconnais $e^x=\sum\dfrac{x^n}{n!}$, valable pour tout réel $x$.`, R`Avec $x=2$ : $\sum\dfrac{2^n}{n!}=$ <span class="ok">$e^2$</span>.`],
+ s:[R`Je reconnais le développement de l'exponentielle, valable pour tout réel $x$ : $$e^x=\sum_{n\ge0}\frac{x^n}{n!}.$$`,
+    R`Avec $x=2$ : la somme vaut <span class="ok">$e^2$</span>.`],
  t:R`$e^x=\sum\frac{x^n}{n!}$ pour tout réel $x$.`},
 {l:'m', q:R`Trouve le rayon de $\displaystyle\sum_{n\ge 0}\frac{n}{2^n}x^n$.`,
- s:[R`$a_n=\dfrac{n}{2^n}$.`, R`$\dfrac{a_{n+1}}{a_n}=\dfrac{n+1}{2^{n+1}}\times\dfrac{2^n}{n}=\dfrac{n+1}{2n}\to\dfrac12$.`, R`Donc <span class="ok">$R=2$</span>.`],
- t:R`Le $\frac1{2^n}$ fixe le rayon, le $n$ ne compte pas.`},
+ s:[R`Les coefficients sont $a_n=\dfrac{n}{2^n}$.`,
+    R`$$\frac{a_{n+1}}{a_n}=\frac{n+1}{2^{n+1}}\times\frac{2^n}{n}=\frac{n+1}{2n}\to\frac12.$$`,
+    R`Donc <span class="ok">$R=2$</span>.`],
+ t:R`Le $\frac1{2^n}$ fixe le rayon ; le facteur $n$ ne compte pas.`},
 {l:'m', q:R`Trouve le rayon de $\displaystyle\sum_{n\ge 0}\frac{x^{2n}}{4^n}$.`,
- s:[R`Attention : il n'y a que des puissances paires. Les coefficients de $x^1, x^3,\dots$ valent $0$, donc je ne peux pas faire $\frac{a_{n+1}}{a_n}$.`, R`J'écris $\dfrac{x^{2n}}{4^n}=\left(\dfrac{x^2}{4}\right)^n$ : c'est une géométrique de raison $\frac{x^2}{4}$.`, R`Elle converge si $\frac{x^2}4\lt 1$, soit $x^2\lt 4$, soit $|x|\lt 2$.`, R`Donc <span class="ok">$R=2$</span>.`],
- t:R`Série « à trous » : je reconnais une géométrique, ou j'applique d'Alembert à $|u_n(x)|$.`},
+ s:[R`Attention : il n'y a que des puissances paires. Les coefficients de $x, x^3,\dots$ valent $0$, donc le quotient $\frac{a_{n+1}}{a_n}$ n'a pas de sens.`,
+    R`Je regroupe : $\dfrac{x^{2n}}{4^n}=\left(\dfrac{x^2}{4}\right)^n$. C'est une géométrique de raison $\frac{x^2}{4}$.`,
+    R`Elle converge si $\frac{x^2}4\lt 1$, soit $x^2\lt 4$, soit $|x|\lt 2$.`,
+    R`Donc <span class="ok">$R=2$</span>.`],
+ t:R`Série « à trous » : je reconnais une géométrique, ou j'applique d'Alembert au terme complet $|u_n(x)|$.`},
 {l:'m', q:R`Trouve le domaine de convergence de $\displaystyle\sum_{n\ge 1}\frac{x^n}{n}$.`,
- s:[R`On a vu que $R=1$ : la série converge sur $]-1\,;1[$ et diverge si $|x|>1$.`, R`<b>En $x=1$</b> : on obtient $\sum\frac1n$, la série harmonique, qui diverge.`, R`<b>En $x=-1$</b> : on obtient $\sum\frac{(-1)^n}{n}$, une série alternée qui converge.`, R`Domaine de convergence : <span class="ok">$[-1\,;1[$</span>.`],
+ s:[R`On a vu que $R=1$ : la série converge sur $]-1\,;1[$ et diverge si $|x|>1$. Restent les deux bords.`,
+    R`<b>En $x=1$</b> : on obtient $\sum\frac1n$, la série harmonique, qui diverge.`,
+    R`<b>En $x=-1$</b> : on obtient $\sum\frac{(-1)^n}{n}$, une série alternée qui converge (partie 1, exercice 17).`,
+    R`Domaine de convergence : <span class="ok">$[-1\,;1[$</span>.`],
  t:R`Aux bords, le rayon ne dit rien : j'étudie $x=R$ et $x=-R$ à la main.`},
 {l:'m', q:R`Trouve le domaine de convergence de $\displaystyle\sum_{n\ge 1}\frac{x^n}{n^2}$.`,
- s:[R`$\dfrac{a_{n+1}}{a_n}=\dfrac{n^2}{(n+1)^2}\to 1$, donc $R=1$.`, R`<b>En $x=1$ et $x=-1$</b> : $\left|\frac{(\pm1)^n}{n^2}\right|=\frac1{n^2}$, et $\sum\frac1{n^2}$ converge.`, R`Donc la série converge (absolument) aux deux bords.`, R`Domaine : <span class="ok">$[-1\,;1]$</span>.`],
+ s:[R`$$\frac{a_{n+1}}{a_n}=\frac{n^2}{(n+1)^2}\to 1,\qquad\text{donc } R=1.$$`,
+    R`<b>En $x=1$ et $x=-1$</b> : $\left|\frac{(\pm1)^n}{n^2}\right|=\frac1{n^2}$, et $\sum\frac1{n^2}$ converge.`,
+    R`La série converge donc (absolument) aux deux bords.`,
+    R`Domaine : <span class="ok">$[-1\,;1]$</span>.`],
  t:R`Même rayon que l'exercice précédent, mais des bords différents.`},
 {k:'derive', l:'m', q:R`Pour $|x|\lt 1$, calcule $\displaystyle\sum_{n\ge 1}n\,x^{n-1}$.`,
- s:[R`Je pars de la série géométrique : $\sum_{n\ge 0}x^n=\dfrac1{1-x}$ pour $|x|\lt 1$.`, R`Je dérive les deux côtés. À gauche, terme à terme : $(x^n)'=n\,x^{n-1}$ (le terme $n=0$ disparaît).`, R`À droite : $\left(\dfrac1{1-x}\right)'=\dfrac1{(1-x)^2}$.`, R`Donc $\sum_{n\ge 1}n\,x^{n-1}=$ <span class="ok">$\dfrac1{(1-x)^2}$</span>.`],
+ s:[R`Je pars de la série géométrique, valable pour $|x|\lt 1$ : $$\sum_{n\ge 0}x^n=\frac1{1-x}.$$`,
+    R`Je dérive les deux côtés, ce qui est permis sur $]-1\,;1[$. À gauche, terme à terme : $(x^n)'=n\,x^{n-1}$, et le terme $n=0$ (une constante) disparaît.`,
+    R`À droite : $$\left(\frac1{1-x}\right)'=\frac1{(1-x)^2}.$$`,
+    R`Donc $\displaystyle\sum_{n\ge 1}n\,x^{n-1}=$ <span class="ok">$\dfrac1{(1-x)^2}$</span>.`],
  t:R`Dériver une série entière ne change pas son rayon.`},
 {k:'integ', l:'m', q:R`Pour $|x|\lt 1$, calcule $\displaystyle\sum_{n\ge 1}\frac{x^n}{n}$.`,
- s:[R`Je pars de $\sum_{n\ge 0}t^n=\dfrac1{1-t}$ et j'intègre entre $0$ et $x$.`, R`À gauche, terme à terme : $\int_0^x t^n\,dt=\dfrac{x^{n+1}}{n+1}$. Donc on obtient $\sum_{n\ge 0}\dfrac{x^{n+1}}{n+1}=\sum_{n\ge 1}\dfrac{x^n}{n}$.`, R`À droite : $\int_0^x\dfrac{dt}{1-t}=\bigl[-\ln(1-t)\bigr]_0^x=-\ln(1-x)$.`, R`La somme vaut <span class="ok">$-\ln(1-x)$</span>.`],
+ s:[R`Je pars de $\sum_{n\ge 0}t^n=\dfrac1{1-t}$ et j'intègre les deux côtés entre $0$ et $x$.`,
+    R`À gauche, terme à terme : $\int_0^x t^n\,dt=\dfrac{x^{n+1}}{n+1}$. On obtient $$\sum_{n\ge 0}\frac{x^{n+1}}{n+1}=\sum_{n\ge 1}\frac{x^n}{n}$$ (j'ai renommé l'indice).`,
+    R`À droite : $$\int_0^x\frac{dt}{1-t}=\bigl[-\ln(1-t)\bigr]_0^x=-\ln(1-x).$$`,
+    R`La somme vaut <span class="ok">$-\ln(1-x)$</span>.`],
  t:R`Intégrer terme à terme ne change pas non plus le rayon.`},
 {k:'nxn', l:'m', q:R`Pour $|x|\lt 1$, calcule $\displaystyle\sum_{n\ge 1}n\,x^n$.`,
- s:[R`J'écris $n\,x^n=x\times n\,x^{n-1}$.`, R`Donc $\sum n\,x^n=x\sum n\,x^{n-1}$.`, R`Avec l'{ex:derive} : la somme vaut $x\times\dfrac1{(1-x)^2}=$ <span class="ok">$\dfrac{x}{(1-x)^2}$</span>.`],
- t:R`Multiplier par $x$ décale les puissances, c'est souvent utile.`},
+ s:[R`J'écris $n\,x^n=x\times n\,x^{n-1}$ : il suffit de multiplier la série de l'{ex:derive} par $x$.`,
+    R`$$\sum_{n\ge1} n\,x^n=x\sum_{n\ge1} n\,x^{n-1}=x\times\frac1{(1-x)^2}.$$`,
+    R`La somme vaut <span class="ok">$\dfrac{x}{(1-x)^2}$</span>.`],
+ t:R`Multiplier par $x$ décale les puissances : c'est souvent utile.`},
 {l:'m', q:R`Développe $\dfrac1{1+x}$ en série entière.`,
- s:[R`J'écris $\dfrac1{1+x}=\dfrac1{1-(-x)}$.`, R`Je remplace $x$ par $-x$ dans $\dfrac1{1-x}=\sum x^n$ : <span class="ok">$\dfrac1{1+x}=\sum_{n\ge 0}(-1)^n x^n$</span>.`, R`Valable si $|-x|\lt 1$, donc $|x|\lt 1$ : $R=1$.`],
+ s:[R`J'écris $\dfrac1{1+x}=\dfrac1{1-(-x)}$, pour retrouver la forme géométrique.`,
+    R`Je remplace $x$ par $-x$ dans $\dfrac1{1-x}=\sum x^n$ : $$\frac1{1+x}=\sum_{n\ge 0}(-x)^n=\sum_{n\ge 0}(-1)^n x^n.$$`,
+    R`C'est valable si $|-x|\lt 1$, donc si $|x|\lt 1$ : <span class="ok">$R=1$</span>.`],
  t:R`Remplacer $x$ par $-x$, $x^2$, $2x$… permet de créer de nouveaux développements.`},
 {l:'m', q:R`Développe $e^{2x}$ en série entière.`,
- s:[R`Je remplace $x$ par $2x$ dans $e^x=\sum\dfrac{x^n}{n!}$.`, R`$(2x)^n=2^n x^n$, donc <span class="ok">$e^{2x}=\sum_{n\ge 0}\dfrac{2^n x^n}{n!}$</span>.`, R`$e^x$ est valable pour tout $x$, donc ici aussi : $R=+\infty$.`],
+ s:[R`Je remplace $x$ par $2x$ dans $e^x=\sum\dfrac{x^n}{n!}$.`,
+    R`Comme $(2x)^n=2^n x^n$ : $$e^{2x}=\sum_{n\ge 0}\frac{2^n x^n}{n!}.$$`,
+    R`Le développement de $e^x$ est valable pour tout $x$, donc celui-ci aussi : <span class="ok">$R=+\infty$</span>.`],
  t:R`Je n'oublie pas la puissance sur le $2$ : $(2x)^n=2^nx^n$.`},
 {l:'m', td:1, q:R`Trouve le domaine de convergence et la somme de $\displaystyle\sum_{n\ge 0}n^2x^n$.`,
- s:[R`Le rayon vaut $R=1$ ({ex:n2}). En $x=\pm1$, $|n^2x^n|=n^2$ ne tend pas vers $0$ : divergence grossière. Domaine $]-1\,;1[$.`, R`Je pars de l'{ex:nxn} : $\sum_{n\ge 1}n\,x^n=\dfrac{x}{(1-x)^2}$.`, R`Je dérive : $\sum_{n\ge 1}n^2x^{n-1}=\dfrac{(1-x)^2+2x(1-x)}{(1-x)^4}=\dfrac{1+x}{(1-x)^3}$.`, R`Je multiplie par $x$ : <span class="ok">$\displaystyle\sum n^2x^n=\dfrac{x(1+x)}{(1-x)^3}$</span> pour $|x|\lt 1$.`],
+ s:[R`Le rayon vaut $R=1$ ({ex:n2}). En $x=\pm1$, $|n^2x^n|=n^2$ ne tend pas vers $0$ : divergence grossière. Domaine : $]-1\,;1[$.`,
+    R`Pour la somme, je pars de l'{ex:nxn} : $$\sum_{n\ge 1}n\,x^n=\frac{x}{(1-x)^2}.$$`,
+    R`Je dérive les deux côtés. À gauche, je trouve $\sum n^2x^{n-1}$. À droite, avec la formule du quotient : $$\left(\frac{x}{(1-x)^2}\right)'=\frac{(1-x)^2+2x(1-x)}{(1-x)^4}=\frac{1+x}{(1-x)^3}.$$`,
+    R`Je multiplie par $x$ pour retrouver $n^2x^n$ : $$\sum_{n\ge0} n^2x^n=\frac{x(1+x)}{(1-x)^3},\qquad |x|\lt 1.$$`,
+    R`Résultat : <span class="ok">$\dfrac{x(1+x)}{(1-x)^3}$</span> sur $]-1\,;1[$.`],
  t:R`Chaque facteur $n$ s'obtient avec « je dérive, puis je multiplie par $x$ ».`},
 {l:'m', td:1, q:R`Développe $\sin^3 x$ en série entière.`,
- s:[R`Je linéarise. Avec $\sin 3x=3\sin x-4\sin^3x$ : $\sin^3x=\dfrac{3\sin x-\sin 3x}{4}$.`, R`$\sin x=\sum\dfrac{(-1)^nx^{2n+1}}{(2n+1)!}$ et $\sin 3x=\sum\dfrac{(-1)^n3^{2n+1}x^{2n+1}}{(2n+1)!}$.`, R`Je combine : <span class="ok">$\sin^3x=\displaystyle\sum_{n\ge 0}\dfrac{(-1)^n\left(3-3^{2n+1}\right)}{4\,(2n+1)!}\,x^{2n+1}$</span>, avec $R=+\infty$.`, R`Vérification : le terme $n=0$ vaut $0$ et le terme $n=1$ vaut $\frac{-(3-27)}{4\times 6}x^3=x^3$. Cohérent avec $\sin^3x\sim x^3$.`],
+ s:[R`Je linéarise d'abord. De $\sin 3x=3\sin x-4\sin^3x$, je tire $$\sin^3x=\frac{3\sin x-\sin 3x}{4}.$$`,
+    R`Je développe chaque sinus (le second en remplaçant $x$ par $3x$) : $$\sin x=\sum\frac{(-1)^nx^{2n+1}}{(2n+1)!},\qquad \sin 3x=\sum\frac{(-1)^n3^{2n+1}x^{2n+1}}{(2n+1)!}.$$`,
+    R`Je combine les deux sommes : $$\sin^3x=\sum_{n\ge 0}c_n\,x^{2n+1}$$ avec $$c_n=\frac{(-1)^n\left(3-3^{2n+1}\right)}{4\,(2n+1)!},$$ et $R=+\infty$ (comme pour $\sin$).`,
+    R`Vérification : le terme $n=0$ vaut $0$, et le terme $n=1$ vaut $\frac{-(3-27)}{4\times 6}x^3=x^3$. C'est cohérent avec $\sin^3x\sim x^3$ près de $0$.`,
+    R`Résultat : <span class="ok">$\displaystyle\sum_{n\ge0}\frac{(-1)^n(3-3^{2n+1})}{4\,(2n+1)!}x^{2n+1}$</span>.`],
  t:R`Une puissance de $\sin$ ou de $\cos$ : je linéarise avant de développer.`},
 {k:'inv1x2', l:'d', q:R`Développe $\dfrac1{1+x^2}$ en série entière.`,
- s:[R`Je remplace $x$ par $x^2$ dans $\dfrac1{1+x}=\sum(-1)^n x^n$.`, R`$(x^2)^n=x^{2n}$, donc <span class="ok">$\dfrac1{1+x^2}=\sum_{n\ge 0}(-1)^n x^{2n}$</span>.`, R`Valable si $x^2\lt 1$, donc $|x|\lt 1$ : $R=1$.`],
- t:R`Ce développement sert juste après pour $\arctan$.`},
+ s:[R`Je remplace $x$ par $x^2$ dans $\dfrac1{1+x}=\sum(-1)^n x^n$.`,
+    R`Comme $(x^2)^n=x^{2n}$ : $$\frac1{1+x^2}=\sum_{n\ge 0}(-1)^n x^{2n}.$$`,
+    R`C'est valable si $x^2\lt 1$, donc si $|x|\lt 1$ : <span class="ok">$R=1$</span>.`],
+ t:R`Ce développement sert juste après, pour $\arctan$.`},
 {l:'d', q:R`Développe $\arctan x$ en série entière.`,
- s:[R`Je connais la dérivée : $(\arctan x)'=\dfrac1{1+x^2}=\sum(-1)^n x^{2n}$ pour $|x|\lt 1$ ({ex:inv1x2}).`, R`J'intègre terme à terme entre $0$ et $x$ : $\int_0^x t^{2n}\,dt=\dfrac{x^{2n+1}}{2n+1}$.`, R`À gauche j'obtiens $\arctan x-\arctan 0=\arctan x$.`, R`Donc <span class="ok">$\arctan x=\sum_{n\ge 0}\dfrac{(-1)^n x^{2n+1}}{2n+1}$</span>, avec $R=1$.`],
+ s:[R`Je connais la dérivée de $\arctan$, et son développement ({ex:inv1x2}) : $$(\arctan x)'=\frac1{1+x^2}=\sum_{n\ge0}(-1)^n x^{2n},\qquad |x|\lt1.$$`,
+    R`J'intègre terme à terme entre $0$ et $x$ : $\int_0^x t^{2n}\,dt=\dfrac{x^{2n+1}}{2n+1}$.`,
+    R`À gauche, j'obtiens $\arctan x-\arctan 0=\arctan x$, car $\arctan 0=0$.`,
+    R`Donc $$\arctan x=\sum_{n\ge 0}\frac{(-1)^n x^{2n+1}}{2n+1},\qquad R=1.$$`,
+    R`Résultat : <span class="ok">$\arctan x=\displaystyle\sum_{n\ge0}\frac{(-1)^nx^{2n+1}}{2n+1}$</span>.`],
  t:R`Pour développer $f$, je peux développer $f'$ puis intégrer, sans oublier la valeur $f(0)$.`},
 {l:'d', q:R`Développe $\ln(1+x)$ en série entière.`,
- s:[R`$\bigl(\ln(1+x)\bigr)'=\dfrac1{1+x}=\sum(-1)^n x^n$ pour $|x|\lt 1$.`, R`J'intègre terme à terme de $0$ à $x$ : $\sum_{n\ge 0}\dfrac{(-1)^n x^{n+1}}{n+1}$.`, R`À gauche : $\ln(1+x)-\ln 1=\ln(1+x)$.`, R`Je pose $k=n+1$ : <span class="ok">$\ln(1+x)=\sum_{k\ge 1}\dfrac{(-1)^{k+1}x^k}{k}$</span>, avec $R=1$.`],
+ s:[R`La dérivée de $\ln(1+x)$ est connue : $$\bigl(\ln(1+x)\bigr)'=\frac1{1+x}=\sum_{n\ge0}(-1)^n x^n,\qquad |x|\lt1.$$`,
+    R`J'intègre terme à terme de $0$ à $x$ : on obtient $\displaystyle\sum_{n\ge 0}\frac{(-1)^n x^{n+1}}{n+1}$.`,
+    R`À gauche : $\ln(1+x)-\ln 1=\ln(1+x)$.`,
+    R`Je pose $k=n+1$ pour un résultat plus lisible : $$\ln(1+x)=\sum_{k\ge 1}\frac{(-1)^{k+1}x^k}{k},\qquad R=1.$$`,
+    R`Résultat : <span class="ok">$\ln(1+x)=\displaystyle\sum_{k\ge1}\frac{(-1)^{k+1}x^k}{k}$</span>.`],
  t:R`Un changement d'indice ($k=n+1$) rend souvent le résultat plus lisible.`},
 {l:'d', q:R`Calcule $\displaystyle\sum_{n\ge 1}\frac{n}{2^n}$.`,
- s:[R`J'écris $\dfrac{n}{2^n}=n\left(\dfrac12\right)^n$ : c'est $\sum n\,x^n$ avec $x=\frac12$.`, R`Comme $\left|\frac12\right|\lt 1$, je peux utiliser l'{ex:nxn} : $\sum n\,x^n=\dfrac{x}{(1-x)^2}$.`, R`Avec $x=\frac12$ : $\dfrac{1/2}{(1/2)^2}=\dfrac{1/2}{1/4}=$ <span class="ok">$2$</span>.`],
+ s:[R`J'écris $\dfrac{n}{2^n}=n\left(\dfrac12\right)^n$ : c'est la série $\sum n\,x^n$ prise en $x=\frac12$.`,
+    R`Comme $\left|\frac12\right|\lt 1$, je peux utiliser l'{ex:nxn} : $\sum n\,x^n=\dfrac{x}{(1-x)^2}$.`,
+    R`Avec $x=\frac12$ : $$\frac{1/2}{(1/2)^2}=\frac{1/2}{1/4}=2.$$`,
+    R`La somme vaut <span class="ok">$2$</span>.`],
  t:R`Pour calculer une série numérique, je la vois comme une série entière en un point.`},
 {l:'d', q:R`Pour $0\lt|x|\lt 1$, calcule $\displaystyle\sum_{n\ge 0}\frac{x^n}{n+1}$.`,
- s:[R`Le dénominateur $n+1$ me fait penser à $\dfrac{x^{n+1}}{n+1}$. Je multiplie donc par $x$ :`, R`$x\sum_{n\ge 0}\dfrac{x^n}{n+1}=\sum_{n\ge 0}\dfrac{x^{n+1}}{n+1}=\sum_{n\ge 1}\dfrac{x^n}{n}=-\ln(1-x)$ ({ex:integ}).`, R`Comme $x\neq 0$, je divise par $x$ : la somme vaut <span class="ok">$-\dfrac{\ln(1-x)}{x}$</span>.`, R`Remarque : en $x=0$, seul le terme $n=0$ reste, et la somme vaut $1$.`],
+ s:[R`Le dénominateur $n+1$ me fait penser à $\dfrac{x^{n+1}}{n+1}$, qui vient d'une intégration. Il me manque une puissance de $x$ : je multiplie par $x$.`,
+    R`$$x\sum_{n\ge 0}\frac{x^n}{n+1}=\sum_{n\ge 0}\frac{x^{n+1}}{n+1}=\sum_{n\ge 1}\frac{x^n}{n}=-\ln(1-x)$$ (d'après l'{ex:integ}).`,
+    R`Comme $x\neq 0$, je peux diviser par $x$ : la somme vaut <span class="ok">$-\dfrac{\ln(1-x)}{x}$</span>.`,
+    R`Remarque : en $x=0$, seul le terme $n=0$ reste, et la somme vaut $1$.`],
  t:R`Quand le dénominateur est $n+1$, je pense à multiplier par $x$.`},
 {l:'d', q:R`Développe $\dfrac1{(1-x)(1-2x)}$ en série entière.`,
- s:[R`Je décompose en éléments simples : $\dfrac1{(1-x)(1-2x)}=\dfrac{a}{1-x}+\dfrac{b}{1-2x}$.`, R`Je multiplie par $(1-x)$ et je pose $x=1$ : $a=\dfrac1{1-2}=-1$. Je multiplie par $(1-2x)$ et je pose $x=\frac12$ : $b=\dfrac1{1-\frac12}=2$.`, R`Donc $\dfrac1{(1-x)(1-2x)}=\dfrac{2}{1-2x}-\dfrac{1}{1-x}$.`, R`$\dfrac2{1-2x}=2\sum(2x)^n=\sum 2^{n+1}x^n$ (si $|x|\lt\frac12$) et $\dfrac1{1-x}=\sum x^n$ (si $|x|\lt 1$).`, R`Je soustrais : <span class="ok">$\sum_{n\ge 0}\left(2^{n+1}-1\right)x^n$</span>, avec $R=\frac12$ (le plus petit des deux).`],
+ s:[R`Je décompose en éléments simples : $$\frac1{(1-x)(1-2x)}=\frac{a}{1-x}+\frac{b}{1-2x}.$$`,
+    R`En multipliant par $(1-x)$ et en posant $x=1$ : $a=\dfrac1{1-2}=-1$. En multipliant par $(1-2x)$ et en posant $x=\frac12$ : $b=\dfrac1{1-\frac12}=2$.`,
+    R`Donc $$\frac1{(1-x)(1-2x)}=\frac{2}{1-2x}-\frac{1}{1-x}.$$`,
+    R`Chaque morceau est une géométrique : $$\frac2{1-2x}=2\sum(2x)^n=\sum 2^{n+1}x^n\ \ (|x|\lt\tfrac12),\qquad \frac1{1-x}=\sum x^n\ \ (|x|\lt 1).$$`,
+    R`Je soustrais : <span class="ok">$\displaystyle\sum_{n\ge 0}\left(2^{n+1}-1\right)x^n$</span>, avec $R=\frac12$ (le plus petit des deux rayons).`],
  t:R`Le rayon d'une somme est au moins le plus petit des deux rayons (ici exactement $\frac12$).`},
 {l:'d', q:R`Cherche une série entière $f(x)=\sum a_n x^n$ telle que $f'=f$ et $f(0)=1$.`,
- s:[R`Je dérive terme à terme : $f'(x)=\sum_{n\ge 1}n\,a_nx^{n-1}=\sum_{n\ge 0}(n+1)\,a_{n+1}x^n$.`, R`$f'=f$ : j'identifie les coefficients de $x^n$ des deux côtés. Donc $(n+1)\,a_{n+1}=a_n$, soit $a_{n+1}=\dfrac{a_n}{n+1}$.`, R`$f(0)=a_0=1$. Puis $a_1=1$, $a_2=\frac12$, $a_3=\frac1{2\times 3}$… donc $a_n=\dfrac1{n!}$.`, R`Le rayon est $+\infty$ ({ex:expo}), et <span class="ok">$f(x)=\sum\dfrac{x^n}{n!}=e^x$</span>.`],
+ s:[R`Je dérive terme à terme, puis je décale l'indice pour retrouver des $x^n$ : $$f'(x)=\sum_{n\ge 1}n\,a_nx^{n-1}=\sum_{n\ge 0}(n+1)\,a_{n+1}x^n.$$`,
+    R`L'égalité $f'=f$ permet d'identifier les coefficients de $x^n$ des deux côtés : $$(n+1)\,a_{n+1}=a_n,\qquad\text{soit}\qquad a_{n+1}=\frac{a_n}{n+1}.$$`,
+    R`Avec $a_0=f(0)=1$ : $a_1=1$, $a_2=\frac12$, $a_3=\frac1{2\times 3}$… et par récurrence $a_n=\dfrac1{n!}$.`,
+    R`Le rayon est $+\infty$ ({ex:expo}), et <span class="ok">$f(x)=\sum\dfrac{x^n}{n!}=e^x$</span>.`],
  t:R`Pour une équation différentielle : je dérive, je décale l'indice, puis j'identifie les coefficients.`},
 {k:'ch', l:'d', q:R`Calcule $\displaystyle\sum_{n\ge 0}\frac{x^{2n}}{(2n)!}$ pour tout réel $x$.`,
- s:[R`J'écris $e^x=\sum\dfrac{x^n}{n!}$ et $e^{-x}=\sum\dfrac{(-1)^nx^n}{n!}$.`, R`J'additionne : $e^x+e^{-x}=\sum\dfrac{x^n}{n!}\bigl(1+(-1)^n\bigr)$.`, R`Si $n$ est impair, $1+(-1)^n=0$ : le terme disparaît. Si $n$ est pair ($n=2k$), il vaut $2$.`, R`Donc $e^x+e^{-x}=2\sum_{k\ge 0}\dfrac{x^{2k}}{(2k)!}$.`, R`La somme vaut $\dfrac{e^x+e^{-x}}{2}=$ <span class="ok">$\operatorname{ch}x$</span>, avec $R=+\infty$.`],
+ s:[R`Je pars des développements de $e^x$ et de $e^{-x}$ : $$e^x=\sum\frac{x^n}{n!},\qquad e^{-x}=\sum\frac{(-1)^nx^n}{n!}.$$`,
+    R`Je les additionne : $$e^x+e^{-x}=\sum\frac{x^n}{n!}\bigl(1+(-1)^n\bigr).$$`,
+    R`Si $n$ est impair, $1+(-1)^n=0$ et le terme disparaît. Si $n$ est pair ($n=2k$), il vaut $2$. Donc $$e^x+e^{-x}=2\sum_{k\ge 0}\frac{x^{2k}}{(2k)!}.$$`,
+    R`La somme vaut $\dfrac{e^x+e^{-x}}{2}=$ <span class="ok">$\operatorname{ch}x$</span>, avec $R=+\infty$.`],
  t:R`Pour garder seulement les puissances paires, je fais la moyenne de $f(x)$ et $f(-x)$.`},
 {l:'d', td:1, q:R`Trouve le rayon et le domaine de convergence de $\displaystyle\sum_{n\ge 1}\left(1+\frac1n\right)^{-n^2}x^n$.`,
- s:[R`Tout est à la puissance $n$ : j'utilise Cauchy. $\sqrt[n]{a_n}=\left(\left(1+\frac1n\right)^{-n^2}\right)^{1/n}=\left(1+\frac1n\right)^{-n}\to\dfrac1e$, car $\left(1+\frac1n\right)^n\to e$.`, R`Donc <span class="ok">$R=e$</span>.`, R`<b>Aux bords</b> $x=\pm e$ : $|u_n|=e^n\left(1+\frac1n\right)^{-n^2}$, et $\ln|u_n|=n-n^2\ln\!\left(1+\frac1n\right)$.`, R`Avec $\ln(1+h)=h-\frac{h^2}{2}+o(h^2)$ et $h=\frac1n$ : $n^2\ln\!\left(1+\frac1n\right)=n-\frac12+o(1)$.`, R`Donc $\ln|u_n|\to\frac12$ et $|u_n|\to\sqrt e\neq 0$ : divergence grossière aux deux bords. Domaine <span class="ok">$]-e\,;e[$</span>.`],
+ s:[R`Le coefficient est une puissance $n$-ième : j'utilise Cauchy. $$\sqrt[n]{a_n}=\left(1+\frac1n\right)^{-n}\to\frac1e,\qquad\text{car }\left(1+\frac1n\right)^n\to e.$$`,
+    R`Donc <span class="ok">$R=e$</span>.`,
+    R`<b>Aux bords</b> $x=\pm e$ : $|u_n|=e^n\left(1+\frac1n\right)^{-n^2}$. Je passe au logarithme : $$\ln|u_n|=n-n^2\ln\!\left(1+\frac1n\right).$$`,
+    R`Un développement à l'ordre 1 donnerait $n-n=0$ : trop grossier. Je vais à l'ordre 2, avec $\ln(1+h)=h-\frac{h^2}{2}+o(h^2)$ et $h=\frac1n$ : $$n^2\ln\!\left(1+\frac1n\right)=n-\frac12+o(1).$$`,
+    R`Donc $\ln|u_n|\to\frac12$ et $|u_n|\to\sqrt e\neq 0$ : divergence grossière aux deux bords. Domaine : <span class="ok">$]-e\,;e[$</span>.`],
  t:R`Aux bords, il faut souvent un développement limité à l'ordre $2$ : l'ordre $1$ donne une forme « $\infty-\infty$ ».`},
 {l:'d', td:1, q:R`Trouve le domaine et la somme de $\displaystyle\sum_{n\ge 1}\frac{x^n}{n(n+1)}$.`,
- s:[R`$a_n=\frac{1}{n(n+1)}$, donc $\frac{a_{n+1}}{a_n}=\frac{n(n+1)}{(n+1)(n+2)}=\frac{n}{n+2}\to 1$, et $R=1$. Aux bords, $\left|\frac{(\pm1)^n}{n(n+1)}\right|\le\frac1{n^2}$ : convergence. Domaine $[-1\,;1]$.`, R`Je décompose : $\dfrac1{n(n+1)}=\dfrac1n-\dfrac1{n+1}$.`, R`$\sum_{n\ge 1}\dfrac{x^n}{n}=-\ln(1-x)$ ({ex:integ}).`, R`Pour $x\neq 0$ : $\sum_{n\ge 1}\dfrac{x^n}{n+1}=\dfrac1x\sum_{n\ge 2}\dfrac{x^{n}}{n}=\dfrac1x\bigl(-\ln(1-x)-x\bigr)$ (il manque le terme $n=1$).`, R`Je soustrais : <span class="ok">$S(x)=1+\dfrac{(1-x)\ln(1-x)}{x}$</span> pour $0\lt|x|\lt 1$, et $S(0)=0$.`],
+ s:[R`$a_n=\frac{1}{n(n+1)}$, donc $\frac{a_{n+1}}{a_n}=\frac{n}{n+2}\to 1$ et $R=1$. Aux bords, $\left|\frac{(\pm1)^n}{n(n+1)}\right|\le\frac1{n^2}$ : la série converge. Domaine : $[-1\,;1]$.`,
+    R`Pour la somme, je décompose : $$\frac1{n(n+1)}=\frac1n-\frac1{n+1}.$$`,
+    R`Premier morceau ({ex:integ}) : $$\sum_{n\ge 1}\frac{x^n}{n}=-\ln(1-x).$$`,
+    R`Second morceau, pour $x\neq 0$ : je fais apparaître $x^{n+1}$ en divisant par $x$, puis je décale l'indice. Il manque le terme $n=1$ de la série du logarithme : $$\sum_{n\ge 1}\frac{x^n}{n+1}=\frac1x\sum_{n\ge 2}\frac{x^{n}}{n}=\frac1x\bigl(-\ln(1-x)-x\bigr).$$`,
+    R`Je soustrais et je simplifie : $$S(x)=1+\frac{(1-x)\ln(1-x)}{x}\qquad(0\lt|x|\lt 1),\qquad S(0)=0.$$`,
+    R`Résultat : <span class="ok">$S(x)=1+\dfrac{(1-x)\ln(1-x)}{x}$</span>.`],
  t:R`Éléments simples + séries connues. Je fais très attention aux indices de départ.`},
 {l:'d', td:1, q:R`Trouve le rayon et la somme de $\displaystyle\sum_{n\ge 0}\frac{x^{3n+1}}{3n+1}$.`,
- s:[R`Série à trous : $\left|\frac{u_{n+1}}{u_n}\right|=\frac{3n+1}{3n+4}|x|^3\to|x|^3$. Elle converge si $|x|\lt 1$ : $R=1$.`, R`Je dérive : $S'(x)=\sum_{n\ge 0}x^{3n}=\dfrac{1}{1-x^3}$, et $S(0)=0$. Donc $S(x)=\displaystyle\int_0^x\frac{dt}{1-t^3}$.`, R`Je factorise $1-t^3=(1-t)(1+t+t^2)$, puis je décompose en éléments simples : $\dfrac1{1-t^3}=\dfrac{1/3}{1-t}+\dfrac13\cdot\dfrac{t+2}{t^2+t+1}$ (je vérifie en réduisant au même dénominateur).`, R`Primitives : $\displaystyle\int\frac{dt}{1-t}=-\ln(1-t)$ et $\displaystyle\int\frac{t+2}{t^2+t+1}\,dt=\frac12\ln(t^2+t+1)+\sqrt3\arctan\frac{2t+1}{\sqrt3}$ (j'écris $t+2=\frac12(2t+1)+\frac32$ et $t^2+t+1=\left(t+\frac12\right)^2+\frac34$).`, R`J'intègre : <span class="ok">$S(x)=-\dfrac13\ln(1-x)+\dfrac16\ln(x^2+x+1)+\dfrac1{\sqrt3}\left(\arctan\dfrac{2x+1}{\sqrt3}-\dfrac\pi6\right)$</span>.`, R`Bords : en $x=1$, $\sum\frac{1}{3n+1}$ diverge (équivalent à $\frac1{3n}$) ; en $x=-1$, $\sum\frac{(-1)^{n+1}}{3n+1}$ converge (alternée). Domaine $[-1\,;1[$.`],
+ s:[R`Série à trous : j'applique d'Alembert au terme complet. $$\left|\frac{u_{n+1}}{u_n}\right|=\frac{3n+1}{3n+4}|x|^3\to|x|^3.$$ Elle converge si $|x|\lt 1$ : $R=1$.`,
+    R`Je dérive pour faire disparaître le dénominateur : $$S'(x)=\sum_{n\ge 0}x^{3n}=\frac{1}{1-x^3}.$$ Comme $S(0)=0$ : $\displaystyle S(x)=\int_0^x\frac{dt}{1-t^3}$.`,
+    R`Je factorise $1-t^3=(1-t)(1+t+t^2)$ et je décompose en éléments simples : $$\frac1{1-t^3}=\frac{1/3}{1-t}+\frac13\cdot\frac{t+2}{t^2+t+1}.$$ (On vérifie en réduisant au même dénominateur.)`,
+    R`Les primitives : $\displaystyle\int\frac{dt}{1-t}=-\ln(1-t)$, et en écrivant $t+2=\frac12(2t+1)+\frac32$ et $t^2+t+1=\left(t+\frac12\right)^2+\frac34$ : $$\int\frac{t+2}{t^2+t+1}\,dt=\frac12\ln(t^2+t+1)+\sqrt3\arctan\frac{2t+1}{\sqrt3}.$$`,
+    R`J'intègre de $0$ à $x$ (avec $\arctan\frac1{\sqrt3}=\frac\pi6$) : <span class="ok">$S(x)=-\dfrac13\ln(1-x)+\dfrac16\ln(x^2+x+1)+\dfrac1{\sqrt3}\left(\arctan\dfrac{2x+1}{\sqrt3}-\dfrac\pi6\right)$</span>.`,
+    R`Bords : en $x=1$, $\sum\frac{1}{3n+1}$ diverge (équivalent à $\frac1{3n}$) ; en $x=-1$, $\sum\frac{(-1)^{n+1}}{3n+1}$ converge (alternée). Domaine : $[-1\,;1[$.`],
  t:R`Pour une somme de $\frac{x^{k}}{k}$ : je dérive pour tomber sur une géométrique, puis j'intègre.`},
 {l:'d', td:1, q:R`Développe $f(x)=\dfrac{x^2-x+2}{x^4-5x^2+4}$ en série entière.`,
- s:[R`Je factorise : $x^4-5x^2+4=(x^2-1)(x^2-4)=(x-1)(x+1)(x-2)(x+2)$.`, R`Éléments simples. Méthode du cache : le coefficient de $\frac{1}{x-a}$ est la valeur de $(x-a)f(x)$ en $x=a$. Par exemple en $x=1$ : $\frac{1-1+2}{(1+1)(1-2)(1+2)}=-\frac13$. On obtient $f(x)=\dfrac{-1/3}{x-1}+\dfrac{2/3}{x+1}+\dfrac{1/3}{x-2}+\dfrac{-2/3}{x+2}$.`, R`Pour chaque terme : $\dfrac1{x-a}=-\dfrac1a\cdot\dfrac1{1-x/a}=-\displaystyle\sum_{n\ge 0}\dfrac{x^n}{a^{n+1}}$, valable si $|x|\lt|a|$.`, R`J'additionne : $f(x)=\sum a_nx^n$ avec <span class="ok">$a_n=\dfrac13+\dfrac23(-1)^n-\dfrac{1+2(-1)^n}{3\cdot 2^{n+1}}$</span>, et $R=1$.`, R`Vérification : $a_0=\frac13+\frac23-\frac36=\frac12=f(0)$ ✓.`],
+ s:[R`Je factorise le dénominateur, qui est un trinôme en $x^2$ : $$x^4-5x^2+4=(x^2-1)(x^2-4)=(x-1)(x+1)(x-2)(x+2).$$`,
+    R`Éléments simples par la méthode du cache : le coefficient de $\frac{1}{x-a}$ est la valeur de $(x-a)f(x)$ en $x=a$. Par exemple en $x=1$ : $\frac{1-1+2}{(1+1)(1-2)(1+2)}=-\frac13$. On obtient $$f(x)=\frac{-1/3}{x-1}+\frac{2/3}{x+1}+\frac{1/3}{x-2}+\frac{-2/3}{x+2}.$$`,
+    R`Chaque terme se développe comme une géométrique : $$\frac1{x-a}=-\frac1a\cdot\frac1{1-x/a}=-\sum_{n\ge 0}\frac{x^n}{a^{n+1}},\qquad |x|\lt|a|.$$`,
+    R`J'additionne les quatre développements : $f(x)=\sum a_nx^n$ avec <span class="ok">$a_n=\dfrac13+\dfrac23(-1)^n-\dfrac{1+2(-1)^n}{3\cdot 2^{n+1}}$</span>, et $R=1$.`,
+    R`Vérification : $a_0=\frac13+\frac23-\frac36=\frac12$, et $f(0)=\frac24=\frac12$ ✓.`],
  t:R`Le rayon est la distance de $0$ au pôle le plus proche (ici $\pm1$).`},
 {l:'d', td:1, q:R`On considère $(E)$ : $y''-\dfrac2x\,y'-\left(1-\dfrac2{x^2}\right)y=0$ sur $]0\,;+\infty[$. 1) Avec $y=x\,z$, trouve l'équation vérifiée par $z$ et résous-la. 2) Cherche $y=x\sum a_nx^n$ et retrouve le résultat.`,
- s:[R`<b>1)</b> $y'=z+xz'$ et $y''=2z'+xz''$. Je remplace : $xz''+2z'-\frac2x(z+xz')-xz+\frac2xz=xz''-xz=0$.`, R`Donc $z''=z$, d'où $z=A\operatorname{ch}x+B\operatorname{sh}x$ et $y=x\bigl(A\operatorname{ch}x+B\operatorname{sh}x\bigr)$.`, R`<b>2)</b> $z=\sum a_nx^n$ vérifie $z''=z$ : $\sum(n+2)(n+1)a_{n+2}x^n=\sum a_nx^n$, donc $a_n=\dfrac{a_{n-2}}{n(n-1)}$ pour $n\ge 2$.`, R`Par récurrence : $a_{2p}=\dfrac{a_0}{(2p)!}$ et $a_{2p+1}=\dfrac{a_1}{(2p+1)!}$. Le rayon est $+\infty$.`, R`Donc <span class="ok">$y(x)=x\bigl(a_0\operatorname{ch}x+a_1\operatorname{sh}x\bigr)$</span> : les deux méthodes donnent le même résultat (voir l'{ex:ch} pour $\operatorname{ch}$).`],
+ s:[R`<b>1)</b> Je dérive $y=xz$ : $y'=z+xz'$ et $y''=2z'+xz''$. Je remplace dans $(E)$ : $$xz''+2z'-\frac2x(z+xz')-xz+\frac2xz=xz''-xz=0.$$`,
+    R`Les termes en $z'$ et en $\frac zx$ s'annulent. Il reste $z''=z$, dont les solutions sont $z=A\operatorname{ch}x+B\operatorname{sh}x$. Donc $$y=x\bigl(A\operatorname{ch}x+B\operatorname{sh}x\bigr).$$`,
+    R`<b>2)</b> $z=\sum a_nx^n$ doit vérifier $z''=z$. En dérivant deux fois et en décalant l'indice : $$\sum(n+2)(n+1)a_{n+2}x^n=\sum a_nx^n,$$ donc $a_n=\dfrac{a_{n-2}}{n(n-1)}$ pour $n\ge 2$.`,
+    R`La relation relie $a_n$ à $a_{n-2}$ : je sépare pairs et impairs. Par récurrence, $a_{2p}=\dfrac{a_0}{(2p)!}$ et $a_{2p+1}=\dfrac{a_1}{(2p+1)!}$. Le rayon est $+\infty$.`,
+    R`Donc <span class="ok">$y(x)=x\bigl(a_0\operatorname{ch}x+a_1\operatorname{sh}x\bigr)$</span> : les deux méthodes donnent le même résultat (voir l'{ex:ch} pour $\operatorname{ch}$).`],
  t:R`Quand la relation lie $a_n$ à $a_{n-2}$, je sépare les indices pairs et impairs.`}
 ];
 
 const P3 = [
 {l:'f', q:R`Donne les coefficients de Fourier de $f(x)=1+\cos 2x-3\sin 5x$.`,
- s:[R`$f$ est déjà une somme de $\cos(nx)$ et de $\sin(nx)$ : c'est sa propre série de Fourier.`, R`J'identifie avec $\frac{a_0}{2}+\sum(a_n\cos nx+b_n\sin nx)$ : $\frac{a_0}{2}=1$, donc $a_0=2$.`, R`<span class="ok">$a_0=2$, $a_2=1$, $b_5=-3$</span>, tous les autres coefficients sont nuls.`],
- t:R`Un polynôme trigonométrique est sa propre série de Fourier : aucune intégrale à calculer. Attention au $\frac{a_0}{2}$.`},
+ s:[R`$f$ est déjà une somme finie de $\cos(nx)$ et de $\sin(nx)$ : c'est sa propre série de Fourier. Il n'y a aucune intégrale à calculer.`,
+    R`J'identifie avec la forme $\frac{a_0}{2}+\sum(a_n\cos nx+b_n\sin nx)$. Le terme constant vaut $\frac{a_0}{2}=1$, donc $a_0=2$ (attention au facteur $\frac12$).`,
+    R`Le terme $\cos 2x$ donne $a_2=1$, et le terme $-3\sin 5x$ donne $b_5=-3$.`,
+    R`Résultat : <span class="ok">$a_0=2$, $a_2=1$, $b_5=-3$</span>, tous les autres coefficients sont nuls.`],
+ t:R`Un polynôme trigonométrique est sa propre série de Fourier. Attention au $\frac{a_0}{2}$.`},
 {l:'f', k:'carre', q:R`Signal carré : $f$ est $2\pi$-périodique, $f(x)=1$ sur $]0\,;\pi[$ et $f(x)=-1$ sur $]-\pi\,;0[$. Calcule sa série de Fourier.`,
- s:[R`$f$ est impaire, donc $a_n=0$ et $b_n=\dfrac2\pi\displaystyle\int_0^\pi\sin(nx)\,dx$.`, R`$\displaystyle\int_0^\pi\sin(nx)\,dx=\left[-\frac{\cos nx}{n}\right]_0^\pi=\frac{1-(-1)^n}{n}$.`, R`Donc $b_n=0$ si $n$ est pair et $b_n=\dfrac{4}{n\pi}$ si $n$ est impair.`, R`<span class="ok">$f(x)\sim\dfrac4\pi\displaystyle\sum_{k\ge 0}\dfrac{\sin\bigl((2k+1)x\bigr)}{2k+1}$</span>.`],
+ s:[R`$f$ est impaire (son graphe est symétrique par rapport à l'origine). Donc $a_n=0$, et $$b_n=\frac2\pi\int_0^\pi f(x)\sin(nx)\,dx=\frac2\pi\int_0^\pi\sin(nx)\,dx.$$`,
+    R`Je calcule l'intégrale, avec $\cos(n\pi)=(-1)^n$ : $$\int_0^\pi\sin(nx)\,dx=\left[-\frac{\cos nx}{n}\right]_0^\pi=\frac{1-(-1)^n}{n}.$$`,
+    R`Si $n$ est pair, $1-(-1)^n=0$ donc $b_n=0$. Si $n$ est impair, $1-(-1)^n=2$ donc $b_n=\dfrac{4}{n\pi}$.`,
+    R`Je ne garde que les indices impairs $n=2k+1$ : $$f(x)\sim\frac4\pi\sum_{k\ge 0}\frac{\sin\bigl((2k+1)x\bigr)}{2k+1}.$$`,
+    R`Résultat : <span class="ok">$f(x)\sim\dfrac4\pi\displaystyle\sum_{k\ge0}\dfrac{\sin((2k+1)x)}{2k+1}$</span>.`],
  t:R`$\cos(n\pi)=(-1)^n$ et $\sin(n\pi)=0$ : ils servent dans presque tous les calculs.`},
 {l:'f', k:'xodd', q:R`$f$ est $2\pi$-périodique et $f(x)=x$ sur $]-\pi\,;\pi[$. Calcule sa série de Fourier.`,
- s:[R`$f$ est impaire : $a_n=0$ et $b_n=\dfrac2\pi\displaystyle\int_0^\pi x\sin(nx)\,dx$.`, R`Par parties ($u=x$, $v'=\sin nx$) : $\displaystyle\int_0^\pi x\sin nx\,dx=\left[-\frac{x\cos nx}{n}\right]_0^\pi+\int_0^\pi\frac{\cos nx}{n}\,dx=-\frac{\pi(-1)^n}{n}$.`, R`Donc $b_n=\dfrac{2(-1)^{n+1}}{n}$.`, R`<span class="ok">$x\sim 2\displaystyle\sum_{n\ge 1}\dfrac{(-1)^{n+1}}{n}\sin(nx)$</span>.`],
+ s:[R`$f$ est impaire : $a_n=0$ et $$b_n=\frac2\pi\int_0^\pi x\sin(nx)\,dx.$$`,
+    R`J'intègre par parties avec $u=x$ (que je dérive) et $v'=\sin nx$ (que j'intègre en $v=-\frac{\cos nx}{n}$) : $$\int_0^\pi x\sin nx\,dx=\left[-\frac{x\cos nx}{n}\right]_0^\pi+\int_0^\pi\frac{\cos nx}{n}\,dx.$$`,
+    R`Le crochet vaut $-\frac{\pi(-1)^n}{n}$. La dernière intégrale vaut $\left[\frac{\sin nx}{n^2}\right]_0^\pi=0$. Donc $$\int_0^\pi x\sin nx\,dx=-\frac{\pi(-1)^n}{n}.$$`,
+    R`J'en déduis $$b_n=\frac2\pi\times\left(-\frac{\pi(-1)^n}{n}\right)=\frac{2(-1)^{n+1}}{n}.$$`,
+    R`Résultat : <span class="ok">$x\sim 2\displaystyle\sum_{n\ge 1}\dfrac{(-1)^{n+1}}{n}\sin(nx)$</span>.`],
  t:R`Pour $x\cos(nx)$ ou $x\sin(nx)$ : intégration par parties avec $u=x$.`},
 {l:'m', q:R`Avec l'{ex:carre}, trouve la somme de la série en $x=0$ et en $x=\frac\pi2$. Déduis-en $1-\frac13+\frac15-\frac17+\dots$`,
- s:[R`$f$ est $C^1$ par morceaux (des morceaux constants) : le théorème de Dirichlet s'applique.`, R`En $x=0$, $f$ saute de $-1$ à $1$ : la série vaut $\frac{-1+1}{2}=0$. (Normal : tous les $\sin 0$ sont nuls.)`, R`En $x=\frac\pi2$, $f$ est continue et vaut $1$. Et $\sin\!\left((2k+1)\frac\pi2\right)=(-1)^k$.`, R`Donc $1=\dfrac4\pi\displaystyle\sum_{k\ge 0}\dfrac{(-1)^k}{2k+1}$, soit <span class="ok">$1-\frac13+\frac15-\dots=\dfrac\pi4$</span>.`],
+ s:[R`$f$ est $C^1$ par morceaux (ses morceaux sont constants) : le théorème de Dirichlet s'applique.`,
+    R`<b>En $x=0$</b>, $f$ saute de $-1$ à $1$. La série vaut la moyenne des deux valeurs : $\frac{-1+1}{2}=0$. C'est normal : tous les $\sin 0$ sont nuls.`,
+    R`<b>En $x=\frac\pi2$</b>, $f$ est continue et vaut $1$. De plus, $\sin\!\left((2k+1)\frac\pi2\right)$ vaut alternativement $1,-1,1,\dots$, c'est-à-dire $(-1)^k$.`,
+    R`Dirichlet donne donc $$1=\frac4\pi\sum_{k\ge 0}\frac{(-1)^k}{2k+1}.$$`,
+    R`En multipliant par $\frac\pi4$ : <span class="ok">$1-\frac13+\frac15-\dots=\dfrac\pi4$</span>.`],
  t:R`Dirichlet : la série vaut $f(x)$ là où $f$ est continue, et la moyenne des limites à gauche et à droite en un saut.`},
 {l:'m', td:1, k:'pimx', q:R`$f$ est $2\pi$-périodique et $f(x)=\pi-|x|$ sur $]-\pi\,;\pi[$. Calcule sa série de Fourier.`,
- s:[R`$f$ est paire : $b_n=0$. Et $a_0=\dfrac2\pi\displaystyle\int_0^\pi(\pi-x)\,dx=\dfrac2\pi\cdot\dfrac{\pi^2}{2}=\pi$.`, R`Pour $n\ge 1$ : $\int_0^\pi\pi\cos nx\,dx=0$ et, par parties, $\displaystyle\int_0^\pi x\cos nx\,dx=\left[\frac{x\sin nx}{n}+\frac{\cos nx}{n^2}\right]_0^\pi=\frac{(-1)^n-1}{n^2}$.`, R`Donc $a_n=\dfrac{2\bigl(1-(-1)^n\bigr)}{\pi n^2}$ : $0$ si $n$ est pair, $\dfrac{4}{\pi n^2}$ si $n$ est impair.`, R`$f$ est continue, donc pour tout $x\in[-\pi\,;\pi]$ : <span class="ok">$\pi-|x|=\dfrac\pi2+\dfrac4\pi\displaystyle\sum_{k\ge 0}\dfrac{\cos\bigl((2k+1)x\bigr)}{(2k+1)^2}$</span>.`],
+ s:[R`$f$ est paire : $b_n=0$. Je calcule $a_0$ à part, car la formule générale divisera par $n$ : $$a_0=\frac2\pi\int_0^\pi(\pi-x)\,dx=\frac2\pi\cdot\frac{\pi^2}{2}=\pi.$$`,
+    R`Pour $n\ge 1$, sur $[0\,;\pi]$ on a $f(x)=\pi-x$. La partie constante donne $\int_0^\pi\pi\cos nx\,dx=0$. Pour l'autre, par parties : $$\int_0^\pi x\cos nx\,dx=\left[\frac{x\sin nx}{n}+\frac{\cos nx}{n^2}\right]_0^\pi=\frac{(-1)^n-1}{n^2}.$$`,
+    R`Donc $$a_n=\frac2\pi\left(0-\frac{(-1)^n-1}{n^2}\right)=\frac{2\bigl(1-(-1)^n\bigr)}{\pi n^2}.$$ Cela vaut $0$ si $n$ est pair et $\frac{4}{\pi n^2}$ si $n$ est impair.`,
+    R`$f$ est continue (pas de saut, même en $\pm\pi$), donc Dirichlet donne l'égalité partout : <span class="ok">$\pi-|x|=\dfrac\pi2+\dfrac4\pi\displaystyle\sum_{k\ge 0}\dfrac{\cos((2k+1)x)}{(2k+1)^2}$</span> pour $x\in[-\pi\,;\pi]$.`],
  t:R`Je calcule toujours $a_0$ à part : la formule générale divise souvent par $n$.`},
 {l:'m', td:1, k:'absx', q:R`Développe en série de Fourier la fonction $2\pi$-périodique égale à $|x|$ sur $]-\pi\,;\pi[$. Déduis-en $\displaystyle\sum_{n\ge 1}\frac1{n^2}$.`,
- s:[R`Astuce : $|x|=\pi-(\pi-|x|)$. Je change donc les signes de la série de l'{ex:pimx}, et $\pi-\frac\pi2=\frac\pi2$ : $|x|=\dfrac\pi2-\dfrac4\pi\displaystyle\sum_{k\ge 0}\dfrac{\cos\bigl((2k+1)x\bigr)}{(2k+1)^2}$.`, R`$f$ est continue. En $x=0$ : $0=\dfrac\pi2-\dfrac4\pi\sum\dfrac{1}{(2k+1)^2}$, donc $\displaystyle\sum_{k\ge 0}\dfrac1{(2k+1)^2}=\dfrac{\pi^2}{8}$.`, R`Je sépare pairs et impairs : $S=\sum_{n\ge 1}\frac1{n^2}=\frac{\pi^2}{8}+\sum_{k\ge 1}\frac{1}{(2k)^2}=\frac{\pi^2}{8}+\frac S4$.`, R`Donc $\frac34S=\frac{\pi^2}{8}$ : <span class="ok">$\displaystyle\sum_{n\ge 1}\dfrac1{n^2}=\dfrac{\pi^2}{6}$</span>.`],
+ s:[R`Astuce : $|x|=\pi-(\pi-|x|)$. Je réutilise l'{ex:pimx} en changeant les signes, et $\pi-\frac\pi2=\frac\pi2$ : $$|x|=\frac\pi2-\frac4\pi\sum_{k\ge 0}\frac{\cos\bigl((2k+1)x\bigr)}{(2k+1)^2}.$$`,
+    R`Cette fonction est continue, donc l'égalité est vraie en $x=0$ : $$0=\frac\pi2-\frac4\pi\sum_{k\ge0}\frac{1}{(2k+1)^2}.$$ Donc $$\sum_{k\ge 0}\frac1{(2k+1)^2}=\frac{\pi^2}{8}.$$`,
+    R`Je passe aux entiers : je sépare les $n$ impairs et les $n$ pairs. Pour les pairs, $n=2k$ et $\frac1{(2k)^2}=\frac14\cdot\frac1{k^2}$. En notant $S=\sum_{n\ge1}\frac1{n^2}$ : $$S=\frac{\pi^2}{8}+\frac S4.$$`,
+    R`Donc $\frac34S=\frac{\pi^2}{8}$, et <span class="ok">$\displaystyle\sum_{n\ge 1}\dfrac1{n^2}=\dfrac{\pi^2}{6}$</span>.`],
  t:R`Pour passer des impairs à tous les entiers : les pairs donnent $\frac14$ de la somme totale.`},
 {l:'m', td:1, k:'abssin', q:R`Calcule la série de Fourier de $f(x)=|\sin x|$.`,
- s:[R`$f$ est paire : $b_n=0$. $a_0=\dfrac2\pi\displaystyle\int_0^\pi\sin x\,dx=\dfrac4\pi$.`, R`Je linéarise : $\sin x\cos nx=\frac12\bigl[\sin((n+1)x)-\sin((n-1)x)\bigr]$. Pour $n=1$ : $a_1=\frac1\pi\int_0^\pi\sin 2x\,dx=0$.`, R`J'utilise $\displaystyle\int_0^\pi\sin(kx)\,dx=\frac{1-(-1)^k}{k}$ avec $k=n+1$ et $k=n-1$. Comme $(-1)^{n\pm1}=-(-1)^n$, les deux numérateurs valent $1+(-1)^n$.`, R`Pour $n\ge 2$ : $a_n=\dfrac2\pi\cdot\dfrac12\left[\dfrac{1+(-1)^n}{n+1}-\dfrac{1+(-1)^n}{n-1}\right]=-\dfrac{2\bigl(1+(-1)^n\bigr)}{\pi(n^2-1)}$.`, R`Seuls les $n=2k$ restent : <span class="ok">$|\sin x|=\dfrac2\pi-\dfrac4\pi\displaystyle\sum_{k\ge 1}\dfrac{\cos 2kx}{4k^2-1}$</span> ($f$ est continue).`, R`Bonus : en $x=0$, on obtient $\sum_{k\ge 1}\frac{1}{4k^2-1}=\frac12$.`],
+ s:[R`$f$ est paire : $b_n=0$. Sur $[0\,;\pi]$, $|\sin x|=\sin x$. D'abord $a_0$ : $$a_0=\frac2\pi\int_0^\pi\sin x\,dx=\frac2\pi\bigl[-\cos x\bigr]_0^\pi=\frac4\pi.$$`,
+    R`Pour $n\ge1$, je linéarise le produit : $$\sin x\cos nx=\frac12\bigl[\sin((n+1)x)-\sin((n-1)x)\bigr].$$ Pour $n=1$, le second sinus est nul et $a_1=\frac1\pi\int_0^\pi\sin 2x\,dx=0$.`,
+    R`Pour $n\ge 2$, j'utilise $\int_0^\pi\sin(kx)\,dx=\frac{1-(-1)^k}{k}$ avec $k=n+1$ et $k=n-1$. Comme $(-1)^{n\pm1}=-(-1)^n$, les deux numérateurs valent $1+(-1)^n$ : $$a_n=\frac2\pi\cdot\frac12\left[\frac{1+(-1)^n}{n+1}-\frac{1+(-1)^n}{n-1}\right]=-\frac{2\bigl(1+(-1)^n\bigr)}{\pi(n^2-1)}.$$`,
+    R`Seuls les $n$ pairs restent ($n=2k$, avec $1+(-1)^n=2$). $f$ est continue, donc : <span class="ok">$|\sin x|=\dfrac2\pi-\dfrac4\pi\displaystyle\sum_{k\ge 1}\dfrac{\cos 2kx}{4k^2-1}$</span>.`,
+    R`Bonus : en $x=0$, on obtient $0=\frac2\pi-\frac4\pi\sum\frac1{4k^2-1}$, donc $\sum_{k\ge 1}\frac{1}{4k^2-1}=\frac12$.`],
  t:R`$\sin a\cos b=\frac12\bigl[\sin(a+b)+\sin(a-b)\bigr]$. Je traite à part les $n$ qui annulent un dénominateur.`},
 {l:'m', q:R`Avec la formule de Parseval et l'{ex:carre}, calcule $\displaystyle\sum_{k\ge 0}\frac{1}{(2k+1)^2}$.`,
- s:[R`Parseval : $\dfrac1\pi\displaystyle\int_{-\pi}^{\pi}f^2=\dfrac{a_0^2}{2}+\sum_{n\ge 1}\left(a_n^2+b_n^2\right)$.`, R`À gauche : $f^2=1$, donc on trouve $\frac1\pi\cdot 2\pi=2$.`, R`À droite : $a_n=0$ et seuls les $b_{2k+1}=\frac{4}{(2k+1)\pi}$ sont non nuls. Leurs carrés valent $\frac{16}{\pi^2(2k+1)^2}$, d'où $\dfrac{16}{\pi^2}\displaystyle\sum\dfrac{1}{(2k+1)^2}$.`, R`Donc <span class="ok">$\displaystyle\sum_{k\ge 0}\dfrac{1}{(2k+1)^2}=\dfrac{\pi^2}{8}$</span>. On retrouve le résultat de l'{ex:absx}.`],
+ s:[R`La formule de Parseval s'écrit : $$\frac1\pi\int_{-\pi}^{\pi}f^2=\frac{a_0^2}{2}+\sum_{n\ge 1}\left(a_n^2+b_n^2\right).$$`,
+    R`À gauche : $f(x)=\pm1$, donc $f^2=1$ partout, et on trouve $\frac1\pi\cdot 2\pi=2$.`,
+    R`À droite : tous les $a_n$ sont nuls, et seuls les $b_{2k+1}=\frac{4}{(2k+1)\pi}$ sont non nuls. Leurs carrés donnent $$\frac{16}{\pi^2}\sum_{k\ge0}\frac{1}{(2k+1)^2}.$$`,
+    R`En égalant les deux côtés : $2=\frac{16}{\pi^2}\sum\frac1{(2k+1)^2}$, donc <span class="ok">$\displaystyle\sum_{k\ge 0}\dfrac{1}{(2k+1)^2}=\dfrac{\pi^2}{8}$</span>. On retrouve le résultat de l'{ex:absx}.`],
  t:R`Parseval transforme une intégrale facile ($\int f^2$) en somme de série.`}
 ];
 
 const P4 = [
 {l:'f', k:'porte', q:R`Calcule la transformée de Fourier de la porte $\Pi(t)=1$ si $|t|\le 1$, $0$ sinon.`,
- s:[R`Par définition : $\hat\Pi(\omega)=\dfrac{1}{\sqrt{2\pi}}\displaystyle\int_{-1}^{1}e^{-i\omega t}\,dt$, car $\Pi=0$ en dehors de $[-1\,;1]$.`, R`Pour $\omega\neq 0$ : $\displaystyle\int_{-1}^{1}e^{-i\omega t}\,dt=\left[\frac{e^{-i\omega t}}{-i\omega}\right]_{-1}^{1}=\frac{e^{i\omega}-e^{-i\omega}}{i\omega}=\frac{2\sin\omega}{\omega}$ (formule d'Euler).`, R`Donc <span class="ok">$\hat\Pi(\omega)=\dfrac{1}{\sqrt{2\pi}}\cdot\dfrac{2\sin\omega}{\omega}=\sqrt{\dfrac2\pi}\,\dfrac{\sin\omega}{\omega}$</span>.`, R`Pour $\omega=0$ : $\hat\Pi(0)=\frac{1}{\sqrt{2\pi}}\int_{-1}^{1}dt=\frac{2}{\sqrt{2\pi}}=\sqrt{\frac2\pi}$, qui est aussi la limite de la formule (car $\frac{\sin\omega}{\omega}\to 1$).`],
+ s:[R`Par définition, et comme $\Pi=0$ en dehors de $[-1\,;1]$, l'intégrale se réduit à cet intervalle : $$\hat\Pi(\omega)=\frac{1}{\sqrt{2\pi}}\int_{-1}^{1}e^{-i\omega t}\,dt.$$`,
+    R`Pour $\omega\neq 0$, je calcule la primitive puis j'utilise la formule d'Euler $e^{i\omega}-e^{-i\omega}=2i\sin\omega$ : $$\int_{-1}^{1}e^{-i\omega t}\,dt=\left[\frac{e^{-i\omega t}}{-i\omega}\right]_{-1}^{1}=\frac{e^{i\omega}-e^{-i\omega}}{i\omega}=\frac{2\sin\omega}{\omega}.$$`,
+    R`Donc $$\hat\Pi(\omega)=\frac{1}{\sqrt{2\pi}}\cdot\frac{2\sin\omega}{\omega}=\sqrt{\frac2\pi}\,\frac{\sin\omega}{\omega}.$$`,
+    R`Pour $\omega=0$ : $\hat\Pi(0)=\frac{1}{\sqrt{2\pi}}\int_{-1}^{1}dt=\sqrt{\frac2\pi}$. C'est aussi la limite de la formule, car $\frac{\sin\omega}{\omega}\to 1$.`,
+    R`Résultat : <span class="ok">$\hat\Pi(\omega)=\sqrt{\dfrac2\pi}\,\dfrac{\sin\omega}{\omega}$</span>.`],
  t:R`$\hat f(0)=\frac{1}{\sqrt{2\pi}}\int f$ : l'aire sous la courbe, divisée par $\sqrt{2\pi}$. Pratique pour vérifier.`},
 {l:'f', q:R`Calcule la transformée de Fourier de $g(x)=e^{-x}$ si $x>0$, $0$ sinon.`,
- s:[R`$\hat g(\omega)=\dfrac{1}{\sqrt{2\pi}}\displaystyle\int_0^{+\infty}e^{-x}e^{-i\omega x}\,dx=\dfrac{1}{\sqrt{2\pi}}\int_0^{+\infty}e^{-(1+i\omega)x}\,dx$ (je regroupe les exponentielles).`, R`$\displaystyle\int_0^{+\infty}e^{-(1+i\omega)x}\,dx=\left[\dfrac{e^{-(1+i\omega)x}}{-(1+i\omega)}\right]_0^{+\infty}=\dfrac{1}{1+i\omega}$, car $\left|e^{-(1+i\omega)x}\right|=e^{-x}\to 0$.`, R`<span class="ok">$\hat g(\omega)=\dfrac{1}{\sqrt{2\pi}\,(1+i\omega)}=\dfrac{1-i\omega}{\sqrt{2\pi}\,(1+\omega^2)}$</span> (je multiplie en haut et en bas par $1-i\omega$).`],
+ s:[R`$g$ est nulle pour $x\le0$, donc l'intégrale commence en $0$. Je regroupe les deux exponentielles : $$\hat g(\omega)=\frac{1}{\sqrt{2\pi}}\int_0^{+\infty}e^{-x}e^{-i\omega x}\,dx=\frac{1}{\sqrt{2\pi}}\int_0^{+\infty}e^{-(1+i\omega)x}\,dx.$$`,
+    R`L'exponentielle tend vers $0$ à l'infini, car $\left|e^{-(1+i\omega)x}\right|=e^{-x}$. Donc $$\int_0^{+\infty}e^{-(1+i\omega)x}\,dx=\left[\frac{e^{-(1+i\omega)x}}{-(1+i\omega)}\right]_0^{+\infty}=\frac{1}{1+i\omega}.$$`,
+    R`Pour écrire le résultat sans $i$ au dénominateur, je multiplie en haut et en bas par $1-i\omega$ : $$\frac{1}{1+i\omega}=\frac{1-i\omega}{1+\omega^2}.$$`,
+    R`Résultat : <span class="ok">$\hat g(\omega)=\dfrac{1}{\sqrt{2\pi}\,(1+i\omega)}=\dfrac{1-i\omega}{\sqrt{2\pi}\,(1+\omega^2)}$</span>.`],
  t:R`Pour $\int_0^{+\infty}e^{-cx}dx$ avec $c$ complexe, c'est la partie réelle de $c$ qui compte : ici $1>0$, donc l'intégrale converge et vaut $\frac1c$.`},
 {l:'f', k:'expa', q:R`Pour $a>0$, calcule la transformée de Fourier de $e^{-a|t|}$, puis celle de $e^{-2|t|}$.`,
- s:[R`$|t|=t$ si $t\ge 0$ et $|t|=-t$ si $t\lt 0$. Je coupe donc l'intégrale en deux :`, R`$\displaystyle\int_0^{+\infty}e^{-(a+i\omega)t}\,dt+\int_{-\infty}^{0}e^{(a-i\omega)t}\,dt=\frac{1}{a+i\omega}+\frac{1}{a-i\omega}=\frac{2a}{a^2+\omega^2}$ (même dénominateur).`, R`Je n'oublie pas le facteur $\frac{1}{\sqrt{2\pi}}$ : <span class="ok">$\widehat{e^{-a|t|}}(\omega)=\sqrt{\dfrac2\pi}\,\dfrac{a}{a^2+\omega^2}$</span>.`, R`Avec $a=2$ : <span class="ok">$\widehat{e^{-2|t|}}(\omega)=\sqrt{\dfrac2\pi}\,\dfrac{2}{4+\omega^2}$</span>.`],
+ s:[R`À cause de la valeur absolue ($|t|=t$ si $t\ge 0$, $|t|=-t$ si $t\lt 0$), je coupe l'intégrale en deux : $$\int_0^{+\infty}e^{-(a+i\omega)t}\,dt+\int_{-\infty}^{0}e^{(a-i\omega)t}\,dt.$$`,
+    R`Chaque morceau se calcule comme dans l'exercice précédent : $$\frac{1}{a+i\omega}+\frac{1}{a-i\omega}=\frac{(a-i\omega)+(a+i\omega)}{a^2+\omega^2}=\frac{2a}{a^2+\omega^2}.$$`,
+    R`Je n'oublie pas le facteur $\frac{1}{\sqrt{2\pi}}$ : $$\widehat{e^{-a|t|}}(\omega)=\frac{1}{\sqrt{2\pi}}\cdot\frac{2a}{a^2+\omega^2}=\sqrt{\frac2\pi}\,\frac{a}{a^2+\omega^2}.$$`,
+    R`Avec $a=2$ : <span class="ok">$\widehat{e^{-2|t|}}(\omega)=\sqrt{\dfrac2\pi}\,\dfrac{2}{4+\omega^2}$</span>.`],
  t:R`Fonction réelle et paire : transformée réelle et paire.`},
 {l:'f', q:R`Calcule la transformée de Fourier de $f(t)=1$ si $1\le t\le 3$, $0$ sinon.`,
- s:[R`$f(t)=\Pi(t-2)$ : c'est la porte de l'{ex:porte}, décalée de $2$ vers la droite.`, R`Propriété du décalage : $\widehat{f(t-a)}(\omega)=e^{-ia\omega}\,\hat f(\omega)$.`, R`<span class="ok">$\hat f(\omega)=e^{-2i\omega}\sqrt{\dfrac2\pi}\,\dfrac{\sin\omega}{\omega}$</span>.`, R`Le module $|\hat f|$ est le même que pour la porte centrée : décaler ne change que la phase.`],
+ s:[R`$f$ vaut $1$ sur un intervalle de longueur $2$ centré en $2$ : c'est la porte de l'{ex:porte}, décalée de $2$ vers la droite. Autrement dit, $f(t)=\Pi(t-2)$.`,
+    R`Propriété du décalage : $$\widehat{f(t-a)}(\omega)=e^{-ia\omega}\,\hat f(\omega).$$`,
+    R`Avec $a=2$ : <span class="ok">$\hat f(\omega)=e^{-2i\omega}\sqrt{\dfrac2\pi}\,\dfrac{\sin\omega}{\omega}$</span>.`,
+    R`Comme $|e^{-2i\omega}|=1$, le module $|\hat f|$ est le même que pour la porte centrée : décaler ne change que la phase.`],
  t:R`Décalage dans le temps = multiplication par $e^{-ia\omega}$.`},
 {l:'m', q:R`Calcule la transformée de Fourier du triangle $\Lambda(t)=1-|t|$ si $|t|\le 1$, $0$ sinon.`,
- s:[R`$\Lambda$ est paire, donc $\hat\Lambda(\omega)=\sqrt{\dfrac2\pi}\displaystyle\int_0^1(1-t)\cos(\omega t)\,dt$.`, R`Par parties, avec $u=1-t$ et $v'=\cos\omega t$ : $\displaystyle\int_0^1(1-t)\cos\omega t\,dt=\left[\frac{(1-t)\sin\omega t}{\omega}\right]_0^1+\int_0^1\frac{\sin\omega t}{\omega}\,dt$.`, R`Le crochet vaut $0$ (en $t=1$ et en $t=0$), et $\displaystyle\int_0^1\frac{\sin\omega t}{\omega}\,dt=\frac{1-\cos\omega}{\omega^2}$.`, R`<span class="ok">$\hat\Lambda(\omega)=\sqrt{\dfrac2\pi}\,\dfrac{1-\cos\omega}{\omega^2}$</span> pour $\omega\neq 0$, et $\hat\Lambda(0)=\frac{1}{\sqrt{2\pi}}\int\Lambda=\frac{1}{\sqrt{2\pi}}$ (l'aire du triangle vaut $1$).`],
+ s:[R`$\Lambda$ est paire, donc la partie en sinus disparaît : $$\hat\Lambda(\omega)=\sqrt{\frac2\pi}\int_0^1(1-t)\cos(\omega t)\,dt.$$`,
+    R`J'intègre par parties avec $u=1-t$ et $v'=\cos\omega t$ (donc $v=\frac{\sin\omega t}{\omega}$) : $$\int_0^1(1-t)\cos\omega t\,dt=\left[\frac{(1-t)\sin\omega t}{\omega}\right]_0^1+\int_0^1\frac{\sin\omega t}{\omega}\,dt.$$`,
+    R`Le crochet vaut $0$ : en $t=1$ à cause du facteur $1-t$, en $t=0$ à cause de $\sin 0$. Il reste $$\int_0^1\frac{\sin\omega t}{\omega}\,dt=\left[-\frac{\cos\omega t}{\omega^2}\right]_0^1=\frac{1-\cos\omega}{\omega^2}.$$`,
+    R`Résultat : <span class="ok">$\hat\Lambda(\omega)=\sqrt{\dfrac2\pi}\,\dfrac{1-\cos\omega}{\omega^2}$</span> pour $\omega\neq 0$.`,
+    R`En $\omega=0$ : $\hat\Lambda(0)=\frac{1}{\sqrt{2\pi}}\int\Lambda=\frac{1}{\sqrt{2\pi}}$, car l'aire du triangle vaut $1$. C'est cohérent avec $\frac{1-\cos\omega}{\omega^2}\to\frac12$.`],
  t:R`Fonction paire : $\hat f(\omega)=\sqrt{\frac2\pi}\int_0^{+\infty}f(t)\cos(\omega t)\,dt$, c'est plus court.`},
 {l:'m', q:R`Calcule la transformée de Fourier de $e^{-|t|}\cos t$.`,
- s:[R`Formule d'Euler : $\cos t=\dfrac{e^{it}+e^{-it}}{2}$, donc $e^{-|t|}\cos t=\frac12e^{it}e^{-|t|}+\frac12e^{-it}e^{-|t|}$.`, R`Modulation : $\widehat{e^{iat}f(t)}(\omega)=\hat f(\omega-a)$. Avec $\widehat{e^{-|t|}}(\omega)=\sqrt{\frac2\pi}\,\frac{1}{1+\omega^2}$ ({ex:expa} avec $a=1$) :`, R`<span class="ok">$\dfrac{1}{\sqrt{2\pi}\,\bigl(1+(\omega-1)^2\bigr)}+\dfrac{1}{\sqrt{2\pi}\,\bigl(1+(\omega+1)^2\bigr)}$</span>.`, R`Le pic en $0$ se dédouble en deux pics, autour de $\omega=\pm1$.`],
+ s:[R`J'écris le cosinus avec la formule d'Euler, pour faire apparaître des exponentielles : $$e^{-|t|}\cos t=\frac12e^{it}e^{-|t|}+\frac12e^{-it}e^{-|t|}.$$`,
+    R`J'utilise la modulation : $\widehat{e^{iat}f(t)}(\omega)=\hat f(\omega-a)$, avec $a=1$ puis $a=-1$. D'après l'{ex:expa} avec $a=1$ : $$\widehat{e^{-|t|}}(\omega)=\sqrt{\frac2\pi}\,\frac{1}{1+\omega^2}.$$`,
+    R`Je décale de $+1$ et de $-1$, je multiplie par $\frac12$, et $\frac12\sqrt{\frac2\pi}=\frac1{\sqrt{2\pi}}$ : <span class="ok">$\dfrac{1}{\sqrt{2\pi}\,\bigl(1+(\omega-1)^2\bigr)}+\dfrac{1}{\sqrt{2\pi}\,\bigl(1+(\omega+1)^2\bigr)}$</span>.`,
+    R`Interprétation : le pic centré en $0$ se dédouble en deux pics, autour de $\omega=\pm1$.`],
  t:R`Multiplier par $e^{iat}$ dans le temps = décaler de $a$ en fréquence.`},
 {l:'d', k:'gauss', q:R`Calcule la transformée de Fourier de la gaussienne $e^{-t^2}$.`,
- s:[R`Je pose $G(\omega)=\dfrac{1}{\sqrt{2\pi}}\displaystyle\int e^{-t^2}e^{-i\omega t}\,dt$. Je dérive sous l'intégrale : $G'(\omega)=\dfrac{1}{\sqrt{2\pi}}\displaystyle\int(-it)\,e^{-t^2}e^{-i\omega t}\,dt$.`, R`Comme $\left(e^{-t^2}\right)'=-2t\,e^{-t^2}$, j'ai $-it\,e^{-t^2}=\frac i2\left(e^{-t^2}\right)'$. J'intègre par parties ; le crochet est nul car $e^{-t^2}\to 0$ à l'infini. On trouve $G'(\omega)=-\frac\omega2\,G(\omega)$.`, R`$G'=-\frac\omega2G$ est une équation différentielle simple : ses solutions sont $G(\omega)=C\,e^{-\omega^2/4}$, avec $C=G(0)$.`, R`$G(0)=\frac{1}{\sqrt{2\pi}}\int e^{-t^2}dt=\frac{\sqrt\pi}{\sqrt{2\pi}}=\frac{1}{\sqrt2}$ (intégrale de Gauss : $\int e^{-t^2}dt=\sqrt\pi$).`, R`<span class="ok">$\widehat{e^{-t^2}}(\omega)=\dfrac{1}{\sqrt2}\,e^{-\omega^2/4}$</span>.`],
+ s:[R`Je pose $G(\omega)=\dfrac{1}{\sqrt{2\pi}}\displaystyle\int e^{-t^2}e^{-i\omega t}\,dt$. Le calcul direct est difficile ; je cherche plutôt une équation différentielle vérifiée par $G$. Je dérive sous l'intégrale : $$G'(\omega)=\frac{1}{\sqrt{2\pi}}\int(-it)\,e^{-t^2}e^{-i\omega t}\,dt.$$`,
+    R`Comme $\left(e^{-t^2}\right)'=-2t\,e^{-t^2}$, j'ai $-it\,e^{-t^2}=\frac i2\left(e^{-t^2}\right)'$. J'intègre par parties ; le crochet est nul car $e^{-t^2}\to 0$ à l'infini. Il reste $$G'(\omega)=-\frac\omega2\,G(\omega).$$`,
+    R`Cette équation différentielle simple a pour solutions $G(\omega)=C\,e^{-\omega^2/4}$, avec $C=G(0)$.`,
+    R`Je calcule $G(0)$ avec l'intégrale de Gauss $\int e^{-t^2}dt=\sqrt\pi$ : $$G(0)=\frac{1}{\sqrt{2\pi}}\int e^{-t^2}dt=\frac{\sqrt\pi}{\sqrt{2\pi}}=\frac{1}{\sqrt2}.$$`,
+    R`Résultat : <span class="ok">$\widehat{e^{-t^2}}(\omega)=\dfrac{1}{\sqrt2}\,e^{-\omega^2/4}$</span>.`],
  t:R`La transformée d'une gaussienne est une gaussienne. Avec cette convention, $e^{-t^2/2}$ est même sa propre transformée.`},
 {l:'d', q:R`Calcule la transformée de Fourier de $e^{-\pi t^2}$.`,
- s:[R`J'écris $e^{-\pi t^2}=g(\sqrt\pi\,t)$ avec $g(t)=e^{-t^2}$. Je vérifie : $g(\sqrt\pi\,t)=e^{-(\sqrt\pi t)^2}=e^{-\pi t^2}$ ✓.`, R`Changement d'échelle : $\widehat{g(\lambda t)}(\omega)=\dfrac{1}{|\lambda|}\,\hat g\!\left(\dfrac\omega\lambda\right)$, ici avec $\lambda=\sqrt\pi$.`, R`Avec l'{ex:gauss} : $\dfrac{1}{\sqrt\pi}\cdot\dfrac{1}{\sqrt2}\,e^{-(\omega/\sqrt\pi)^2/4}$.`, R`<span class="ok">$\widehat{e^{-\pi t^2}}(\omega)=\dfrac{1}{\sqrt{2\pi}}\,e^{-\omega^2/(4\pi)}$</span>.`],
+ s:[R`J'écris $e^{-\pi t^2}=g(\sqrt\pi\,t)$ avec $g(t)=e^{-t^2}$. Je vérifie : $g(\sqrt\pi\,t)=e^{-(\sqrt\pi t)^2}=e^{-\pi t^2}$ ✓.`,
+    R`J'utilise le changement d'échelle avec $\lambda=\sqrt\pi$ : $$\widehat{g(\lambda t)}(\omega)=\frac{1}{|\lambda|}\,\hat g\!\left(\frac\omega\lambda\right).$$`,
+    R`D'après l'{ex:gauss}, $\hat g(\omega)=\frac1{\sqrt2}e^{-\omega^2/4}$. Donc $$\widehat{e^{-\pi t^2}}(\omega)=\frac{1}{\sqrt\pi}\cdot\frac{1}{\sqrt2}\,e^{-(\omega/\sqrt\pi)^2/4}=\frac{1}{\sqrt{2\pi}}\,e^{-\omega^2/(4\pi)}.$$`,
+    R`Résultat : <span class="ok">$\widehat{e^{-\pi t^2}}(\omega)=\dfrac{1}{\sqrt{2\pi}}\,e^{-\omega^2/(4\pi)}$</span>.`],
  t:R`Changement d'échelle : je divise par $|\lambda|$ et je remplace $\omega$ par $\frac\omega\lambda$.`}
 ];
-
 
 const PARTS = [
   {t:'Séries numériques', ex:P1},
