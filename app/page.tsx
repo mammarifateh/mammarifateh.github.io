@@ -4,8 +4,6 @@ import Mdx from '@/components/Mdx';
 import { getPublications } from '@/lib/content';
 import { bio, contacts, directions, site, tools } from '@/lib/site';
 
-const accents = ['tag-teal', 'tag-blue', 'tag-rose', 'tag-amber'];
-
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
     <section id={id} className="scroll-mt-20 border-t rule py-10">
@@ -35,9 +33,9 @@ export default function Home() {
 
       <Section id="research" title="Research directions">
         <ul className="grid gap-3">
-          {directions.map((d, i) => (
+          {directions.map((d) => (
             <li key={d.title}>
-              <span className={`font-semibold ${accents[i % accents.length]}`}>{d.title}.</span> <span className="muted">{d.text}</span>
+              <span className="font-semibold">{d.title}.</span> <span className="muted">{d.text}</span>
             </li>
           ))}
         </ul>
@@ -46,11 +44,11 @@ export default function Home() {
 
       <Section id="publications" title="Publications">
         <div className="grid gap-5">
-          {pubs.map((p, i) => {
+          {pubs.map((p) => {
             const m = p.meta as Record<string, string | null | undefined>;
             return (
               <article key={p.slug} id={p.slug} className="scroll-mt-20 rounded-2xl border rule p-5 sm:p-6">
-                <p className={`text-xs font-semibold tracking-wide uppercase ${i % 2 ? 'tag-teal' : 'tag-blue'}`}>{m.kind}</p>
+                <p className="text-xs font-semibold tracking-wide uppercase faint">{m.kind}</p>
                 <h3 className="mt-1.5 text-[17px] leading-snug font-semibold">
                   <a href={`https://doi.org/${m.doi}`} target="_blank" rel="noopener" className="hover:text-accent dark:hover:text-night-accent">
                     {p.title}
@@ -82,9 +80,9 @@ export default function Home() {
 
       <Section id="teaching" title="Teaching">
         <a href="/analyse/" className="card block p-5 sm:p-6">
-          <p className="text-xs font-semibold tracking-wide uppercase tag-rose">In French</p>
+          <p className="text-xs font-semibold tracking-wide uppercase faint">In French</p>
           <p className="mt-1.5 text-[17px] font-semibold">Analyse mathématique</p>
-          <p className="mt-1 text-[15px] muted">Course notes and corrected exercises: numerical series, power series, Fourier series and the Fourier transform.</p>
+          <p className="mt-1 text-[15px] muted">Course summaries and worked exercises for undergraduate analysis: numerical series, power series, Fourier series and the Fourier transform.</p>
         </a>
       </Section>
 

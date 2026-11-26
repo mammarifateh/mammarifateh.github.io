@@ -6,8 +6,8 @@
 
 /* Palette in the spirit of a chat interface: white / charcoal, soft grey bubbles, a few elegant accents. */
 @theme {
-  --font-serif: var(--font-inter), Inter, ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--font-inter), Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-serif: ui-sans-serif, -apple-system, system-ui, 'Segoe UI', Helvetica, 'Apple Color Emoji', Arial, sans-serif;
+  --font-sans: ui-sans-serif, -apple-system, system-ui, 'Segoe UI', Helvetica, 'Apple Color Emoji', Arial, sans-serif;
   --font-mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
 
   --color-paper: #ffffff;
@@ -16,9 +16,9 @@
   --color-ink-2: #5d5d5d;
   --color-ink-3: #8f8f8f;
   --color-rule: #e5e5e5;
-  --color-accent: #3b5bdb;
-  --color-accent-2: #4c6ef5;
-  --color-accent-soft: #eef2ff;
+  --color-accent: #0d0d0d;
+  --color-accent-2: #0d0d0d;
+  --color-accent-soft: #f4f4f4;
   --color-teal: #0f9d84;
   --color-rose: #c2255c;
   --color-amber: #e8590c;
@@ -29,8 +29,8 @@
   --color-night-ink-2: #b4b4b4;
   --color-night-ink-3: #8f8f8f;
   --color-night-rule: #3a3a3a;
-  --color-night-accent: #8ea8ff;
-  --color-night-accent-soft: #232a45;
+  --color-night-accent: #ececec;
+  --color-night-accent-soft: #303030;
   --color-night-teal: #3fd0b2;
   --color-night-rose: #f783ac;
   --color-night-amber: #ffa94d;
@@ -103,21 +103,15 @@
     @apply flex gap-4;
   }
   .avatar {
-    @apply mt-0.5 grid h-8 w-8 flex-none place-items-center rounded-full text-[15px] text-white;
+    @apply mt-0.5 grid h-8 w-8 flex-none place-items-center rounded-full text-[15px] text-white dark:text-night;
     font-family: 'Times New Roman', serif;
-    background: linear-gradient(135deg, var(--color-accent-2), var(--color-rose));
+    background: var(--color-ink);
   }
-  .tag-teal {
-    @apply text-teal dark:text-night-teal;
-  }
-  .tag-blue {
-    @apply text-accent dark:text-night-accent;
-  }
-  .tag-rose {
-    @apply text-rose dark:text-night-rose;
-  }
+  .tag-teal,
+  .tag-blue,
+  .tag-rose,
   .tag-amber {
-    @apply text-amber dark:text-night-amber;
+    color: inherit;
   }
 }
 
@@ -182,4 +176,8 @@
 }
 .prose-sci > :last-child {
   margin-bottom: 0;
+}
+
+html.dark .avatar {
+  background: var(--color-night-ink);
 }

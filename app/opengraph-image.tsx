@@ -10,8 +10,8 @@ export const contentType = 'image/png';
 export default function OgImage() {
   return new ImageResponse(
     (
-      <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', background: '#f8f7f3', color: '#1f2328', padding: '72px 80px', fontFamily: 'serif' }}>
-        <div style={{ display: 'flex', fontSize: 24, letterSpacing: 4, color: '#35598a', textTransform: 'uppercase', fontFamily: 'sans-serif' }}>
+      <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', background: '#ffffff', color: '#1f2328', padding: '72px 80px', fontFamily: 'sans-serif' }}>
+        <div style={{ display: 'flex', fontSize: 24, letterSpacing: 4, color: '#0d0d0d', textTransform: 'uppercase', fontFamily: 'sans-serif' }}>
           {site.position}
         </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -19,7 +19,7 @@ export default function OgImage() {
           <div style={{ fontSize: 40, marginTop: 24, color: '#4b5260' }}>{site.institution}</div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 24, fontSize: 24, color: '#7a808c', fontFamily: 'sans-serif' }}>
-          <div style={{ display: 'flex', width: 120, height: 4, background: '#35598a' }} />
+          <div style={{ display: 'flex', width: 120, height: 4, background: '#0d0d0d' }} />
           mammarifateh.github.io
         </div>
       </div>
